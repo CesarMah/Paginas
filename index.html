@@ -2548,6 +2548,19 @@
     a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
   });
 
+  /* Cerrar el menú al tocar en cualquier lugar fuera de él */
+  document.addEventListener('click', function(event) {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+
+    // Comprobamos si el menú está abierto
+    if (navLinks.classList.contains('open')) {
+      // Si el clic NO fue dentro del panel de enlaces Y NO fue en el icono de hamburguesa
+      if (!navLinks.contains(event.target) && !hamburger.contains(event.target)) {
+        navLinks.classList.remove('open'); // Cerramos el menú
+      }
+    }
+  });
   /* ══════════════════════════════════════════
      MODAL DE ACCESO — Abrir y cerrar
      openModal: añade clase "open" y bloquea el scroll de la página.
