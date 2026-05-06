@@ -1415,6 +1415,129 @@
       .protegen-bg-shield { display:none; }
     }
 
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — TABLETS Y MÓVILES
+    ═══════════════════════════════════════════ */
+
+    /* ── Tablet (≤ 900px) ── */
+    @media (max-width: 900px) {
+      .protegen-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .protegen-bg-shield { display: none; }
+      .protegen-title { font-size: clamp(2.5rem, 7vw, 3.5rem); }
+    }
+
+    /* ── Móvil (≤ 768px) ── */
+    @media (max-width: 768px) {
+      /* Espaciado general */
+      .section-pad { padding: 4rem 0; }
+      .container { padding: 0 1.2rem; }
+
+      /* Navbar */
+      #navbar { padding: 0.9rem 1.2rem; }
+
+      /* Hero: ocultar elementos que desbordan en pantallas angostas */
+      #hero { padding: 7rem 1.2rem 3rem; }
+      .hero-orbit { display: none; }
+      .hero-shield { display: none; }
+      .hero-blob-1 { width: 320px; height: 320px; left: -100px; top: -80px; }
+      .hero-blob-2 { width: 280px; height: 280px; right: -80px; bottom: -60px; }
+      .hero-blob-3 { display: none; }
+      .hero-badge { font-size: 0.65rem; letter-spacing: 1px; padding: 0.35rem 0.8rem; }
+      .hero h1 { letter-spacing: 2px; }
+      .hero-tagline { font-size: 0.95rem; padding: 0 0.5rem; }
+      .hero-tagline br { display: none; }
+
+      /* CTA buttons: apilados en móvil */
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .hero-ctas a { width: 100%; text-align: center; justify-content: center; }
+
+      /* Stats: apilar verticalmente con separador horizontal */
+      .hero-stats {
+        flex-direction: column;
+        margin-top: 2.5rem;
+        width: 100%;
+        max-width: 340px;
+        border-radius: var(--radius);
+      }
+      .stat { padding: 1.1rem 1.5rem; }
+      .stat:not(:last-child)::after {
+        top: auto;
+        bottom: 0;
+        left: 8%;
+        right: 8%;
+        width: auto;
+        height: 1px;
+      }
+      .hero-scroll { display: none; }
+
+      /* About */
+      .about-float-card { display: none; }
+      .about-main-card { padding: 1.8rem; }
+      .about-years-display { font-size: 4rem; }
+
+      /* Protegen */
+      .protegen-inner { padding: 4rem 0; }
+      .protegen-cards { grid-template-columns: 1fr 1fr; }
+
+      /* Map */
+      #mapa iframe { height: 280px; }
+
+      /* Sección Thin Blue Line */
+      .tbl-stripe { height: 10px; }
+
+      /* Chat y scroll-top */
+      #chatBtn { left: 1rem; bottom: 1rem; width: 50px; height: 50px; font-size: 1.2rem; }
+      #chatWindow { left: 1rem; right: 1rem; width: auto; max-width: none; bottom: 4.5rem; }
+      #scrollTop { right: 1rem; bottom: 1rem; }
+    }
+
+    /* ── Móvil pequeño (≤ 480px) ── */
+    @media (max-width: 480px) {
+      /* Hero */
+      #hero { padding: 6rem 1rem 2.5rem; }
+      .hero h1 { font-size: clamp(3rem, 22vw, 5rem); letter-spacing: 0px; }
+      .hero-badge { font-size: 0.58rem; letter-spacing: 0.5px; }
+      .hero-tagline { font-size: 0.88rem; }
+      .stat-num { font-size: 2.2rem; }
+      .stat { padding: 1rem 1.2rem; }
+
+      /* About */
+      .mv-grid { grid-template-columns: 1fr; }
+      .about-main-card { padding: 1.3rem; }
+      .about-badge-row { flex-direction: column; gap: 0.6rem; text-align: center; }
+
+      /* Corps */
+      .corps-grid { max-width: 100%; }
+      .corps-card { padding: 1.8rem 1.2rem; }
+
+      /* Protegen */
+      .protegen-cards { grid-template-columns: 1fr; }
+      .protegen-title { font-size: 2.3rem; letter-spacing: 1px; }
+      .protegen-card.wide { flex-direction: column; gap: 0.6rem; }
+
+      /* Values */
+      .values-grid { grid-template-columns: 1fr; }
+
+      /* Contact */
+      .contact-form { padding: 1.5rem 1.2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-detail { gap: 0.7rem; }
+
+      /* Footer */
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: 1; }
+      footer { padding: 3rem 1.2rem 1.5rem; }
+
+      /* Map */
+      #mapa iframe { height: 240px; }
+      .map-badge { font-size: 0.7rem; padding: 0.4rem 0.7rem; max-width: calc(100% - 2rem); }
+
+      /* Navbar */
+      #navbar { padding: 0.7rem 1rem; }
+      .nav-logo-text { font-size: 1.1rem; }
+      .nav-logo-sub { display: none; }
+    }
+
     /* ─── CHATBOT ─── */
     #chatBtn {
       position: fixed;
