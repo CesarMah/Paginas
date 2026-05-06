@@ -2546,9 +2546,8 @@
   /* Al hacer clic en cualquier enlace del menú, se cierra el panel */
   document.querySelectorAll('#navLinks a').forEach(a => {
     a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
-  });
 
-  /* Cerrar el menú al tocar en cualquier lugar fuera de él */
+      /* Cerrar el menú al tocar en cualquier lugar fuera de él */
   document.addEventListener('click', function(event) {
     const navLinks = document.getElementById('navLinks');
     const hamburger = document.getElementById('hamburger');
@@ -2561,6 +2560,9 @@
       }
     }
   });
+  });
+
+
   /* ══════════════════════════════════════════
      MODAL DE ACCESO — Abrir y cerrar
      openModal: añade clase "open" y bloquea el scroll de la página.
