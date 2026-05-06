@@ -317,13 +317,14 @@
 
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(3.8rem, 11vw, 9rem);
-      line-height: 0.88;
-      letter-spacing: 4px;
+      font-size: clamp(5.5rem, 18vw, 14rem);
+      line-height: 0.85;
+      letter-spacing: 6px;
       color: var(--navy);
       animation: fadeDown 0.7s 0.1s ease both;
       position: relative;
       z-index: 1;
+      text-shadow: 0 4px 40px rgba(0,87,184,0.08);
     }
     .hero h1 .accent {
       color: var(--blue);
@@ -1031,6 +1032,45 @@
     .form-success-icon { font-size: 3rem; margin-bottom: 1rem; }
     .form-success strong { color: var(--navy); font-size: 1.1rem; }
     .form-success p { color: var(--gray-500); margin-top: 0.5rem; font-size: 0.9rem; }
+    /* ─── MAP ─── */
+    .map-wrap {
+      margin-top: 3rem;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1.5px solid var(--gray-100);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .map-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 320px;
+      border: none;
+      filter: saturate(0.85) contrast(1.05);
+    }
+    .map-badge {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+    .map-badge-dot {
+      width: 8px; height: 8px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
     @media(max-width:768px){
       .contact-grid{ grid-template-columns:1fr; }
       .form-row{ grid-template-columns:1fr; }
@@ -1212,6 +1252,199 @@
 
     /* ─── COUNTER ANIMATION ─── */
     .count-up { display: inline; }
+
+    /* ─── CHATBOT ─── */
+    #chatBtn {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      width: 56px; height: 56px;
+      background: var(--blue);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(0,87,184,0.45);
+      z-index: 900;
+      transition: transform 0.3s, background 0.2s;
+      animation: chatPulseRing 2.5s ease-out infinite;
+    }
+    #chatBtn:hover { background: var(--blue-dark); transform: scale(1.08); }
+    #chatBtn.open { background: var(--blue-dark); transform: scale(0.95); animation: none; }
+    @keyframes chatPulseRing {
+      0%   { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0 rgba(0,87,184,0.35); }
+      60%  { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 14px rgba(0,87,184,0); }
+      100% { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0 rgba(0,87,184,0); }
+    }
+    #chatWindow {
+      position: fixed;
+      bottom: 5.5rem;
+      left: 2rem;
+      width: 340px;
+      max-height: 480px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,87,184,0.1);
+      z-index: 901;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.85) translateY(20px);
+      transform-origin: bottom left;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.25s ease;
+    }
+    #chatWindow.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .chat-header {
+      background: var(--blue);
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-shrink: 0;
+    }
+    .chat-avatar {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .chat-header-info .chat-name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .chat-header-info .chat-status {
+      font-size: 0.68rem; color: rgba(255,255,255,0.75);
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .chat-status-dot {
+      width: 6px; height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 2px; }
+    .chat-msg {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 14px;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      animation: msgSlide 0.25s ease;
+    }
+    @keyframes msgSlide {
+      from { opacity:0; transform: translateY(6px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .chat-msg.bot {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      color: var(--navy);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-msg.user {
+      background: var(--blue);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-msg a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .chat-msg a:hover { text-decoration: underline; }
+    .chat-typing {
+      display: flex;
+      gap: 4px;
+      padding: 0.55rem 0.8rem;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+      align-items: center;
+    }
+    .chat-typing span {
+      width: 6px; height: 6px;
+      background: var(--gray-300);
+      border-radius: 50%;
+      animation: typingDot 1.2s ease-in-out infinite;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingDot {
+      0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+      40%            { transform: scale(1);   opacity: 1; }
+    }
+    .chat-quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0.3rem 1rem 0.8rem;
+    }
+    .chat-quick-btn {
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-pale2);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .chat-quick-btn:hover { background: var(--blue); color: #fff; }
+    .chat-input-row {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--gray-100);
+      flex-shrink: 0;
+    }
+    .chat-input {
+      flex: 1;
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--navy);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input:focus { border-color: var(--blue); background: var(--white); }
+    .chat-send-btn {
+      width: 38px; height: 38px;
+      background: var(--blue);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .chat-send-btn:hover { background: var(--blue-dark); transform: scale(1.05); }
+    @media(max-width:400px){
+      #chatWindow { width: calc(100vw - 2rem); left: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -1624,6 +1857,7 @@
           <a href="https://twitter.com/SCARBERYHUERT/" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">𝕏</a>
           <a href="https://www.instagram.com/tiendatelcel_oficial/" class="social-btn" title="Instagram" target="_blank" rel="noopener">◉</a>
         </div>
+
       </div>
 
       <div class="contact-form reveal">
@@ -1663,6 +1897,22 @@
       </div>
     </div>
   </div>
+</section>
+
+<!-- ─── MAPA ─── -->
+<section id="mapa" style="position:relative;">
+  <div class="map-badge" style="top:1.5rem;left:1.5rem;">
+    <span class="map-badge-dot"></span>
+    Sucursal Tlalpan · CDMX — Real Madrid 80, Arboledas del Sur
+  </div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.xxxxxxx!2d-99.1292!3d19.2978!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce00727c0a14b1%3A0xa03c4e1b5a5d3b7c!2sReal%20Madrid%2080%2C%20Arboledas%20del%20Sur%2C%20Tlalpan%2C%2014376%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses!2smx!4v1700000000000"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Ubicación Beryhuert"
+    style="display:block;width:100%;height:480px;border:none;filter:saturate(0.85) contrast(1.05);"
+  ></iframe>
 </section>
 
 <!-- ─── FOOTER ─── -->
@@ -1707,6 +1957,28 @@
 
 <!-- ─── SCROLL TOP ─── -->
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ─── CHATBOT ─── -->
+<button id="chatBtn" onclick="toggleChat()" title="Asistente virtual">💬</button>
+
+<div id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <div class="chat-name">Asistente Beryhuert</div>
+      <div class="chat-status">
+        <span class="chat-status-dot"></span>
+        En línea · respuesta inmediata
+      </div>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-quick-replies" id="quickReplies"></div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')sendChat()" />
+    <button class="chat-send-btn" onclick="sendChat()">➤</button>
+  </div>
+</div>
 
 <script>
   /* ── Navbar scroll ── */
@@ -1801,6 +2073,175 @@
     }
     document.getElementById('contactFormWrap').style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  /* ── Chatbot ── */
+  const chatBtn    = document.getElementById('chatBtn');
+  const chatWindow = document.getElementById('chatWindow');
+  const chatMsgs   = document.getElementById('chatMessages');
+  const quickRepl  = document.getElementById('quickReplies');
+  let chatOpen = false;
+  let chatStarted = false;
+
+  const BOT_RESPONSES = [
+    {
+      keys: ['hola','buenos','buenas','hey','saludos','hi'],
+      reply: '¡Hola! 👋 Soy el asistente virtual de <strong>Beryhuert</strong>. Estoy aquí para ayudarte con planes Telcel, equipos y todo lo relacionado con tu corporación. ¿En qué puedo ayudarte?',
+      quick: ['Ver planes','Dirección','Contacto','¿Qué son los planes?']
+    },
+    {
+      keys: ['plan','planes','corporativo','nomina','nómina'],
+      reply: '📱 Contamos con <strong>3 planes corporativos</strong> con descuento directo en nómina:<br><br>🛡️ <strong>Amigo PA</strong> — Policía Auxiliar<br>🏦 <strong>Amigo PBI</strong> — Policía Bancaria e Industrial<br>🏙️ <strong>SSC CDMX</strong> — Secretaría de Seguridad Ciudadana<br><br>Todos incluyen datos LTE+, sin buró de crédito y equipos de alta gama.',
+      quick: ['Policía Auxiliar','Policía Bancaria','SSC CDMX','Contactar asesor']
+    },
+    {
+      keys: ['auxiliar','pa','amigo pa','policia auxiliar','policía auxiliar'],
+      reply: '🛡️ <strong>Amigo PA — Policía Auxiliar</strong><br><br>Plan exclusivo con:<br>✅ Descuento directo en nómina<br>✅ Equipos Telcel de alta gama<br>✅ Datos ilimitados / LTE+<br>✅ Llamadas y SMS sin costo<br><br><a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" target="_blank">→ Acceder al plan aquí</a>',
+      quick: ['Policía Bancaria','SSC CDMX','Contactar asesor']
+    },
+    {
+      keys: ['bancaria','industrial','pbi','amigo pbi'],
+      reply: '🏦 <strong>Amigo PBI — Policía Bancaria e Industrial</strong><br><br>Plan preferencial con:<br>✅ Planes pospago preferentes<br>✅ Sin aval ni buró de crédito<br>✅ Portabilidad incluida<br>✅ Atención personalizada<br><br><a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" target="_blank">→ Acceder al plan aquí</a>',
+      quick: ['Policía Auxiliar','SSC CDMX','Contactar asesor']
+    },
+    {
+      keys: ['ssc','secretaria','seguridad ciudadana','cdmx','secretaría'],
+      reply: '🏙️ <strong>SSC CDMX — Secretaría de Seguridad Ciudadana</strong><br><br>Convenio institucional con:<br>✅ Equipos con plan incluido<br>✅ Cobertura nacional Telcel<br>✅ Soporte técnico dedicado<br>✅ Convenio directo SSC<br><br><a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" target="_blank">→ Acceder al plan aquí</a>',
+      quick: ['Policía Auxiliar','Policía Bancaria','Contactar asesor']
+    },
+    {
+      keys: ['direccion','dirección','ubicacion','ubicación','donde','dónde','mapa','sucursal'],
+      reply: '📍 Nos encontramos en:<br><br><strong>Real Madrid 80, Coapa, Arboledas del Sur, Tlalpan, 14376 Ciudad de México, CDMX</strong><br><br>Puedes ver el mapa en la sección de contacto de esta página.',
+      quick: ['Horario','Contactar asesor','Ver planes']
+    },
+    {
+      keys: ['horario','hora','horas','atencion','atención','abierto'],
+      reply: '🕐 Nuestros asesores están disponibles de <strong>Lunes a Viernes 9:00 – 18:00</strong> y <strong>Sábados 9:00 – 14:00</strong>.<br><br>También puedes enviarnos un mensaje por el formulario de contacto y te responderemos en menos de 24 horas.',
+      quick: ['Dirección','Contactar asesor','Ver planes']
+    },
+    {
+      keys: ['contacto','asesor','hablar','llamar','telefono','teléfono','whatsapp'],
+      reply: '📞 Para hablar con un asesor puedes:<br><br>• Llenar el <strong>formulario de contacto</strong> en esta página<br>• Visitar nuestra plataforma en <a href="https://www.descuentoxnomina.com.mx" target="_blank">descuentoxnomina.com.mx</a><br>• Seguirnos en redes sociales<br><br>Un asesor te responde en menos de 24 horas.',
+      quick: ['Dirección','Ver planes','Acceso plataforma']
+    },
+    {
+      keys: ['acceso','login','plataforma','registro','preregistro','pre-registro'],
+      reply: '🔐 Puedes acceder a la plataforma de pre-registro según tu corporación:<br><br>• <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" target="_blank">Policía Auxiliar</a><br>• <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" target="_blank">Policía Bancaria e Industrial</a><br>• <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" target="_blank">SSC CDMX</a><br>• <a href="https://www.descuentoxnomina.com.mx/Acceso/Login" target="_blank">Acceso general / Admin</a>',
+      quick: ['Ver planes','Dirección','Contactar asesor']
+    },
+    {
+      keys: ['telcel','distribuidor','autorizado','quien','quién','empresa','beryhuert'],
+      reply: '🏢 <strong>Beryhuert S.A. de C.V.</strong> es Distribuidor Autorizado de <strong>Radio Móvil Dipsa (Telcel)</strong> desde el <strong>8 de agosto de 1992</strong> — más de 25 años conectando a México.<br><br>Somos especialistas en planes corporativos para instituciones de seguridad pública en la Ciudad de México.',
+      quick: ['Ver planes','Contactar asesor','Dirección']
+    },
+    {
+      keys: ['equipo','equipos','celular','telefono','teléfono','smartphone','iphone','samsung'],
+      reply: '📱 Manejamos <strong>equipos de última generación</strong> con planes Telcel incluidos. Disponemos de smartphones de alta gama para uso corporativo.<br><br>Los equipos se entregan con plan activo y garantía oficial Telcel. Contacta a un asesor para ver disponibilidad.',
+      quick: ['Contactar asesor','Ver planes','Acceso plataforma']
+    },
+    {
+      keys: ['datos','internet','lte','señal','cobertura','megas'],
+      reply: '📶 Todos nuestros planes corporativos incluyen <strong>datos LTE+ de alta velocidad</strong> con cobertura nacional Telcel.<br><br>La red Telcel tiene la mayor cobertura en México, garantizando conexión en todo el país.',
+      quick: ['Ver planes','Contactar asesor']
+    },
+    {
+      keys: ['precio','costo','cuanto','cuánto','pagar','mensualidad'],
+      reply: '💰 Los precios varían según el plan y equipo que elijas. La gran ventaja es que el pago se realiza mediante <strong>descuento directo en nómina</strong>, sin necesidad de buró de crédito ni aval.<br><br>Contacta a un asesor para recibir una cotización personalizada.',
+      quick: ['Contactar asesor','Ver planes','Acceso plataforma']
+    },
+    {
+      keys: ['gracias','thanks','perfecto','genial','excelente'],
+      reply: '😊 ¡Con gusto! Si tienes más preguntas, aquí estaré. ¿Hay algo más en lo que pueda ayudarte?',
+      quick: ['Ver planes','Contactar asesor','Dirección']
+    }
+  ];
+
+  const DEFAULT = {
+    reply: '🤔 No encontré información exacta sobre eso, pero puedo conectarte con un asesor que resolverá tu duda. También puedes explorar las opciones de abajo.',
+    quick: ['Ver planes','Contactar asesor','Dirección','¿Quiénes son?']
+  };
+
+  const QUICK_MAP = {
+    'Ver planes':       () => sendQuick('planes corporativos'),
+    'Policía Auxiliar': () => sendQuick('Policía Auxiliar PA'),
+    'Policía Bancaria': () => sendQuick('Policía Bancaria PBI'),
+    'SSC CDMX':         () => sendQuick('SSC CDMX seguridad ciudadana'),
+    'Dirección':        () => sendQuick('dirección ubicación'),
+    'Horario':          () => sendQuick('horario atención'),
+    'Contactar asesor': () => sendQuick('contacto asesor'),
+    'Acceso plataforma':() => sendQuick('acceso plataforma registro'),
+    '¿Quiénes son?':    () => sendQuick('quiénes son beryhuert empresa'),
+    '¿Qué son los planes?': () => sendQuick('planes corporativos nómina'),
+  };
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    chatBtn.classList.toggle('open', chatOpen);
+    chatWindow.classList.toggle('open', chatOpen);
+    if (chatOpen && !chatStarted) {
+      chatStarted = true;
+      setTimeout(() => addTyping(() => {
+        addBotMsg('👋 ¡Bienvenido a <strong>Beryhuert</strong>! Soy tu asistente virtual. Te ayudo con información sobre planes Telcel corporativos, equipos, ubicación y más. ¿Cómo puedo ayudarte hoy?');
+        setQuickReplies(['Ver planes','Dirección','Contactar asesor','¿Quiénes son?']);
+      }), 400);
+    }
+  }
+
+  function addBotMsg(html) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg bot';
+    div.innerHTML = html;
+    chatMsgs.appendChild(div);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function addUserMsg(text) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg user';
+    div.textContent = text;
+    chatMsgs.appendChild(div);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function addTyping(cb) {
+    const t = document.createElement('div');
+    t.className = 'chat-typing';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    chatMsgs.appendChild(t);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    setTimeout(() => { t.remove(); cb(); }, 900);
+  }
+
+  function setQuickReplies(options) {
+    quickRepl.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'chat-quick-btn';
+      btn.textContent = opt;
+      btn.onclick = () => (QUICK_MAP[opt] || (() => sendQuick(opt)))();
+      quickRepl.appendChild(btn);
+    });
+  }
+
+  function sendQuick(text) {
+    document.getElementById('chatInput').value = text;
+    sendChat();
+  }
+
+  function sendChat() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    addUserMsg(text);
+    input.value = '';
+    quickRepl.innerHTML = '';
+    const lower = text.toLowerCase();
+    const match = BOT_RESPONSES.find(r => r.keys.some(k => lower.includes(k)));
+    const response = match || DEFAULT;
+    setTimeout(() => addTyping(() => {
+      addBotMsg(response.reply);
+      if (response.quick) setQuickReplies(response.quick);
+    }), 300);
   }
 
   /* ── Subtle card tilt on hover ── */
