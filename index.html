@@ -1,129 +1,227 @@
+<!--
+  ════════════════════════════════════════════════════════════════════
+  BERYHUERT — Página web principal
+  Distribuidor Autorizado Telcel · Región 9 · Ciudad de México
+  ════════════════════════════════════════════════════════════════════
+
+  Este archivo contiene TODO el código de la página web en un solo lugar:
+    1. La ESTRUCTURA (HTML) — lo que aparece en pantalla
+    2. Los ESTILOS  (CSS)  — cómo se ve: colores, tamaños, animaciones
+    3. La LÓGICA   (JS)   — qué hace al hacer clic, el chatbot, etc.
+
+  No necesitas saber programación para entender los comentarios.
+  Cada sección está explicada en lenguaje sencillo.
+  ════════════════════════════════════════════════════════════════════
+-->
+
+<!-- DOCTYPE le dice al navegador: "esto es una página web moderna" -->
 <!DOCTYPE html>
+
+<!-- <html> es el contenedor principal de TODA la página. lang="es" indica que el idioma es español -->
 <html lang="es">
+
+<!-- ═══════════════════════════════════════════
+     HEAD — Información que el navegador necesita
+     pero que el usuario NO ve directamente
+     ═══════════════════════════════════════════ -->
 <head>
+  <!-- UTF-8 permite mostrar letras con acentos (á, é, ñ, etc.) -->
   <meta charset="UTF-8" />
+
+  <!-- Esto hace que en teléfonos la página no se vea muy pequeña.
+       width=device-width = usa el ancho real del teléfono
+       initial-scale=1.0  = no hacer zoom automático al cargar -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Descripción que aparece en Google cuando alguien busca la empresa -->
   <meta name="description" content="Beryhuert - Distribuidor Autorizado Telcel. Planes especiales para Policía Auxiliar, PBI y Secretaría de Seguridad Ciudadana CDMX." />
+
+  <!-- Título que aparece en la pestaña del navegador -->
   <title>BERYHUERT | Distribuidor Autorizado Telcel</title>
+
+  <!-- Las siguientes 3 líneas cargan las fuentes (tipos de letra) desde internet.
+       preconnect = "avisa" al navegador que se conecte a Google Fonts con anticipación,
+       para que las letras carguen más rápido -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Carga dos fuentes:
+       - "Bebas Neue": letras grandes y condensadas (usada en títulos)
+       - "Outfit": letras modernas y legibles (usada en el cuerpo del texto)
+       wght@300;400;500;600;700;800 = distintos grosores de la misma fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ═══════════════════════════════════════════
+       STYLE — Aquí empieza todo el CSS de la página.
+       CSS es el lenguaje que controla CÓMO se ven
+       los elementos: colores, tamaños, posición,
+       animaciones, etc.
+       ═══════════════════════════════════════════ -->
   <style>
+    /* Este selector especial (*) aplica a TODOS los elementos de la página.
+       box-sizing:border-box → los tamaños incluyen bordes y relleno (más predecible)
+       margin:0; padding:0  → elimina espacios por defecto que pone el navegador */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ─── VARIABLES GLOBALES (la "paleta de colores" de la página) ───
+       :root es como un cuaderno de notas donde guardamos valores que usaremos
+       en toda la página. En lugar de escribir "#0057b8" cada vez, escribimos
+       "var(--blue)" y el navegador sabe a qué color nos referimos.
+       Si queremos cambiar el azul principal, solo lo cambiamos aquí y
+       se actualiza en toda la página automáticamente. */
     :root {
-      --blue:        #0057b8;
-      --blue-dark:   #003d8a;
-      --blue-deeper: #002966;
-      --blue-light:  #3b82f6;
-      --blue-pale:   #eff6ff;
-      --blue-pale2:  #dbeafe;
-      --blue-glow:   rgba(0,87,184,0.18);
-      --accent:      #0ea5e9;
-      --white:       #ffffff;
-      --off-white:   #f8fafc;
-      --gray-50:     #f1f5f9;
-      --gray-100:    #e2e8f0;
-      --gray-300:    #94a3b8;
-      --gray-500:    #64748b;
-      --gray-700:    #334155;
-      --navy:        #0f172a;
-      --font-display:'Bebas Neue', sans-serif;
-      --font-body:   'Outfit', sans-serif;
-      --radius-sm:   8px;
-      --radius:      16px;
-      --radius-lg:   24px;
+      /* ── Colores azules (del más oscuro al más claro) ── */
+      --blue:        #0057b8;   /* azul principal de Telcel/Beryhuert */
+      --blue-dark:   #003d8a;   /* azul más oscuro (hover de botones) */
+      --blue-deeper: #002966;   /* azul muy profundo (fondos oscuros) */
+      --blue-light:  #3b82f6;   /* azul claro (acentos sobre fondo oscuro) */
+      --blue-pale:   #eff6ff;   /* azul muy pálido (fondos de tarjetas) */
+      --blue-pale2:  #dbeafe;   /* azul pálido medio (bordes de tarjetas) */
+      --blue-glow:   rgba(0,87,184,0.18); /* azul semi-transparente (brillos) */
+      --accent:      #0ea5e9;   /* azul cielo (detalles y gradientes) */
+
+      /* ── Colores neutros ── */
+      --white:       #ffffff;   /* blanco puro */
+      --off-white:   #f8fafc;   /* blanco ligeramente grisáceo (fondos alternos) */
+      --gray-50:     #f1f5f9;   /* gris muy claro */
+      --gray-100:    #e2e8f0;   /* gris claro (bordes y separadores) */
+      --gray-300:    #94a3b8;   /* gris medio (placeholders de formularios) */
+      --gray-500:    #64748b;   /* gris (texto secundario) */
+      --gray-700:    #334155;   /* gris oscuro (texto de importancia media) */
+      --navy:        #0f172a;   /* azul marino casi negro (texto principal) */
+
+      /* ── Fuentes ── */
+      --font-display:'Bebas Neue', sans-serif; /* fuente para títulos grandes */
+      --font-body:   'Outfit', sans-serif;     /* fuente para párrafos y menús */
+
+      /* ── Bordes redondeados ── */
+      --radius-sm:   8px;   /* redondeado pequeño (botones, inputs) */
+      --radius:      16px;  /* redondeado mediano (tarjetas normales) */
+      --radius-lg:   24px;  /* redondeado grande (tarjetas principales) */
+
+      /* ── Sombras (dan profundidad visual a los elementos) ──
+         El formato es: desplazamiento-X desplazamiento-Y difuminado color */
       --shadow-sm:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
       --shadow:      0 4px 24px rgba(0,87,184,0.10), 0 1px 4px rgba(0,0,0,0.06);
       --shadow-lg:   0 20px 60px rgba(0,87,184,0.15), 0 4px 16px rgba(0,0,0,0.08);
-      --shadow-blue: 0 8px 32px rgba(0,87,184,0.35);
+      --shadow-blue: 0 8px 32px rgba(0,87,184,0.35); /* sombra azul intensa para botones */
     }
 
+    /* scroll-behavior:smooth → cuando haces clic en un enlace del menú,
+       la página se desplaza suavemente en lugar de saltar de golpe */
     html { scroll-behavior: smooth; }
 
+    /* Estilos base del cuerpo de la página */
     body {
-      background: var(--white);
-      color: var(--navy);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
+      background: var(--white);      /* fondo blanco */
+      color: var(--navy);            /* color de texto por defecto: azul marino oscuro */
+      font-family: var(--font-body); /* fuente "Outfit" para todo el texto */
+      font-size: 16px;               /* tamaño base de letra */
+      line-height: 1.6;              /* espacio entre líneas (1.6 × 16px = 25.6px) */
+      overflow-x: hidden;            /* evita que aparezca barra de scroll horizontal */
     }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--gray-50); }
-    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+    /* ── Barra de scroll personalizada (solo funciona en Chrome/Edge) ──
+       Cambia la barra de desplazamiento de gris aburrido a azul elegante */
+    ::-webkit-scrollbar { width: 6px; }                              /* ancho de la barra */
+    ::-webkit-scrollbar-track { background: var(--gray-50); }       /* fondo del carril */
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; } /* pastilla azul */
 
-    /* ─── NAVBAR ─── */
+    /* ═══════════════════════════════════════════
+       NAVBAR — Barra de navegación superior
+       Siempre visible aunque hagas scroll
+       ═══════════════════════════════════════════ */
+
+    /* El navbar está "pegado" arriba de la pantalla (position:fixed).
+       z-index:1000 → aparece encima de todo lo demás (como una capa transparente flotante).
+       Al principio es completamente transparente (background: rgba(255,255,255,0)) */
     #navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background 0.4s, box-shadow 0.4s, padding 0.3s;
-      background: rgba(255,255,255,0);
+      position: fixed;           /* fijo en pantalla, no se mueve al hacer scroll */
+      top: 0; left: 0; right: 0; /* ocupa todo el ancho arriba */
+      z-index: 1000;             /* capa 1000: encima de casi todo */
+      padding: 1rem 2rem;        /* espacio interno: arriba/abajo 1rem, lados 2rem */
+      display: flex;             /* organiza los hijos en fila horizontal */
+      align-items: center;       /* los centra verticalmente */
+      justify-content: space-between; /* logo a la izquierda, menú a la derecha */
+      transition: background 0.4s, box-shadow 0.4s, padding 0.3s; /* animación suave al cambiar */
+      background: rgba(255,255,255,0); /* transparente al inicio */
     }
+
+    /* Cuando el usuario hace scroll hacia abajo (JavaScript añade la clase "scrolled"),
+       el navbar se vuelve blanco semi-transparente con efecto de vidrio esmerilado */
     #navbar.scrolled {
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 1px 0 var(--gray-100), 0 4px 20px rgba(0,0,0,0.06);
-      padding: 0.7rem 2rem;
+      background: rgba(255,255,255,0.95); /* blanco con 95% de opacidad */
+      backdrop-filter: blur(20px);         /* efecto vidrio esmerilado (borroso atrás) */
+      box-shadow: 0 1px 0 var(--gray-100), 0 4px 20px rgba(0,0,0,0.06); /* sombra sutil */
+      padding: 0.7rem 2rem;                /* se hace un poco más delgado */
     }
+
+    /* Logo de la empresa en el navbar: es un enlace que lleva al inicio */
     .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      text-decoration: none;
+      display: flex;          /* logo cuadrado + texto en fila */
+      align-items: center;    /* alineados al centro vertical */
+      gap: 0.7rem;            /* espacio entre el cuadro "B" y el texto */
+      text-decoration: none;  /* quita el subrayado de enlace */
     }
+
+    /* El cuadro azul con la letra "B" */
     .nav-logo-mark {
       width: 40px; height: 40px;
       background: var(--blue);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;             /* esquinas redondeadas */
+      display: flex; align-items: center; justify-content: center; /* centra la "B" */
       font-family: var(--font-display);
       font-size: 1.3rem;
       color: #fff;
-      box-shadow: 0 4px 12px rgba(0,87,184,0.4);
-      transition: transform 0.3s;
+      box-shadow: 0 4px 12px rgba(0,87,184,0.4); /* sombra azul debajo */
+      transition: transform 0.3s;      /* animación suave al hacer hover */
     }
+    /* Al pasar el cursor, el cuadro gira y crece ligeramente */
     .nav-logo:hover .nav-logo-mark { transform: rotate(-5deg) scale(1.05); }
+
+    /* Texto "BERYHUERT" junto al logo */
     .nav-logo-text {
       font-family: var(--font-display);
       font-size: 1.4rem;
-      letter-spacing: 2px;
+      letter-spacing: 2px; /* espacio entre letras */
       color: var(--navy);
       line-height: 1;
     }
+
+    /* Texto pequeño "Dist. Autorizado Telcel" debajo del nombre */
     .nav-logo-sub {
       font-size: 0.58rem;
       font-weight: 600;
       color: var(--blue);
       letter-spacing: 1.5px;
-      text-transform: uppercase;
+      text-transform: uppercase; /* todo en mayúsculas */
     }
+
+    /* Lista de enlaces del menú (Inicio, Acerca, Planes...) */
     nav ul {
-      list-style: none;
-      display: flex;
-      gap: 0.1rem;
+      list-style: none;  /* quita los puntos de lista */
+      display: flex;     /* todos los enlaces en fila horizontal */
+      gap: 0.1rem;       /* espacio mínimo entre enlaces */
       align-items: center;
     }
+
+    /* Cada enlace del menú */
     nav ul a {
       text-decoration: none;
       color: var(--gray-700);
       font-size: 0.82rem;
       font-weight: 500;
       letter-spacing: 0.5px;
-      padding: 0.5rem 0.9rem;
+      padding: 0.5rem 0.9rem;       /* área clickeable más grande */
       border-radius: var(--radius-sm);
-      transition: color 0.2s, background 0.2s;
+      transition: color 0.2s, background 0.2s; /* transición suave al hover */
     }
+    /* Al pasar el cursor: letra azul, fondo azul pálido */
     nav ul a:hover { color: var(--blue); background: var(--blue-pale); }
+
+    /* Botón especial "Acceso →" — tiene fondo azul sólido */
     nav ul .btn-nav {
       background: var(--blue);
-      color: #fff !important;
+      color: #fff !important; /* !important sobreescribe el color gris del enlace normal */
       padding: 0.55rem 1.2rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
@@ -132,139 +230,179 @@
     }
     nav ul .btn-nav:hover {
       background: var(--blue-dark);
-      transform: translateY(-1px);
+      transform: translateY(-1px); /* sube 1px al hacer hover */
       box-shadow: 0 12px 32px rgba(0,87,184,0.4);
     }
+
+    /* Icono de "hamburguesa" (≡) para el menú en móviles.
+       Por defecto está oculto (display:none) y solo aparece en pantallas pequeñas */
     .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
+      display: none;          /* oculto en escritorio */
+      flex-direction: column; /* 3 rayas en columna */
+      gap: 5px;               /* espacio entre rayas */
       cursor: pointer;
       padding: 4px;
     }
+    /* Cada raya del icono hamburguesa */
     .nav-hamburger span {
       display: block;
       width: 24px; height: 2px;
       background: var(--navy);
       border-radius: 2px;
-      transition: transform 0.3s, opacity 0.3s;
+      transition: transform 0.3s, opacity 0.3s; /* para animación futura */
     }
+
+    /* ── Menú en pantallas pequeñas (≤ 820px) ──
+       En móviles el menú cambia: se convierte en un panel que sale por la derecha */
     @media(max-width:820px){
+      /* El contenedor <nav> se colapsa a tamaño cero para que no empuje
+         al botón hamburguesa hacia el centro de la barra */
+      nav { flex: 0 0 0; overflow: visible; }
+
+      /* La lista de enlaces se convierte en un panel lateral fijo */
       nav ul {
-        position: fixed;
-        top: 0; right: -100%;
-        height: 100vh;
-        width: 280px;
-        flex-direction: column;
+        position: fixed;          /* fijo en pantalla, no scroll */
+        top: 0; right: -100%;    /* empieza fuera de la pantalla (a la derecha) */
+        height: 100vh;            /* altura completa de la ventana */
+        width: 280px;             /* ancho del panel */
+        flex-direction: column;   /* enlaces en columna vertical */
         background: rgba(255,255,255,0.98);
-        backdrop-filter: blur(24px);
-        padding: 5rem 2rem 2rem;
+        backdrop-filter: blur(24px); /* vidrio esmerilado */
+        padding: 5rem 2rem 2rem;  /* espacio: 5rem arriba para no tapar el navbar */
         gap: 0.3rem;
-        transition: right 0.35s cubic-bezier(.4,0,.2,1);
+        transition: right 0.35s cubic-bezier(.4,0,.2,1); /* deslizamiento suave */
         border-left: 1px solid var(--gray-100);
         box-shadow: -8px 0 40px rgba(0,0,0,0.1);
       }
+      /* Cuando JavaScript añade la clase "open", el panel entra a la pantalla */
       nav ul.open { right: 0; }
-      nav ul a { display: block; width: 100%; }
-      .nav-hamburger { display: flex; }
+      nav ul a { display: block; width: 100%; } /* cada enlace ocupa todo el ancho */
+      .nav-hamburger { display: flex; } /* mostrar el botón hamburguesa en móvil */
     }
 
-    /* ─── HERO ─── */
+    /* ═══════════════════════════════════════════
+       HERO — La primera pantalla que ve el usuario
+       Ocupa el 100% de la altura de la ventana
+       ═══════════════════════════════════════════ */
+
+    /* position:relative → necesario para que los elementos absolutos del interior
+       se posicionen respecto a esta sección (no respecto a toda la página).
+       min-height:100vh → ocupa al menos el 100% de la altura visible de la ventana
+       (vh = viewport height, unidad que vale 1% de la altura del navegador) */
     #hero {
       position: relative;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8rem 2rem 5rem;
+      flex-direction: column;   /* apila los hijos verticalmente */
+      align-items: center;      /* centra horizontalmente */
+      justify-content: center;  /* centra verticalmente */
+      padding: 8rem 2rem 5rem;  /* 8rem arriba para no tapar el navbar fijo */
       text-align: center;
-      overflow: hidden;
+      overflow: hidden;         /* oculta las partes de los "blobs" que salen del área */
       background: var(--white);
     }
 
-    /* Animated background blobs */
+    /* ── Blobs animados (manchas de color difuminadas en el fondo) ──
+       Son círculos gigantes con color muy tenue y muy borrosos.
+       Generan la sensación de luz de fondo sin ser intrusivos.
+       pointer-events:none → el usuario NO puede hacer clic en ellos
+       (son puramente decorativos) */
     .hero-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
+      position: absolute;       /* se posicionan libremente dentro del hero */
+      border-radius: 50%;       /* hacerlos circulares */
+      filter: blur(80px);       /* difuminar hasta que se vean como nubes de color */
       pointer-events: none;
-      animation: blobFloat 8s ease-in-out infinite;
+      animation: blobFloat 8s ease-in-out infinite; /* flotan sin parar */
     }
+    /* Blob grande azul en esquina superior izquierda */
     .hero-blob-1 {
       width: 700px; height: 700px;
       background: radial-gradient(circle, rgba(0,87,184,0.08) 0%, transparent 70%);
-      top: -200px; left: -150px;
+      top: -200px; left: -150px; /* sale un poco de la pantalla para que no se vea el borde */
       animation-delay: 0s;
     }
+    /* Blob mediano cian en esquina inferior derecha */
     .hero-blob-2 {
       width: 500px; height: 500px;
       background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%);
       bottom: -100px; right: -100px;
-      animation-delay: -3s;
+      animation-delay: -3s; /* empieza 3 segundos "adelantado" en la animación */
     }
+    /* Blob pequeño en el centro */
     .hero-blob-3 {
       width: 300px; height: 300px;
       background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
       top: 40%; left: 60%;
       animation-delay: -5s;
     }
+    /* Animación de los blobs: se mueven ligeramente y cambian de tamaño */
     @keyframes blobFloat {
       0%, 100% { transform: translate(0,0) scale(1); }
-      33% { transform: translate(30px,-20px) scale(1.05); }
-      66% { transform: translate(-20px,15px) scale(0.97); }
+      33%  { transform: translate(30px,-20px) scale(1.05); }
+      66%  { transform: translate(-20px,15px) scale(0.97); }
     }
 
-    /* Grid lines */
+    /* ── Cuadrícula de fondo ──
+       Líneas horizontales y verticales que forman una rejilla sutil.
+       mask-image → hace que la cuadrícula solo se vea en el centro
+       (los bordes se desvanecen gradualmente) */
     .hero-grid {
       position: absolute;
-      inset: 0;
+      inset: 0; /* cubre todo el hero (top:0, right:0, bottom:0, left:0) */
       background-image:
-        linear-gradient(var(--gray-100) 1px, transparent 1px),
-        linear-gradient(90deg, var(--gray-100) 1px, transparent 1px);
-      background-size: 60px 60px;
+        linear-gradient(var(--gray-100) 1px, transparent 1px),    /* líneas horizontales */
+        linear-gradient(90deg, var(--gray-100) 1px, transparent 1px); /* líneas verticales */
+      background-size: 60px 60px; /* tamaño de cada celda de la rejilla */
       mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
       opacity: 0.5;
     }
 
-    /* Floating orbit rings */
+    /* ── Anillos orbitales giratorios ──
+       Dos círculos que giran alrededor del centro, como órbitas planetarias.
+       Añaden movimiento tecnológico al fondo sin distraer */
     .hero-orbit {
       position: absolute;
-      border: 1px solid rgba(0,87,184,0.08);
+      border: 1px solid rgba(0,87,184,0.08); /* línea azul muy tenue */
       border-radius: 50%;
-      animation: orbitSpin linear infinite;
+      animation: orbitSpin linear infinite; /* giran continuamente */
       pointer-events: none;
     }
+    /* Órbita pequeña (500px de diámetro, gira en 30 segundos) */
     .hero-orbit-1 {
       width: 500px; height: 500px;
       top: 50%; left: 50%;
       transform-origin: center;
-      margin: -250px 0 0 -250px;
+      margin: -250px 0 0 -250px; /* centra el círculo (la mitad de su tamaño) */
       animation-duration: 30s;
     }
+    /* Órbita grande (720px, gira en sentido contrario en 45 segundos) */
     .hero-orbit-2 {
       width: 720px; height: 720px;
       top: 50%; left: 50%;
       margin: -360px 0 0 -360px;
       animation-duration: 45s;
-      animation-direction: reverse;
+      animation-direction: reverse; /* gira al revés */
     }
+    /* Punto azul brillante que viaja sobre cada órbita (como un satélite) */
     .hero-orbit::after {
-      content: '';
+      content: '';           /* elemento vacío necesario para el punto */
       position: absolute;
       width: 8px; height: 8px;
       background: var(--blue);
       border-radius: 50%;
-      top: -4px; left: 50%;
+      top: -4px; left: 50%; /* posicionado en la parte superior del círculo */
       transform: translateX(-50%);
-      box-shadow: 0 0 12px var(--blue);
+      box-shadow: 0 0 12px var(--blue); /* resplandor azul alrededor del punto */
     }
+    /* La animación de giro: de 0° a 360° (vuelta completa) */
     @keyframes orbitSpin {
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
 
-    /* Floating particles */
+    /* ── Partículas flotantes ──
+       Puntitos azules que suben desde el fondo y desaparecen.
+       Son generadas dinámicamente por JavaScript */
     .hero-particles {
       position: absolute;
       inset: 0;
@@ -272,19 +410,22 @@
     }
     .particle {
       position: absolute;
-      border-radius: 50%;
+      border-radius: 50%;  /* forma circular */
       background: var(--blue);
-      opacity: 0;
+      opacity: 0;          /* inician invisible */
       animation: particleFly linear infinite;
     }
+    /* La partícula aparece, sube 120px y desaparece */
     @keyframes particleFly {
       0%   { opacity: 0; transform: translateY(0) scale(0); }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.3; }
+      10%  { opacity: 0.6; }   /* aparece rápido */
+      90%  { opacity: 0.3; }   /* se desvanece lentamente */
       100% { opacity: 0; transform: translateY(-120px) scale(1); }
     }
 
-    /* Hero badge */
+    /* ── Insignia / Badge superior ──
+       La etiqueta pequeña que dice "Distribuidor Autorizado · Región 9 CDMX"
+       con el puntito azul pulsante */
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -297,39 +438,47 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       padding: 0.4rem 1.1rem;
-      border-radius: 100px;
+      border-radius: 100px; /* completamente ovalado (píldora) */
       margin-bottom: 1.8rem;
-      animation: fadeDown 0.7s ease both;
+      animation: fadeDown 0.7s ease both; /* entra desde arriba al cargar */
       position: relative;
-      z-index: 1;
+      z-index: 1; /* encima del fondo animado */
     }
+    /* El puntito que pulsa (como indicador de "en vivo") */
     .hero-badge-dot {
       width: 7px; height: 7px;
       background: var(--blue);
       border-radius: 50%;
-      animation: pulse 2s infinite;
+      animation: pulse 2s infinite; /* pulsa continuamente */
       box-shadow: 0 0 6px var(--blue);
     }
+    /* Animación de pulso: el punto se agranda y achica */
     @keyframes pulse {
       0%,100%{ opacity:1; transform:scale(1); }
-      50%{ opacity:0.5; transform:scale(1.5); }
+      50%    { opacity:0.5; transform:scale(1.5); }
     }
 
+    /* ── Título principal "BERYHUERT" ──
+       clamp(mínimo, preferido, máximo) hace que el texto sea fluido:
+       en móvil pequeño = 5.5rem, en escritorio grande = 14rem,
+       siempre proporcionado al ancho de pantalla (18vw) */
     .hero h1 {
       font-family: var(--font-display);
       font-size: clamp(5.5rem, 18vw, 14rem);
-      line-height: 0.85;
-      letter-spacing: 6px;
+      line-height: 0.85;   /* altura entre líneas muy compacta */
+      letter-spacing: 6px; /* separa las letras para darle aire */
       color: var(--navy);
-      animation: fadeDown 0.7s 0.1s ease both;
+      animation: fadeDown 0.7s 0.1s ease both; /* 0.1s de retraso respecto al badge */
       position: relative;
       z-index: 1;
       text-shadow: 0 4px 40px rgba(0,87,184,0.08);
     }
+    /* La palabra "HUERT" en azul (dentro de <span class="accent">) */
     .hero h1 .accent {
       color: var(--blue);
       position: relative;
     }
+    /* Línea decorativa debajo de "HUERT" (gradient azul, semi-transparente) */
     .hero h1 .accent::after {
       content: '';
       position: absolute;
@@ -339,28 +488,34 @@
       border-radius: 3px;
       opacity: 0.25;
     }
+
+    /* ── Subtítulo debajo del nombre ── */
     .hero-tagline {
       margin-top: 1.2rem;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-size: clamp(1rem, 2.5vw, 1.2rem); /* también fluido */
       font-weight: 300;
       color: var(--gray-500);
-      max-width: 580px;
+      max-width: 580px;   /* limita el ancho para que no sea demasiado largo */
       animation: fadeUp 0.7s 0.2s ease both;
       position: relative;
       z-index: 1;
       line-height: 1.8;
     }
     .hero-tagline strong { color: var(--blue); font-weight: 700; }
+
+    /* ── Botones de acción (CTA = Call To Action) ── */
     .hero-ctas {
       margin-top: 2.5rem;
       display: flex;
       gap: 1rem;
-      flex-wrap: wrap;
+      flex-wrap: wrap;     /* si no caben en fila, se pasan a la siguiente línea */
       justify-content: center;
       animation: fadeUp 0.7s 0.3s ease both;
       position: relative;
       z-index: 1;
     }
+
+    /* Botón principal (azul sólido) */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -381,9 +536,11 @@
     }
     .btn-primary:hover {
       background: var(--blue-dark);
-      transform: translateY(-2px);
+      transform: translateY(-2px); /* sube 2px al pasar el cursor */
       box-shadow: 0 12px 40px rgba(0,87,184,0.45);
     }
+
+    /* Botón secundario (borde gris, sin relleno) */
     .btn-outline {
       display: inline-flex;
       align-items: center;
@@ -407,7 +564,8 @@
       transform: translateY(-2px);
     }
 
-    /* Stats row */
+    /* ── Fila de estadísticas (25+ años, 3 corporaciones, R9) ──
+       Es una tarjeta blanca horizontal dividida en 3 celdas */
     .hero-stats {
       margin-top: 4.5rem;
       display: flex;
@@ -423,11 +581,13 @@
       box-shadow: var(--shadow);
       overflow: hidden;
     }
+    /* Cada celda de estadística */
     .stat {
       text-align: center;
       padding: 1.8rem 2.5rem;
       position: relative;
     }
+    /* Línea vertical divisora entre celdas (se crea con pseudo-elemento, sin HTML extra) */
     .stat:not(:last-child)::after {
       content: '';
       position: absolute;
@@ -435,6 +595,7 @@
       width: 1px;
       background: var(--gray-100);
     }
+    /* El número grande en azul (ej: "25") */
     .stat-num {
       font-family: var(--font-display);
       font-size: 3rem;
@@ -442,6 +603,7 @@
       color: var(--blue);
       line-height: 1;
     }
+    /* El texto pequeño debajo (ej: "Años de experiencia") */
     .stat-label {
       font-size: 0.72rem;
       font-weight: 600;
@@ -451,12 +613,13 @@
       margin-top: 0.4rem;
     }
 
-    /* Scroll indicator */
+    /* ── Indicador de scroll "Scroll ↓" ──
+       Flecha animada en la parte inferior para invitar a hacer scroll */
     .hero-scroll {
       position: absolute;
       bottom: 2.5rem;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%); /* centra horizontalmente */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -466,24 +629,40 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       z-index: 1;
-      animation: fadeUp 1s 1s ease both;
+      animation: fadeUp 1s 1s ease both; /* aparece 1 segundo después de cargar */
     }
+    /* La línea vertical que pulsa debajo del texto "Scroll" */
     .hero-scroll-line {
       width: 1px;
       height: 40px;
       background: linear-gradient(to bottom, var(--blue), transparent);
       animation: scrollLine 2s ease-in-out infinite;
     }
+    /* La línea crece y se encoge para simular un pulso hacia abajo */
     @keyframes scrollLine {
       0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.2); }
+      50%       { opacity: 1;   transform: scaleY(1.2); }
     }
 
-    /* ─── SECTION COMMONS ─── */
+    /* ═══════════════════════════════════════════
+       ESTILOS COMUNES A TODAS LAS SECCIONES
+       ═══════════════════════════════════════════ */
+
+    /* Todas las secciones <section> necesitan position:relative
+       para que sus elementos absolutos internos se posicionen respecto a ellas */
     section { position: relative; }
+
+    /* Contenedor centrado: limita el ancho a 1200px y lo centra en pantalla.
+       Si la pantalla es más angosta que 1200px, ocupa todo el ancho disponible.
+       padding: 0 2rem → espacio lateral para que el contenido no toque los bordes */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Relleno vertical estándar de cada sección: 7rem arriba y abajo (~112px) */
     .section-pad { padding: 7rem 0; }
 
+    /* Etiqueta pequeña que va arriba del título de cada sección
+       (ej: "Quiénes somos", "Planes corporativos").
+       El guión azul antes del texto se genera con ::before (sin HTML extra) */
     .section-label {
       display: inline-flex;
       align-items: center;
@@ -495,40 +674,53 @@
       color: var(--blue);
       margin-bottom: 0.8rem;
     }
+    /* Guión horizontal azul antes del texto de la etiqueta */
     .section-label::before {
-      content: '';
+      content: '';          /* elemento vacío solo para mostrar la línea */
       width: 16px; height: 2px;
       background: var(--blue);
       border-radius: 1px;
     }
+
+    /* Título grande de cada sección (ej: "30 AÑOS CONECTANDO CDMX") */
     .section-title {
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 6vw, 4.2rem);
+      font-size: clamp(2.5rem, 6vw, 4.2rem); /* fluido: entre 2.5rem y 4.2rem */
       letter-spacing: 2px;
       color: var(--navy);
-      line-height: 0.95;
+      line-height: 0.95; /* muy compacto, las líneas casi se tocan */
     }
+
+    /* Párrafo descriptivo debajo del título */
     .section-desc {
       font-size: 1rem;
       font-weight: 400;
       color: var(--gray-500);
-      max-width: 540px;
+      max-width: 540px;  /* limita el ancho para mejor legibilidad */
       margin-top: 0.9rem;
       line-height: 1.8;
     }
 
-    /* ─── FEATURE STRIP ─── */
+    /* ═══════════════════════════════════════════
+       FEATURE STRIP — Banda azul con texto deslizante
+       La franja azul debajo del hero con los beneficios
+       que se mueven de derecha a izquierda
+       ═══════════════════════════════════════════ */
     #features {
       background: var(--blue);
       padding: 1.2rem 0;
-      overflow: hidden;
+      overflow: hidden; /* oculta el texto que sale por los lados mientras se mueve */
     }
+    /* La "pista" que contiene todos los elementos y se desplaza.
+       width:max-content → el ancho se ajusta al contenido total (muy ancho).
+       La animación "scroll" lo mueve continuamente a la izquierda */
     .features-track {
       display: flex;
       gap: 3rem;
-      animation: scroll 30s linear infinite;
+      animation: scroll 30s linear infinite; /* 30 segundos por vuelta completa */
       width: max-content;
     }
+    /* Cada elemento de la pista (ej: "• Distribuidor Autorizado Telcel") */
     .feature-item {
       display: flex;
       align-items: center;
@@ -538,19 +730,30 @@
       color: rgba(255,255,255,0.85);
       letter-spacing: 1px;
       text-transform: uppercase;
-      white-space: nowrap;
+      white-space: nowrap; /* evita que el texto se parta en varias líneas */
     }
+    /* El punto separador entre ítems */
     .feature-dot { width: 5px; height: 5px; background: rgba(255,255,255,0.5); border-radius: 50%; }
 
-    /* ─── ABOUT ─── */
+    /* ═══════════════════════════════════════════
+       ABOUT — Sección "Quiénes somos"
+       Fondo blanco ligeramente grisáceo
+       ═══════════════════════════════════════════ */
     #about { background: var(--off-white); }
+
+    /* Dos columnas: izquierda = tarjeta visual, derecha = texto.
+       grid-template-columns: 1fr 1fr → cada columna ocupa la mitad */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5rem;
+      gap: 5rem;          /* espacio entre columnas */
       align-items: center;
     }
-    .about-visual { position: relative; }
+
+    /* Columna izquierda: contiene la tarjeta y las mini-tarjetas flotantes */
+    .about-visual { position: relative; } /* para que las tarjetas flotantes se posicionen aquí */
+
+    /* Tarjeta principal blanca con los datos de la empresa */
     .about-main-card {
       background: var(--white);
       border-radius: var(--radius-lg);
@@ -560,6 +763,7 @@
       position: relative;
       overflow: hidden;
     }
+    /* Línea decorativa de gradiente azul en la parte superior de la tarjeta */
     .about-main-card::before {
       content: '';
       position: absolute;
@@ -567,6 +771,8 @@
       height: 4px;
       background: linear-gradient(90deg, var(--blue), var(--accent));
     }
+
+    /* Franja azul pálida que dice "Autorización Oficial · Radio Móvil Dipsa" */
     .about-badge-row {
       display: flex;
       align-items: center;
@@ -577,6 +783,7 @@
       border: 1px solid var(--blue-pale2);
       border-radius: var(--radius);
     }
+    /* El cuadro azul con la "T" de Telcel */
     .about-badge-icon {
       width: 48px; height: 48px;
       background: var(--blue);
@@ -585,21 +792,24 @@
       font-family: var(--font-display);
       font-size: 1.3rem;
       color: #fff;
-      flex-shrink: 0;
+      flex-shrink: 0; /* no se encoge aunque el espacio sea reducido */
     }
     .about-badge-label { font-size: 0.62rem; color: var(--gray-500); letter-spacing: 1.5px; text-transform: uppercase; }
-    .about-badge-val { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-top: 1px; }
+    .about-badge-val   { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-top: 1px; }
 
+    /* El número "25" gigante en contorno (sin relleno, solo borde de letra).
+       -webkit-text-stroke → truco CSS para texto solo con borde, sin relleno de color */
     .about-years-display {
       font-family: var(--font-display);
       font-size: 6rem;
       letter-spacing: 3px;
-      color: transparent;
-      -webkit-text-stroke: 2px var(--blue-pale2);
+      color: transparent;                     /* sin relleno */
+      -webkit-text-stroke: 2px var(--blue-pale2); /* solo el borde, en azul pálido */
       line-height: 1;
       text-align: center;
       margin: 1rem 0 0.3rem;
     }
+    /* Texto "Años innovando · Desde 1992" */
     .about-years-sub {
       text-align: center;
       font-size: 0.75rem;
@@ -610,6 +820,7 @@
       margin-bottom: 1.5rem;
     }
 
+    /* Cuadrícula de 2 columnas para las tarjetas de Misión y Visión */
     .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
     .mv-card {
       background: var(--gray-50);
@@ -617,13 +828,14 @@
       border-radius: var(--radius);
       padding: 1.1rem;
     }
-    .mv-icon { font-size: 1.3rem; margin-bottom: 0.4rem; }
+    .mv-icon  { font-size: 1.3rem; margin-bottom: 0.4rem; }
     .mv-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 0.3rem; }
-    .mv-text { font-size: 0.78rem; color: var(--gray-500); line-height: 1.6; }
+    .mv-text  { font-size: 0.78rem; color: var(--gray-500); line-height: 1.6; }
 
-    /* Floating mini-card */
+    /* Mini-tarjetas que flotan encima/debajo de la tarjeta principal.
+       Tienen animación de subir y bajar levemente (efecto de levitación) */
     .about-float-card {
-      position: absolute;
+      position: absolute; /* se posicionan respecto a .about-visual */
       background: var(--white);
       border: 1px solid var(--gray-100);
       border-radius: var(--radius);
@@ -634,22 +846,26 @@
       gap: 0.8rem;
       animation: floatCard 6s ease-in-out infinite;
     }
+    /* Tarjeta "📱 Equipos disponibles" en la esquina inferior derecha */
     .about-float-card:nth-child(2) {
       bottom: -1rem; right: -2rem;
-      animation-delay: -2s;
+      animation-delay: -2s; /* desfasada para que no floten sincronizadas */
     }
+    /* Tarjeta "🛡️ 3 Corporaciones" en la esquina superior derecha */
     .about-float-card:nth-child(3) {
       top: -1rem; right: -1rem;
       animation-delay: -4s;
     }
+    /* Sube 10px y baja en bucle */
     @keyframes floatCard {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50%       { transform: translateY(-10px); }
     }
-    .float-icon { font-size: 1.5rem; }
+    .float-icon  { font-size: 1.5rem; }
     .float-label { font-size: 0.65rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; }
-    .float-val { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+    .float-val   { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
 
+    /* Columna derecha: texto de historia y lista de checkmarks */
     .about-info { position: relative; z-index: 1; }
     .about-info p {
       font-size: 0.93rem;
@@ -658,6 +874,8 @@
       margin-bottom: 1rem;
     }
     .about-info p strong { color: var(--navy); font-weight: 700; }
+
+    /* Lista de beneficios con círculos y palomitas (✓) */
     .about-checkmarks { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.7rem; }
     .about-check {
       display: flex;
@@ -666,6 +884,7 @@
       font-size: 0.88rem;
       color: var(--gray-700);
     }
+    /* Círculo azul pálido que contiene la palomita SVG */
     .check-icon {
       width: 22px; height: 22px;
       background: var(--blue-pale);
@@ -673,23 +892,34 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
+    /* La palomita es un SVG dibujado a mano con líneas (polyline) */
     .check-icon svg { width: 12px; height: 12px; stroke: var(--blue); fill: none; stroke-width: 2.5; }
 
+    /* En móvil: las dos columnas se apilan (una debajo de la otra) */
     @media(max-width:768px){ .about-grid{ grid-template-columns:1fr; gap:2.5rem; } }
 
-    /* ─── PLANS / CORPS ─── */
+    /* ═══════════════════════════════════════════
+       PLANS / CORPS — Las 3 tarjetas de corporaciones
+       (Policía Auxiliar, PBI, SSC CDMX)
+       ═══════════════════════════════════════════ */
     #corps { background: var(--white); }
+
+    /* Encabezado de la sección: título a la izquierda */
     .corps-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       margin-bottom: 3rem;
     }
+
+    /* Cuadrícula de 3 columnas iguales para las tarjetas */
     .corps-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr); /* 3 columnas del mismo ancho */
       gap: 1.5rem;
     }
+
+    /* Cada tarjeta de corporación (es un enlace <a> estilizado como tarjeta) */
     .corps-card {
       background: var(--white);
       border: 1.5px solid var(--gray-100);
@@ -698,28 +928,34 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      /* cubic-bezier → curva de aceleración personalizada para la animación */
       transition: transform 0.35s cubic-bezier(.25,.8,.25,1), border-color 0.3s, box-shadow 0.3s;
       cursor: pointer;
-      text-decoration: none;
+      text-decoration: none; /* quita subrayado de enlace */
       display: block;
-      color: inherit;
+      color: inherit; /* hereda el color del texto del padre */
     }
+    /* Al pasar el cursor: la tarjeta sube 8px y adquiere borde azul */
     .corps-card:hover {
       transform: translateY(-8px);
       border-color: var(--blue);
       box-shadow: var(--shadow-lg);
     }
+
+    /* Barra azul en la parte superior de la tarjeta.
+       Empieza invisible (scaleX:0) y se expande al hacer hover */
     .corps-card-top-bar {
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 4px;
       background: linear-gradient(90deg, var(--blue), var(--accent));
-      transform: scaleX(0);
-      transform-origin: left;
+      transform: scaleX(0);       /* inicialmente comprimida a 0 */
+      transform-origin: left;     /* se expande desde la izquierda */
       transition: transform 0.35s ease;
     }
-    .corps-card:hover .corps-card-top-bar { transform: scaleX(1); }
+    .corps-card:hover .corps-card-top-bar { transform: scaleX(1); } /* se expande al hacer hover */
 
+    /* Fondo con gradiente sutil que aparece al hacer hover */
     .corps-card-bg {
       position: absolute;
       inset: 0;
@@ -729,6 +965,7 @@
     }
     .corps-card:hover .corps-card-bg { opacity: 1; }
 
+    /* Círculo con el emoji del emblema (🛡️, 🏦, 🏙️) */
     .corps-emblem {
       width: 80px; height: 80px;
       margin: 0 auto 1.5rem;
@@ -741,112 +978,83 @@
       position: relative;
       z-index: 1;
     }
+    /* Al hacer hover: el círculo se vuelve azul sólido y gira un poco */
     .corps-card:hover .corps-emblem {
       background: var(--blue);
       border-color: var(--blue);
       transform: scale(1.08) rotate(-5deg);
     }
-    .corps-name {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      color: var(--navy);
-      margin-bottom: 0.2rem;
-      position: relative; z-index: 1;
-    }
-    .corps-full {
-      font-size: 0.72rem;
-      color: var(--blue);
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      position: relative; z-index: 1;
-    }
-    .corps-desc {
-      font-size: 0.85rem;
-      color: var(--gray-500);
-      line-height: 1.75;
-      margin-bottom: 1.5rem;
-      position: relative; z-index: 1;
-    }
-    .corps-features {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      text-align: left;
-      margin-bottom: 2rem;
-      position: relative; z-index: 1;
-    }
-    .corps-feat {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.82rem;
-      color: var(--gray-700);
-    }
-    .corps-feat-dot {
-      width: 7px; height: 7px;
-      background: var(--blue);
-      border-radius: 50%;
-      flex-shrink: 0;
-      opacity: 0.5;
-      transition: opacity 0.3s;
-    }
+
+    .corps-name { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: 2px; color: var(--navy); margin-bottom: 0.2rem; position: relative; z-index: 1; }
+    .corps-full { font-size: 0.72rem; color: var(--blue); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1rem; position: relative; z-index: 1; }
+    .corps-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.75; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+
+    /* Lista de características con puntos azules */
+    .corps-features { display: flex; flex-direction: column; gap: 0.55rem; text-align: left; margin-bottom: 2rem; position: relative; z-index: 1; }
+    .corps-feat { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--gray-700); }
+    /* El puntito azul semi-transparente que se vuelve sólido al hover */
+    .corps-feat-dot { width: 7px; height: 7px; background: var(--blue); border-radius: 50%; flex-shrink: 0; opacity: 0.5; transition: opacity 0.3s; }
     .corps-card:hover .corps-feat-dot { opacity: 1; }
+
+    /* Botón "Acceder al plan →" en la parte inferior de cada tarjeta */
     .corps-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      width: 100%;
-      padding: 0.8rem;
-      background: var(--blue-pale);
-      border: 1.5px solid var(--blue-pale2);
-      border-radius: var(--radius-sm);
-      color: var(--blue);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 1px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.4rem; width: 100%; padding: 0.8rem;
+      background: var(--blue-pale); border: 1.5px solid var(--blue-pale2);
+      border-radius: var(--radius-sm); color: var(--blue);
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 1px;
       text-transform: uppercase;
       transition: background 0.25s, border-color 0.25s, color 0.25s;
       position: relative; z-index: 1;
     }
-    .corps-card:hover .corps-btn {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: #fff;
-    }
+    /* Al hacer hover en la tarjeta, el botón se vuelve azul sólido con texto blanco */
+    .corps-card:hover .corps-btn { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    /* En tablet: las 3 tarjetas se apilan en 1 columna, centradas */
     @media(max-width:900px){ .corps-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto; } .corps-header{ flex-direction:column; align-items:flex-start; gap:1rem; } }
 
-    /* ─── VALUES ─── */
-    #valores { background: var(--blue); }
+    /* ═══════════════════════════════════════════
+       VALORES — Sección con fondo azul y 6 tarjetas
+       ═══════════════════════════════════════════ */
+    #valores { background: var(--blue); } /* fondo azul sólido */
+
+    /* Contenedor interno con overflow:hidden para ocultar el texto enorme de fondo */
     .valores-inner { position: relative; overflow: hidden; }
+
+    /* Texto decorativo gigantesco "VALORES" casi invisible en el fondo.
+       Es solo visual — pointer-events:none y user-select:none para que
+       no se pueda hacer clic ni seleccionar */
     .valores-bg-text {
       position: absolute;
       top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%,-50%); /* centrado perfecto */
       font-family: var(--font-display);
       font-size: 20rem;
       letter-spacing: 10px;
-      color: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.03); /* casi transparente, apenas visible */
       white-space: nowrap;
       pointer-events: none;
-      user-select: none;
+      user-select: none; /* no se puede seleccionar el texto */
     }
+
+    /* Sobre fondo azul, la etiqueta y el título cambian a blanco */
     #valores .section-label { color: rgba(255,255,255,0.7); }
     #valores .section-label::before { background: rgba(255,255,255,0.5); }
     #valores .section-title { color: #fff; }
+
+    /* Rejilla de 3 columnas para las 6 tarjetas de valores */
     .values-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
       margin-top: 3rem;
       position: relative;
-      z-index: 1;
+      z-index: 1; /* encima del texto de fondo */
     }
+
+    /* Cada tarjeta de valor: fondo blanco semi-transparente con efecto vidrio */
     .val-card {
-      background: rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.07);    /* blanco muy tenue */
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: var(--radius);
       padding: 1.8rem;
@@ -854,13 +1062,15 @@
       align-items: flex-start;
       gap: 1rem;
       transition: background 0.25s, transform 0.25s, border-color 0.25s;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px); /* vidrio esmerilado detrás de la tarjeta */
     }
+    /* Al hacer hover: más visible y se eleva ligeramente */
     .val-card:hover {
       background: rgba(255,255,255,0.13);
       border-color: rgba(255,255,255,0.25);
       transform: translateY(-3px);
     }
+    /* Cuadro con el emoji del valor */
     .val-icon {
       width: 44px; height: 44px;
       background: rgba(255,255,255,0.12);
@@ -871,26 +1081,43 @@
     }
     .val-name { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
     .val-desc { font-size: 0.78rem; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+    /* En tablet: 2 columnas; en móvil pequeño: 1 columna */
     @media(max-width:768px){ .values-grid{ grid-template-columns:1fr 1fr; } }
     @media(max-width:480px){ .values-grid{ grid-template-columns:1fr; } }
 
-    /* ─── CLIENTS ─── */
+    /* ═══════════════════════════════════════════
+       CLIENTS — Carrusel de logos de clientes
+       Texto que se desplaza automáticamente
+       ═══════════════════════════════════════════ */
     #clientes { background: var(--off-white); }
     #clientes .section-title { color: var(--navy); }
+
+    /* Contenedor del carrusel: oculta el desbordamiento lateral.
+       mask-image → desvanece los bordes del carrusel para que
+       el texto no aparezca/desaparezca abruptamente */
     .clients-track-wrap {
       overflow: hidden;
       margin-top: 3rem;
       padding: 1rem 0;
       mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
     }
+
+    /* La "pista" que contiene todas las pastillas y se mueve continuamente */
     .clients-track {
       display: flex;
       gap: 1.2rem;
       animation: scroll 28s linear infinite;
       width: max-content;
     }
+    /* Al pasar el cursor sobre el carrusel, la animación se pausa */
     .clients-track:hover { animation-play-state: paused; }
+
+    /* La animación "scroll" mueve el elemento al -50% de su ancho.
+       Como el contenido está duplicado, parece un bucle infinito sin saltos */
     @keyframes scroll { from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+    /* Cada pastilla con el nombre de un cliente */
     .client-pill {
       background: var(--white);
       border: 1.5px solid var(--gray-100);
@@ -909,94 +1136,57 @@
       box-shadow: var(--shadow);
     }
 
-    /* ─── CONTACT ─── */
+    /* ═══════════════════════════════════════════
+       CONTACT — Sección de contacto
+       Dos columnas: info a la izquierda, formulario a la derecha
+       ═══════════════════════════════════════════ */
     #contacto { background: var(--white); }
+    /* Cuadrícula de 2 columnas: info (1fr) y formulario (1.5fr, más ancho) */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1.5fr;
       gap: 4rem;
-      align-items: start;
+      align-items: start; /* alineación al tope, no centrada */
       margin-top: 3rem;
     }
-    .contact-info-title {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      letter-spacing: 1px;
-      color: var(--navy);
-      margin-bottom: 0.5rem;
-    }
-    .contact-info-sub {
-      font-size: 0.9rem;
-      color: var(--gray-500);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-    .contact-detail {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-    }
+    .contact-info-title { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px; color: var(--navy); margin-bottom: 0.5rem; }
+    .contact-info-sub   { font-size: 0.9rem; color: var(--gray-500); line-height: 1.8; margin-bottom: 2rem; }
+
+    /* Cada fila de dato de contacto (📍 Dirección, 🌐 Sitio web, etc.) */
+    .contact-detail { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.2rem; }
+    /* Cuadro con el emoji del tipo de dato */
     .contact-detail-icon {
       width: 44px; height: 44px;
-      background: var(--blue-pale);
-      border: 1px solid var(--blue-pale2);
+      background: var(--blue-pale); border: 1px solid var(--blue-pale2);
       border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
+      font-size: 1.1rem; flex-shrink: 0;
     }
-    .contact-detail-text label {
-      display: block;
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 2px;
-    }
-    .contact-detail-text span { font-size: 0.88rem; color: var(--gray-700); }
-    .socials {
-      display: flex;
-      gap: 0.7rem;
-      margin-top: 2.5rem;
-    }
+    /* Etiqueta y valor del dato (ej: "DIRECCIÓN" / "Real Madrid 80...") */
+    .contact-detail-text label { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+    .contact-detail-text span  { font-size: 0.88rem; color: var(--gray-700); }
+
+    /* Botones de redes sociales (Facebook, Twitter, Instagram) */
+    .socials { display: flex; gap: 0.7rem; margin-top: 2.5rem; }
     .social-btn {
       width: 42px; height: 42px;
-      background: var(--white);
-      border: 1.5px solid var(--gray-100);
+      background: var(--white); border: 1.5px solid var(--gray-100);
       border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-decoration: none;
-      color: var(--gray-500);
+      font-size: 0.9rem; font-weight: 700; text-decoration: none; color: var(--gray-500);
       transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
       box-shadow: var(--shadow-sm);
     }
-    .social-btn:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      background: var(--blue-pale);
-      transform: translateY(-2px);
-    }
-    .contact-form {
-      background: var(--white);
-      border: 1.5px solid var(--gray-100);
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      box-shadow: var(--shadow);
-    }
+    .social-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); transform: translateY(-2px); }
+
+    /* Tarjeta blanca que contiene el formulario de contacto */
+    .contact-form { background: var(--white); border: 1.5px solid var(--gray-100); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow); }
+
+    /* Cada campo del formulario (nombre, email, etc.) */
     .form-group { margin-bottom: 1.2rem; }
-    .form-group label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--gray-700);
-      margin-bottom: 0.5rem;
-    }
+    .form-group label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-700); margin-bottom: 0.5rem; }
+
+    /* Estilos comunes para inputs, textarea y select */
     .form-group input,
     .form-group textarea,
     .form-group select {
@@ -1008,309 +1198,242 @@
       color: var(--navy);
       font-family: var(--font-body);
       font-size: 0.9rem;
-      outline: none;
+      outline: none; /* quita el borde azul feo del navegador por defecto */
       transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-      appearance: none;
+      appearance: none; /* quita estilos nativos del navegador en el select */
     }
+    /* Color del texto de placeholder (el texto gris antes de escribir) */
     .form-group input::placeholder,
     .form-group textarea::placeholder { color: var(--gray-300); }
+    /* Al hacer clic en el campo: borde azul + halo azul suave alrededor */
     .form-group input:focus,
     .form-group textarea:focus,
     .form-group select:focus {
       border-color: var(--blue);
       background: var(--white);
-      box-shadow: 0 0 0 3px rgba(0,87,184,0.1);
+      box-shadow: 0 0 0 3px rgba(0,87,184,0.1); /* anillo de enfoque azul translúcido */
     }
+    /* El área de texto se puede redimensionar verticalmente (no horizontalmente) */
     .form-group textarea { resize: vertical; min-height: 110px; }
+
+    /* Dos campos en la misma fila (Nombre | Email) */
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-submit { width: 100%; margin-top: 0.5rem; }
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 3rem 2rem;
-    }
+
+    /* Mensaje de éxito que aparece después de enviar el formulario
+       (está oculto por defecto — display:none — y JavaScript lo muestra) */
+    .form-success { display: none; text-align: center; padding: 3rem 2rem; }
     .form-success-icon { font-size: 3rem; margin-bottom: 1rem; }
     .form-success strong { color: var(--navy); font-size: 1.1rem; }
     .form-success p { color: var(--gray-500); margin-top: 0.5rem; font-size: 0.9rem; }
-    /* ─── MAP ─── */
-    .map-wrap {
-      margin-top: 3rem;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1.5px solid var(--gray-100);
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-    .map-wrap iframe {
-      display: block;
-      width: 100%;
-      height: 320px;
-      border: none;
-      filter: saturate(0.85) contrast(1.05);
-    }
+
+    /* ═══════════════════════════════════════════
+       MAP — Estilos del mapa dentro de la sección contacto
+       (el mapa grande full-width tiene sus estilos inline en el HTML)
+       ═══════════════════════════════════════════ */
+    /* Contenedor del mapa pequeño (versión dentro del contacto, si existiera) */
+    .map-wrap { margin-top: 3rem; border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--gray-100); box-shadow: var(--shadow); position: relative; }
+    .map-wrap iframe { display: block; width: 100%; height: 320px; border: none; filter: saturate(0.85) contrast(1.05); }
+
+    /* Etiqueta flotante sobre el mapa con la dirección y el puntito pulsante */
     .map-badge {
-      position: absolute;
-      top: 1rem; left: 1rem;
-      background: var(--white);
-      border: 1px solid var(--gray-100);
-      border-radius: var(--radius-sm);
-      padding: 0.55rem 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--navy);
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--white); border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm); padding: 0.55rem 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; font-weight: 600; color: var(--navy);
       box-shadow: var(--shadow-sm);
     }
-    .map-badge-dot {
-      width: 8px; height: 8px;
-      background: var(--blue);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-      flex-shrink: 0;
-    }
+    /* El puntito azul que pulsa (reutiliza la animación "pulse") */
+    .map-badge-dot { width: 8px; height: 8px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
 
-    @media(max-width:768px){
-      .contact-grid{ grid-template-columns:1fr; }
-      .form-row{ grid-template-columns:1fr; }
-    }
+    /* En móvil: las dos columnas de contacto se apilan y el formulario ocupa todo el ancho */
+    @media(max-width:768px){ .contact-grid{ grid-template-columns:1fr; } .form-row{ grid-template-columns:1fr; } }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--navy);
-      padding: 4rem 2rem 2rem;
-    }
+    /* ═══════════════════════════════════════════
+       FOOTER — Pie de página oscuro
+       ═══════════════════════════════════════════ */
+    footer { background: var(--navy); padding: 4rem 2rem 2rem; }
+
+    /* Cuadrícula del footer: columna de marca (doble ancho) + 3 columnas de enlaces */
     .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1200px; margin: 0 auto;
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 1fr; /* primera columna más ancha */
       gap: 3rem;
     }
-    .footer-brand p {
-      font-size: 0.82rem;
-      color: var(--gray-300);
-      line-height: 1.8;
-      margin-top: 1rem;
-      max-width: 260px;
-    }
+    .footer-brand p { font-size: 0.82rem; color: var(--gray-300); line-height: 1.8; margin-top: 1rem; max-width: 260px; }
+
+    /* Estos !important sobreescriben los colores del logo que son para el navbar claro.
+       En el footer oscuro el logo necesita colores invertidos */
     .footer-logo-mark { background: var(--blue) !important; }
     .footer-logo-text { color: #fff !important; }
-    .footer-logo-sub { color: rgba(255,255,255,0.5) !important; }
-    .footer-col h4 {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gray-300);
-      margin-bottom: 1rem;
-    }
-    .footer-col a {
-      display: block;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      margin-bottom: 0.6rem;
-      transition: color 0.2s;
-    }
+    .footer-logo-sub  { color: rgba(255,255,255,0.5) !important; }
+
+    /* Títulos de las columnas del footer (NAVEGACIÓN, ACCESO, LEGAL) */
+    .footer-col h4 { font-size: 0.68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray-300); margin-bottom: 1rem; }
+    /* Enlaces de cada columna */
+    .footer-col a { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 0.6rem; transition: color 0.2s; }
     .footer-col a:hover { color: #fff; }
+
+    /* Barra inferior del footer: copyright a la izquierda, aviso de privacidad a la derecha */
     .footer-bottom {
-      max-width: 1200px;
-      margin: 2rem auto 0;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.07); /* línea separadora muy sutil */
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
     }
     .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
     .footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
     .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
-    @media(max-width:768px){
-      .footer-inner{ grid-template-columns:1fr 1fr; }
-      .footer-brand{ grid-column:1/-1; }
-    }
+
+    /* Footer responsivo: 2 columnas en tablet, 1 en móvil pequeño */
+    @media(max-width:768px){ .footer-inner{ grid-template-columns:1fr 1fr; } .footer-brand{ grid-column:1/-1; } }
     @media(max-width:480px){ .footer-inner{ grid-template-columns:1fr; } }
 
-    /* ─── SCROLL TO TOP ─── */
+    /* ═══════════════════════════════════════════
+       BOTÓN "VOLVER ARRIBA" — Esquina inferior derecha
+       Aparece cuando el usuario ha bajado 300px en la página
+       ═══════════════════════════════════════════ */
     #scrollTop {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
+      bottom: 2rem; right: 2rem;
       width: 46px; height: 46px;
       background: var(--blue);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
+      border: none; border-radius: 12px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      color: #fff;
+      font-size: 1.1rem; color: #fff;
       box-shadow: var(--shadow-blue);
-      opacity: 0;
-      transform: translateY(12px);
+      opacity: 0;                    /* invisible por defecto */
+      transform: translateY(12px);   /* ligeramente abajo (para la animación de entrada) */
       transition: opacity 0.3s, transform 0.3s, background 0.2s;
       z-index: 900;
     }
+    /* JavaScript añade "show" al hacer scroll → el botón aparece */
     #scrollTop.show { opacity: 1; transform: translateY(0); }
     #scrollTop:hover { background: var(--blue-dark); }
 
-    /* ─── ANIMATIONS ─── */
+    /* ═══════════════════════════════════════════
+       ANIMACIONES GLOBALES DE ENTRADA
+       fadeDown = cae desde arriba / fadeUp = sube desde abajo
+       ═══════════════════════════════════════════ */
     @keyframes fadeDown { from{ opacity:0; transform:translateY(-20px); } to{ opacity:1; transform:translateY(0); } }
     @keyframes fadeUp   { from{ opacity:0; transform:translateY(24px);  } to{ opacity:1; transform:translateY(0); } }
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+
+    /* Clase "reveal": elementos que empiezan ocultos y aparecen al hacer scroll.
+       JavaScript detecta cuándo son visibles y añade "in-view" */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.in-view { opacity: 1; transform: none; }
 
-    /* ─── MODAL ─── */
+    /* ═══════════════════════════════════════════
+       MODAL DE ACCESO — Ventana emergente
+       Aparece al hacer clic en "Acceso →" del navbar
+       ═══════════════════════════════════════════ */
+
+    /* Fondo oscuro que cubre toda la pantalla detrás del modal.
+       inset:0 es equivalente a top:0; right:0; bottom:0; left:0 */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(15,23,42,0.5);
-      backdrop-filter: blur(8px);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      justify-content: center;
+      background: rgba(15,23,42,0.5); /* oscuro semi-transparente */
+      backdrop-filter: blur(8px);      /* fondo borroso detrás del modal */
+      z-index: 2000;                   /* encima de todo, incluso del navbar (1000) */
+      display: none;                   /* oculto por defecto */
+      align-items: center; justify-content: center;
       padding: 1.5rem;
     }
+    /* JavaScript añade "open" para mostrar el fondo oscuro con el modal */
     .modal-overlay.open { display: flex; }
+
+    /* La tarjeta blanca del modal */
     .modal {
-      background: var(--white);
-      border: 1px solid var(--gray-100);
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      max-width: 480px;
-      width: 100%;
+      background: var(--white); border: 1px solid var(--gray-100);
+      border-radius: var(--radius-lg); padding: 2.5rem;
+      max-width: 480px; width: 100%;
       position: relative;
-      animation: fadeUp 0.35s ease;
+      animation: fadeUp 0.35s ease; /* entra desde abajo al abrirse */
       box-shadow: 0 40px 80px rgba(0,0,0,0.2);
     }
-    .modal::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--blue), var(--accent));
-      border-radius: 24px 24px 0 0;
-    }
-    .modal h3 {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      letter-spacing: 2px;
-      color: var(--navy);
-      margin-bottom: 0.4rem;
-    }
-    .modal p { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.7; }
-    .modal-close {
-      position: absolute;
-      top: 1.2rem; right: 1.2rem;
-      width: 32px; height: 32px;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      color: var(--gray-500);
-      font-size: 0.9rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: color 0.2s, background 0.2s;
-    }
+    /* Línea de gradiente azul en la parte superior del modal */
+    .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--blue), var(--accent)); border-radius: 24px 24px 0 0; }
+    .modal h3 { font-family: var(--font-display); font-size: 2rem; letter-spacing: 2px; color: var(--navy); margin-bottom: 0.4rem; }
+    .modal p  { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.7; }
+
+    /* Botón "✕" para cerrar el modal */
+    .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; width: 32px; height: 32px; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: var(--radius-sm); cursor: pointer; color: var(--gray-500); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: color 0.2s, background 0.2s; }
     .modal-close:hover { color: var(--navy); background: var(--gray-100); }
     .modal-btns { display: flex; flex-direction: column; gap: 0.7rem; }
-    .modal-link {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      padding: 1rem 1.2rem;
-      background: var(--gray-50);
-      border: 1.5px solid var(--gray-100);
-      border-radius: var(--radius);
-      text-decoration: none;
-      color: var(--gray-700);
-      font-size: 0.88rem;
-      font-weight: 500;
-      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .modal-link:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      background: var(--blue-pale);
-      transform: translateX(4px);
-    }
+
+    /* Cada fila de opción dentro del modal (Policía Auxiliar, PBI, SSC...) */
+    .modal-link { display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.2rem; background: var(--gray-50); border: 1.5px solid var(--gray-100); border-radius: var(--radius); text-decoration: none; color: var(--gray-700); font-size: 0.88rem; font-weight: 500; transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s; }
+    .modal-link:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); transform: translateX(4px); /* se desliza 4px a la derecha */ }
     .modal-link span { font-size: 1.4rem; }
-    .modal-link .modal-arrow {
-      margin-left: auto;
-      font-size: 1rem;
-      opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-    }
+    /* La flecha "→" que aparece al hacer hover */
+    .modal-link .modal-arrow { margin-left: auto; font-size: 1rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
     .modal-link:hover .modal-arrow { opacity: 1; transform: translateX(3px); }
 
-    /* ─── COUNTER ANIMATION ─── */
+    /* Marca al elemento span como "en línea" para el contador animado */
     .count-up { display: inline; }
 
-    /* ─── HERO SHIELDS ─── */
+    /* ═══════════════════════════════════════════
+       ESCUDOS POLICIALES — Elemento decorativo
+       Escudos SVG dibujados a mano que flotan en el hero.
+       Son semitransparentes y forman parte de la identidad visual
+       policial de la página
+       ═══════════════════════════════════════════ */
     .hero-shield {
       position: absolute;
-      pointer-events: none;
-      opacity: 0.045;
+      pointer-events: none; /* no se puede interactuar con ellos */
+      opacity: 0.045;       /* casi invisibles: solo dan textura de fondo */
       animation: shieldFloat ease-in-out infinite;
     }
     .hero-shield svg { width: 100%; height: 100%; }
-    .hero-shield-1 {
-      width: 340px; height: 380px;
-      top: 8%; left: -60px;
-      animation-duration: 12s;
-      animation-delay: 0s;
-    }
-    .hero-shield-2 {
-      width: 220px; height: 250px;
-      top: 15%; right: 5%;
-      animation-duration: 9s;
-      animation-delay: -3s;
-    }
-    .hero-shield-3 {
-      width: 160px; height: 180px;
-      bottom: 18%; right: 18%;
-      animation-duration: 11s;
-      animation-delay: -6s;
-      opacity: 0.03;
-    }
+
+    /* Escudo grande a la izquierda */
+    .hero-shield-1 { width: 340px; height: 380px; top: 8%; left: -60px; animation-duration: 12s; animation-delay: 0s; }
+    /* Escudo mediano a la derecha */
+    .hero-shield-2 { width: 220px; height: 250px; top: 15%; right: 5%; animation-duration: 9s; animation-delay: -3s; }
+    /* Escudo pequeño más transparente abajo a la derecha */
+    .hero-shield-3 { width: 160px; height: 180px; bottom: 18%; right: 18%; animation-duration: 11s; animation-delay: -6s; opacity: 0.03; }
+
+    /* Los escudos se balancean suavemente (suben/bajan y rotan levemente) */
     @keyframes shieldFloat {
       0%,100% { transform: translateY(0) rotate(-3deg); }
       50%      { transform: translateY(-18px) rotate(3deg); }
     }
 
-    /* ─── THIN BLUE LINE ─── */
-    .tbl-divider {
-      display: flex;
-      flex-direction: column;
-    }
-    .tbl-stripe {
-      width: 100%;
-      height: 14px;
-    }
-    .tbl-stripe.tbl-black { background: #111318; }
-    .tbl-stripe.tbl-blue  { background: var(--blue); }
+    /* ═══════════════════════════════════════════
+       THIN BLUE LINE (La Línea Azul Delgada)
+       Símbolo cultural policial: 3 franjas negra-azul-negra.
+       Separa el hero de la sección "Acerca de"
+       ═══════════════════════════════════════════ */
+    .tbl-divider { display: flex; flex-direction: column; } /* franjas apiladas verticalmente */
+    .tbl-stripe  { width: 100%; height: 14px; }             /* cada franja ocupa todo el ancho */
+    .tbl-stripe.tbl-black { background: #111318; }          /* franja negra oscura */
+    .tbl-stripe.tbl-blue  { background: var(--blue); }      /* franja azul central */
 
-    /* ─── PARA QUIENES PROTEGEN ─── */
+    /* ═══════════════════════════════════════════
+       PARA QUIENES PROTEGEN — Sección oscura tipo "manifiesto"
+       Fondo azul marino con texto blanco y tarjetas de datos
+       ═══════════════════════════════════════════ */
+    /* Sección "Para quienes protegen": fondo oscuro, texto blanco */
     #protegen {
       background: var(--navy);
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* oculta el escudo decorativo que sobresale */
     }
+
+    /* Escudo SVG gigante semitransparente en el lado derecho de la sección.
+       Solo decorativo — pointer-events:none para que no bloquee clics */
     .protegen-bg-shield {
       position: absolute;
       right: -80px; top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%); /* centrado vertical */
       width: 600px; height: 680px;
       opacity: 0.04;
       pointer-events: none;
     }
+
+    /* Interior de la sección: dos columnas (texto | tarjetas de datos) */
     .protegen-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1318,499 +1441,438 @@
       align-items: center;
       padding: 6rem 0;
       position: relative;
-      z-index: 1;
+      z-index: 1; /* encima del escudo de fondo */
     }
+
+    /* Etiqueta "Nuestro compromiso" sobre el título */
     .protegen-text .protegen-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--blue-light);
-      margin-bottom: 1rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--blue-light); margin-bottom: 1rem;
     }
-    .protegen-text .protegen-label::before {
-      content: '';
-      width: 16px; height: 2px;
-      background: var(--blue-light);
-    }
+    .protegen-text .protegen-label::before { content: ''; width: 16px; height: 2px; background: var(--blue-light); }
+
+    /* Título grande "HECHO PARA QUIENES NOS PROTEGEN" */
     .protegen-title {
       font-family: var(--font-display);
       font-size: clamp(2.8rem, 6vw, 5rem);
-      letter-spacing: 3px;
-      color: #fff;
-      line-height: 0.92;
-      margin-bottom: 1.5rem;
+      letter-spacing: 3px; color: #fff;
+      line-height: 0.92; margin-bottom: 1.5rem;
     }
-    .protegen-title span { color: var(--blue-light); }
-    .protegen-desc {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.85;
-      max-width: 480px;
-    }
+    .protegen-title span { color: var(--blue-light); } /* "PROTEGEN" en azul claro */
+    .protegen-desc { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.85; max-width: 480px; }
+
+    /* Botón azul "Ver mis beneficios →" */
     .protegen-cta {
       margin-top: 2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--blue);
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 0.9rem 2rem;
-      border-radius: var(--radius-sm);
-      text-decoration: none;
-      box-shadow: var(--shadow-blue);
-      transition: background 0.2s, transform 0.2s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--blue); color: #fff; font-family: var(--font-body);
+      font-size: 0.9rem; font-weight: 700; padding: 0.9rem 2rem;
+      border-radius: var(--radius-sm); text-decoration: none;
+      box-shadow: var(--shadow-blue); transition: background 0.2s, transform 0.2s;
     }
     .protegen-cta:hover { background: var(--blue-dark); transform: translateY(-2px); }
 
-    .protegen-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+    /* Cuadrícula de 2x2 con las tarjetas de estadísticas (3 corps, +25 años, LTE+, $0) */
+    .protegen-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .protegen-card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
-      padding: 1.5rem;
+      border-radius: var(--radius); padding: 1.5rem;
       transition: background 0.25s, border-color 0.25s, transform 0.25s;
     }
-    .protegen-card:hover {
-      background: rgba(0,87,184,0.15);
-      border-color: rgba(0,87,184,0.4);
-      transform: translateY(-4px);
-    }
-    .protegen-card-icon {
-      font-size: 2rem;
-      margin-bottom: 0.8rem;
-    }
-    .protegen-card-num {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      letter-spacing: 2px;
-      color: var(--blue-light);
-      line-height: 1;
-    }
-    .protegen-card-label {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 0.3rem;
-      line-height: 1.5;
-    }
-    .protegen-card.wide {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
+    .protegen-card:hover { background: rgba(0,87,184,0.15); border-color: rgba(0,87,184,0.4); transform: translateY(-4px); }
+    .protegen-card-icon  { font-size: 2rem; margin-bottom: 0.8rem; }
+    .protegen-card-num   { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 2px; color: var(--blue-light); line-height: 1; }
+    .protegen-card-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; line-height: 1.5; }
+
+    /* Tarjeta "ancha" que ocupa las 2 columnas completas (grid-column: 1 / -1 = de columna 1 hasta el final) */
+    .protegen-card.wide { grid-column: 1 / -1; display: flex; align-items: center; gap: 1.2rem; }
     .protegen-card.wide .protegen-card-icon { font-size: 2.5rem; margin: 0; flex-shrink: 0; }
-    @media(max-width:768px){
-      .protegen-inner { grid-template-columns:1fr; gap:2.5rem; }
-      .protegen-bg-shield { display:none; }
-    }
+
+    /* En móvil: la sección se apila y el escudo decorativo se oculta */
+    @media(max-width:768px){ .protegen-inner { grid-template-columns:1fr; gap:2.5rem; } .protegen-bg-shield { display:none; } }
 
     /* ═══════════════════════════════════════════
-       RESPONSIVE — TABLETS Y MÓVILES
-    ═══════════════════════════════════════════ */
+       DISEÑO RESPONSIVO — Adaptaciones para cada tamaño de pantalla
+       Los @media son "consultas de medios": aplican reglas solo cuando
+       el ancho de la ventana es menor al número indicado.
+       ═══════════════════════════════════════════ */
 
-    /* ── Tablet (≤ 900px) ── */
+    /* ── Tablet (pantallas de hasta 900px de ancho) ── */
     @media (max-width: 900px) {
+      /* La sección "Protegen" pasa de 2 columnas a 1 columna */
       .protegen-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-      .protegen-bg-shield { display: none; }
-      .protegen-title { font-size: clamp(2.5rem, 7vw, 3.5rem); }
+      .protegen-bg-shield { display: none; } /* el escudo no cabe, se oculta */
+      .protegen-title { font-size: clamp(2.5rem, 7vw, 3.5rem); } /* título más pequeño */
     }
 
-    /* ── Móvil (≤ 768px) ── */
+    /* ── Móvil estándar (pantallas de hasta 768px — la mayoría de teléfonos) ── */
     @media (max-width: 768px) {
-      /* Espaciado general */
+      /* Reducir el espaciado vertical de todas las secciones */
       .section-pad { padding: 4rem 0; }
+      /* Reducir el margen lateral del contenedor */
       .container { padding: 0 1.2rem; }
 
-      /* Navbar */
+      /* Navbar más compacto en móvil */
       #navbar { padding: 0.9rem 1.2rem; }
 
-      /* Hero: ocultar elementos que desbordan en pantallas angostas */
+      /* Hero: menos padding arriba, sin orbitas ni escudos (desbordarían la pantalla) */
       #hero { padding: 7rem 1.2rem 3rem; }
-      .hero-orbit { display: none; }
-      .hero-shield { display: none; }
+      .hero-orbit  { display: none; } /* los anillos de 500-720px no caben en móvil */
+      .hero-shield { display: none; } /* los escudos decorativos tampoco */
+      /* Blobs reducidos para móvil */
       .hero-blob-1 { width: 320px; height: 320px; left: -100px; top: -80px; }
       .hero-blob-2 { width: 280px; height: 280px; right: -80px; bottom: -60px; }
       .hero-blob-3 { display: none; }
-      .hero-badge { font-size: 0.65rem; letter-spacing: 1px; padding: 0.35rem 0.8rem; }
-      .hero h1 { letter-spacing: 2px; }
+      /* Badge y tagline más pequeños */
+      .hero-badge   { font-size: 0.65rem; letter-spacing: 1px; padding: 0.35rem 0.8rem; }
+      .hero h1      { letter-spacing: 2px; }
       .hero-tagline { font-size: 0.95rem; padding: 0 0.5rem; }
-      .hero-tagline br { display: none; }
+      .hero-tagline br { display: none; } /* quita saltos de línea manuales */
 
-      /* CTA buttons: apilados en móvil */
+      /* Los 2 botones (Ver planes / Contactar) se apilan en columna */
       .hero-ctas { flex-direction: column; align-items: stretch; }
       .hero-ctas a { width: 100%; text-align: center; justify-content: center; }
 
-      /* Stats: apilar verticalmente con separador horizontal */
-      .hero-stats {
-        flex-direction: column;
-        margin-top: 2.5rem;
-        width: 100%;
-        max-width: 340px;
-        border-radius: var(--radius);
-      }
+      /* Las estadísticas pasan de fila horizontal a columna vertical */
+      .hero-stats { flex-direction: column; margin-top: 2.5rem; width: 100%; max-width: 340px; border-radius: var(--radius); }
       .stat { padding: 1.1rem 1.5rem; }
-      .stat:not(:last-child)::after {
-        top: auto;
-        bottom: 0;
-        left: 8%;
-        right: 8%;
-        width: auto;
-        height: 1px;
-      }
-      .hero-scroll { display: none; }
+      /* El separador entre estadísticas cambia de vertical (|) a horizontal (—) */
+      .stat:not(:last-child)::after { top: auto; bottom: 0; left: 8%; right: 8%; width: auto; height: 1px; }
+      .hero-scroll { display: none; } /* el indicador "Scroll" no se ve en móvil */
 
-      /* About */
-      .about-float-card { display: none; }
-      .about-main-card { padding: 1.8rem; }
+      /* About: las tarjetas flotantes no caben en móvil */
+      .about-float-card  { display: none; }
+      .about-main-card   { padding: 1.8rem; }
       .about-years-display { font-size: 4rem; }
 
       /* Protegen */
       .protegen-inner { padding: 4rem 0; }
       .protegen-cards { grid-template-columns: 1fr 1fr; }
 
-      /* Map */
+      /* El mapa de Google se hace menos alto en móvil */
       #mapa iframe { height: 280px; }
 
-      /* Sección Thin Blue Line */
+      /* Las franjas de la Línea Azul se adelgazan */
       .tbl-stripe { height: 10px; }
 
-      /* Chat y scroll-top */
-      #chatBtn { left: 1rem; bottom: 1rem; width: 50px; height: 50px; font-size: 1.2rem; }
+      /* Chatbot y botón de scroll se mueven a los márgenes del teléfono */
+      #chatBtn    { left: 1rem; bottom: 1rem; width: 50px; height: 50px; font-size: 1.2rem; }
       #chatWindow { left: 1rem; right: 1rem; width: auto; max-width: none; bottom: 4.5rem; }
-      #scrollTop { right: 1rem; bottom: 1rem; }
+      #scrollTop  { right: 1rem; bottom: 1rem; }
     }
 
-    /* ── Móvil pequeño (≤ 480px) ── */
+    /* ── Móvil pequeño (pantallas de hasta 480px — teléfonos compactos) ── */
     @media (max-width: 480px) {
-      /* Hero */
+      /* Hero: aún menos espacio, título más pequeño con clamp más agresivo */
       #hero { padding: 6rem 1rem 2.5rem; }
-      .hero h1 { font-size: clamp(3rem, 22vw, 5rem); letter-spacing: 0px; }
-      .hero-badge { font-size: 0.58rem; letter-spacing: 0.5px; }
+      .hero h1     { font-size: clamp(3rem, 22vw, 5rem); letter-spacing: 0px; }
+      .hero-badge  { font-size: 0.58rem; letter-spacing: 0.5px; }
       .hero-tagline { font-size: 0.88rem; }
-      .stat-num { font-size: 2.2rem; }
-      .stat { padding: 1rem 1.2rem; }
+      .stat-num    { font-size: 2.2rem; }
+      .stat        { padding: 1rem 1.2rem; }
 
-      /* About */
+      /* About: Misión y Visión pasan de 2 columnas a 1 */
       .mv-grid { grid-template-columns: 1fr; }
-      .about-main-card { padding: 1.3rem; }
-      .about-badge-row { flex-direction: column; gap: 0.6rem; text-align: center; }
+      .about-main-card  { padding: 1.3rem; }
+      .about-badge-row  { flex-direction: column; gap: 0.6rem; text-align: center; }
 
-      /* Corps */
+      /* Las tarjetas de planes ocupan el 100% del ancho */
       .corps-grid { max-width: 100%; }
       .corps-card { padding: 1.8rem 1.2rem; }
 
-      /* Protegen */
+      /* Las tarjetas de Protegen se apilan en 1 columna */
       .protegen-cards { grid-template-columns: 1fr; }
       .protegen-title { font-size: 2.3rem; letter-spacing: 1px; }
       .protegen-card.wide { flex-direction: column; gap: 0.6rem; }
 
-      /* Values */
+      /* Valores en 1 columna */
       .values-grid { grid-template-columns: 1fr; }
 
-      /* Contact */
-      .contact-form { padding: 1.5rem 1.2rem; }
-      .form-row { grid-template-columns: 1fr; }
+      /* Formulario con menos padding */
+      .contact-form  { padding: 1.5rem 1.2rem; }
+      .form-row      { grid-template-columns: 1fr; } /* campos uno debajo del otro */
       .contact-detail { gap: 0.7rem; }
 
-      /* Footer */
-      .footer-inner { grid-template-columns: 1fr; }
-      .footer-brand { grid-column: 1; }
-      footer { padding: 3rem 1.2rem 1.5rem; }
+      /* Footer en 1 sola columna */
+      .footer-inner  { grid-template-columns: 1fr; }
+      .footer-brand  { grid-column: 1; }
+      footer         { padding: 3rem 1.2rem 1.5rem; }
 
-      /* Map */
-      #mapa iframe { height: 240px; }
-      .map-badge { font-size: 0.7rem; padding: 0.4rem 0.7rem; max-width: calc(100% - 2rem); }
+      /* Mapa más bajo */
+      #mapa iframe   { height: 240px; }
+      .map-badge     { font-size: 0.7rem; padding: 0.4rem 0.7rem; max-width: calc(100% - 2rem); }
 
-      /* Navbar */
-      #navbar { padding: 0.7rem 1rem; }
+      /* Navbar muy compacto */
+      #navbar        { padding: 0.7rem 1rem; }
       .nav-logo-text { font-size: 1.1rem; }
-      .nav-logo-sub { display: none; }
+      .nav-logo-sub  { display: none; } /* el subtítulo "Dist. Autorizado Telcel" se oculta */
     }
 
-    /* ─── CHATBOT ─── */
+    /* ═══════════════════════════════════════════
+       CHATBOT — Botón flotante y ventana de chat
+       ═══════════════════════════════════════════ */
+
+    /* Botón circular "💬" fijo en la esquina inferior izquierda.
+       Tiene un anillo que pulsa hacia afuera (efecto "ping") */
+    /* Botón circular del chatbot */
     #chatBtn {
       position: fixed;
-      bottom: 2rem;
-      left: 2rem;
+      bottom: 2rem; left: 2rem;   /* esquina inferior izquierda */
       width: 56px; height: 56px;
       background: var(--blue);
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
+      border: none; border-radius: 50%; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      color: #fff;
+      font-size: 1.4rem; color: #fff;
       box-shadow: 0 8px 32px rgba(0,87,184,0.45);
       z-index: 900;
       transition: transform 0.3s, background 0.2s;
-      animation: chatPulseRing 2.5s ease-out infinite;
+      animation: chatPulseRing 2.5s ease-out infinite; /* anillo pulsante */
     }
     #chatBtn:hover { background: var(--blue-dark); transform: scale(1.08); }
-    #chatBtn.open { background: var(--blue-dark); transform: scale(0.95); animation: none; }
+    /* Cuando el chat está abierto (JS añade "open"): más oscuro y sin anillo */
+    #chatBtn.open  { background: var(--blue-dark); transform: scale(0.95); animation: none; }
+
+    /* Animación del anillo pulsante: se expande y desaparece como ondas en el agua */
     @keyframes chatPulseRing {
-      0%   { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0 rgba(0,87,184,0.35); }
+      0%   { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0   rgba(0,87,184,0.35); }
       60%  { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 14px rgba(0,87,184,0); }
-      100% { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0 rgba(0,87,184,0); }
+      100% { box-shadow: 0 8px 32px rgba(0,87,184,0.45), 0 0 0 0   rgba(0,87,184,0); }
     }
+
+    /* Ventana del chatbot: arriba del botón, inicialmente invisible y reducida.
+       cubic-bezier(.34,1.56,.64,1) → efecto de "rebote" al aparecer */
     #chatWindow {
       position: fixed;
-      bottom: 5.5rem;
-      left: 2rem;
-      width: 340px;
-      max-height: 480px;
+      bottom: 5.5rem; left: 2rem; /* encima del botón */
+      width: 340px; max-height: 480px;
       background: var(--white);
       border: 1.5px solid var(--gray-100);
       border-radius: var(--radius-lg);
       box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,87,184,0.1);
-      z-index: 901;
-      display: flex;
-      flex-direction: column;
+      z-index: 901;              /* encima del botón */
+      display: flex; flex-direction: column;
       overflow: hidden;
-      transform: scale(0.85) translateY(20px);
+      transform: scale(0.85) translateY(20px); /* empieza pequeña y más abajo */
       transform-origin: bottom left;
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0;                /* invisible */
+      pointer-events: none;      /* no recibe clics cuando está cerrada */
       transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.25s ease;
     }
-    #chatWindow.open {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      pointer-events: all;
-    }
-    .chat-header {
-      background: var(--blue);
-      padding: 1rem 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex-shrink: 0;
-    }
-    .chat-avatar {
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .chat-header-info .chat-name { font-size: 0.9rem; font-weight: 700; color: #fff; }
-    .chat-header-info .chat-status {
-      font-size: 0.68rem; color: rgba(255,255,255,0.75);
-      display: flex; align-items: center; gap: 0.35rem;
-    }
-    .chat-status-dot {
-      width: 6px; height: 6px;
-      background: #4ade80;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
+    /* Cuando JS añade "open": aparece con animación de rebote */
+    #chatWindow.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+    /* Encabezado azul del chat: avatar robot + nombre + estado */
+    .chat-header { background: var(--blue); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
+    /* Círculo blanco semitransparente con el emoji 🤖 */
+    .chat-avatar  { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .chat-header-info .chat-name   { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .chat-header-info .chat-status { font-size: 0.68rem; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 0.35rem; }
+    /* Puntito verde que indica "en línea" */
+    .chat-status-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; flex-shrink: 0; }
+
+    /* Área de mensajes: ocupa todo el espacio disponible y tiene scroll si hay muchos */
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem; }
+    .chat-messages::-webkit-scrollbar       { width: 4px; }
     .chat-messages::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 2px; }
-    .chat-msg {
-      max-width: 85%;
-      padding: 0.65rem 0.9rem;
-      border-radius: 14px;
-      font-size: 0.84rem;
-      line-height: 1.5;
-      animation: msgSlide 0.25s ease;
-    }
-    @keyframes msgSlide {
-      from { opacity:0; transform: translateY(6px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-    .chat-msg.bot {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      color: var(--navy);
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-    .chat-msg.user {
-      background: var(--blue);
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-    .chat-msg a { color: var(--blue); font-weight: 600; text-decoration: none; }
+
+    /* Cada burbuja de mensaje */
+    .chat-msg { max-width: 85%; padding: 0.65rem 0.9rem; border-radius: 14px; font-size: 0.84rem; line-height: 1.5; animation: msgSlide 0.25s ease; }
+    /* La burbuja entra deslizándose desde abajo */
+    @keyframes msgSlide { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+    /* Mensajes del bot: grises, alineados a la izquierda, con esquina inferior izquierda recta */
+    .chat-msg.bot  { background: var(--gray-50); border: 1px solid var(--gray-100); color: var(--navy); align-self: flex-start; border-bottom-left-radius: 4px; }
+    /* Mensajes del usuario: azules, alineados a la derecha, con esquina inferior derecha recta */
+    .chat-msg.user { background: var(--blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+    /* Enlaces dentro de los mensajes del bot */
+    .chat-msg a       { color: var(--blue); font-weight: 600; text-decoration: none; }
     .chat-msg a:hover { text-decoration: underline; }
-    .chat-typing {
-      display: flex;
-      gap: 4px;
-      padding: 0.55rem 0.8rem;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      border-radius: 14px;
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-      align-items: center;
-    }
-    .chat-typing span {
-      width: 6px; height: 6px;
-      background: var(--gray-300);
-      border-radius: 50%;
-      animation: typingDot 1.2s ease-in-out infinite;
-    }
+
+    /* Indicador "está escribiendo...": 3 puntitos que rebotan secuencialmente */
+    .chat-typing { display: flex; gap: 4px; padding: 0.55rem 0.8rem; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 14px; border-bottom-left-radius: 4px; align-self: flex-start; align-items: center; }
+    .chat-typing span { width: 6px; height: 6px; background: var(--gray-300); border-radius: 50%; animation: typingDot 1.2s ease-in-out infinite; }
+    /* Cada punto empieza su animación 0.2s después del anterior (efecto de ola) */
     .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
     .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingDot {
-      0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
-      40%            { transform: scale(1);   opacity: 1; }
-    }
-    .chat-quick-replies {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      padding: 0.3rem 1rem 0.8rem;
-    }
-    .chat-quick-btn {
-      background: var(--blue-pale);
-      border: 1px solid var(--blue-pale2);
-      color: var(--blue);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.35rem 0.75rem;
-      border-radius: 100px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
-    }
+    @keyframes typingDot { 0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+
+    /* Respuestas rápidas: botones-píldora que aparecen debajo de cada mensaje del bot */
+    .chat-quick-replies { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.3rem 1rem 0.8rem; }
+    .chat-quick-btn { background: var(--blue-pale); border: 1px solid var(--blue-pale2); color: var(--blue); font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.75rem; border-radius: 100px; cursor: pointer; transition: background 0.2s, color 0.2s; white-space: nowrap; }
     .chat-quick-btn:hover { background: var(--blue); color: #fff; }
-    .chat-input-row {
-      display: flex;
-      gap: 0.5rem;
-      padding: 0.8rem 1rem;
-      border-top: 1px solid var(--gray-100);
-      flex-shrink: 0;
-    }
-    .chat-input {
-      flex: 1;
-      background: var(--gray-50);
-      border: 1.5px solid var(--gray-100);
-      border-radius: var(--radius-sm);
-      padding: 0.6rem 0.9rem;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      color: var(--navy);
-      outline: none;
-      transition: border-color 0.2s;
-    }
+
+    /* Fila de entrada de texto + botón de enviar */
+    .chat-input-row { display: flex; gap: 0.5rem; padding: 0.8rem 1rem; border-top: 1px solid var(--gray-100); flex-shrink: 0; }
+    /* Campo de texto donde el usuario escribe */
+    .chat-input { flex: 1; background: var(--gray-50); border: 1.5px solid var(--gray-100); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; font-family: var(--font-body); font-size: 0.85rem; color: var(--navy); outline: none; transition: border-color 0.2s; }
     .chat-input:focus { border-color: var(--blue); background: var(--white); }
-    .chat-send-btn {
-      width: 38px; height: 38px;
-      background: var(--blue);
-      border: none;
-      border-radius: var(--radius-sm);
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.15s;
-      flex-shrink: 0;
-    }
+    /* Botón "➤" de enviar */
+    .chat-send-btn { width: 38px; height: 38px; background: var(--blue); border: none; border-radius: var(--radius-sm); color: #fff; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.15s; flex-shrink: 0; }
     .chat-send-btn:hover { background: var(--blue-dark); transform: scale(1.05); }
-    @media(max-width:400px){
-      #chatWindow { width: calc(100vw - 2rem); left: 1rem; }
-    }
+
+    /* En teléfonos muy pequeños (< 400px): el chatbot ocupa casi todo el ancho */
+    @media(max-width:400px){ #chatWindow { width: calc(100vw - 2rem); left: 1rem; } }
+
   </style>
+  <!-- ── Fin del bloque de estilos CSS ── -->
 </head>
 <body>
 
-<!-- ─── MODAL ─── -->
+<!-- ════════════════════════════════════════════════════════════
+     BODY — Aquí empieza todo lo que el usuario VE en pantalla
+     El orden de los elementos aquí determina el orden visual
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════
+     MODAL DE ACCESO
+     Ventana emergente que aparece al hacer clic en "Acceso →".
+     Está oculta por defecto (display:none en CSS).
+     JavaScript añade la clase "open" para mostrarla.
+     ══════════════════════════════════════════ -->
+<!-- El fondo oscuro que cubre toda la pantalla cuando el modal está abierto -->
 <div class="modal-overlay" id="modalOverlay">
+
+  <!-- La tarjeta blanca central del modal -->
   <div class="modal">
+
+    <!-- Botón "✕" en la esquina superior derecha para cerrar el modal -->
     <button class="modal-close" id="modalClose">✕</button>
+
+    <!-- Título y descripción del modal -->
     <h3>ACCESO</h3>
     <p>Selecciona tu corporación para acceder a la plataforma de pre-registro de planes.</p>
+
+    <!-- Lista de opciones: cada una lleva a un enlace diferente según la corporación -->
     <div class="modal-btns">
+
+      <!-- Enlace para Policía Auxiliar -->
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" class="modal-link">
         <span>🛡️</span> Policía Auxiliar (PA)
-        <span class="modal-arrow">→</span>
+        <span class="modal-arrow">→</span>  <!-- flecha que aparece al hacer hover -->
       </a>
+
+      <!-- Enlace para Policía Bancaria e Industrial -->
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" class="modal-link">
         <span>🏦</span> Policía Bancaria e Industrial (PBI)
         <span class="modal-arrow">→</span>
       </a>
+
+      <!-- Enlace para Secretaría de Seguridad Ciudadana -->
       <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" class="modal-link">
         <span>🏙️</span> Secretaría de Seg. Ciudadana CDMX (SSC)
         <span class="modal-arrow">→</span>
       </a>
+
+      <!-- Enlace de acceso general para administradores -->
       <a href="https://www.descuentoxnomina.com.mx/Acceso/Login" class="modal-link">
         <span>🔐</span> Acceso General / Administración
         <span class="modal-arrow">→</span>
       </a>
+
     </div>
   </div>
 </div>
 
-<!-- ─── NAVBAR ─── -->
+<!-- ══════════════════════════════════════════
+     NAVBAR — Barra de navegación superior fija
+     Siempre visible en la parte superior de la pantalla.
+     Se vuelve blanca al hacer scroll (JavaScript).
+     ══════════════════════════════════════════ -->
+<!-- <header> es la etiqueta semántica para cabeceras de página -->
 <header id="navbar">
+
+  <!-- Logo: es un enlace que lleva al inicio de la página (#hero) -->
   <a href="#hero" class="nav-logo">
+    <!-- Cuadro azul con la letra "B" -->
     <div class="nav-logo-mark">B</div>
     <div>
+      <!-- Nombre de la empresa en fuente grande -->
       <div class="nav-logo-text">BERYHUERT</div>
+      <!-- Subtítulo pequeño debajo del nombre -->
       <div class="nav-logo-sub">Dist. Autorizado Telcel</div>
     </div>
   </a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
+
+  <!-- Menú de navegación: lista de enlaces a cada sección de la página.
+       En móvil este menú se convierte en un panel lateral (CSS lo controla). -->
   <nav>
     <ul id="navLinks">
+      <!-- href="#hero" → desplaza a la sección con id="hero" -->
       <li><a href="#hero">Inicio</a></li>
       <li><a href="#about">Acerca</a></li>
       <li><a href="#corps">Planes</a></li>
       <li><a href="#valores">Valores</a></li>
       <li><a href="#clientes">Clientes</a></li>
       <li><a href="#contacto">Contacto</a></li>
+      <!-- Botón especial "Acceso →": abre el modal en lugar de navegar.
+           onclick="openModal(event)" llama a la función JavaScript al hacer clic.
+           event.preventDefault() dentro evita que el enlace "#" recargue la página -->
       <li><a href="#" class="btn-nav" onclick="openModal(event)">Acceso →</a></li>
     </ul>
   </nav>
+
+  <!-- Botón hamburguesa (≡) para abrir/cerrar el menú en móvil.
+       onclick="toggleMenu()" es la función JavaScript que abre/cierra el panel.
+       Los tres <span> son las tres rayas horizontales del icono. -->
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
 </header>
 
-<!-- ─── HERO ─── -->
+<!-- ══════════════════════════════════════════
+     HERO — Primera pantalla (la más importante)
+     Es lo primero que el usuario ve al abrir la página.
+     Contiene: fondo animado + nombre + subtítulo + botones + estadísticas
+     ══════════════════════════════════════════ -->
 <section id="hero">
-  <!-- Animated background -->
+
+  <!-- ── Fondo decorativo animado ──
+       Estos divs vacíos son SOLO decoración visual.
+       El CSS les da color, tamaño y animación. -->
+
+  <!-- Manchas de luz azul difuminada que flotan en el fondo -->
   <div class="hero-blob hero-blob-1"></div>
   <div class="hero-blob hero-blob-2"></div>
   <div class="hero-blob hero-blob-3"></div>
+
+  <!-- Rejilla de líneas grises sutiles (como papel cuadriculado) -->
   <div class="hero-grid"></div>
+
+  <!-- Anillos circulares giratorios (como órbitas de planetas) -->
   <div class="hero-orbit hero-orbit-1"></div>
   <div class="hero-orbit hero-orbit-2"></div>
 
-  <!-- Floating particles (generated by JS) -->
+  <!-- Contenedor vacío donde JavaScript insertará puntitos flotantes -->
   <div class="hero-particles" id="heroParticles"></div>
 
-  <!-- Escudos policiales flotantes en el fondo del hero -->
+  <!-- ── Escudos policiales SVG (dibujos vectoriales) ──
+       SVG es un formato de imagen hecho con código matemático (líneas, círculos).
+       Estos escudos son semitransparentes y solo decoran el fondo.
+       viewBox="0 0 200 230" define el "lienzo" del dibujo (ancho 200, alto 230). -->
+
+  <!-- Escudo grande a la izquierda (con detalles completos: 2 contornos + círculo + líneas) -->
   <div class="hero-shield hero-shield-1">
     <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Contorno exterior del escudo -->
       <path d="M100 8L12 42V110C12 160 52 205 100 222C148 205 188 160 188 110V42L100 8Z" stroke="#0057b8" stroke-width="6" fill="none"/>
+      <!-- Contorno interior del escudo (más pequeño) -->
       <path d="M100 30L30 58V112C30 152 60 188 100 202C140 188 170 152 170 112V58L100 30Z" stroke="#0057b8" stroke-width="3" fill="none"/>
+      <!-- Círculo central decorativo -->
       <circle cx="100" cy="115" r="28" stroke="#0057b8" stroke-width="4" fill="none"/>
-      <line x1="100" y1="58" x2="100" y2="87" stroke="#0057b8" stroke-width="3"/>
+      <!-- Líneas que salen del círculo (como una mira o compás) -->
+      <line x1="100" y1="58"  x2="100" y2="87"  stroke="#0057b8" stroke-width="3"/>
       <line x1="100" y1="143" x2="100" y2="172" stroke="#0057b8" stroke-width="3"/>
-      <line x1="72" y1="115" x2="43" y2="115" stroke="#0057b8" stroke-width="3"/>
+      <line x1="72"  y1="115" x2="43"  y2="115" stroke="#0057b8" stroke-width="3"/>
       <line x1="157" y1="115" x2="128" y2="115" stroke="#0057b8" stroke-width="3"/>
     </svg>
   </div>
+
+  <!-- Escudo mediano a la derecha (simplificado: 2 contornos + círculo) -->
   <div class="hero-shield hero-shield-2">
     <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M100 8L12 42V110C12 160 52 205 100 222C148 205 188 160 188 110V42L100 8Z" stroke="#0057b8" stroke-width="6" fill="none"/>
@@ -1818,52 +1880,82 @@
       <circle cx="100" cy="115" r="28" stroke="#0057b8" stroke-width="4" fill="none"/>
     </svg>
   </div>
+
+  <!-- Escudo pequeño aún más transparente (solo el contorno exterior) -->
   <div class="hero-shield hero-shield-3">
     <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M100 8L12 42V110C12 160 52 205 100 222C148 205 188 160 188 110V42L100 8Z" stroke="#0057b8" stroke-width="6" fill="none"/>
     </svg>
   </div>
 
+  <!-- ── Contenido principal del hero (encima del fondo) ── -->
+
+  <!-- Insignia/badge superior: píldora azul con puntito pulsante -->
   <div class="hero-badge">
-    <span class="hero-badge-dot"></span>
+    <span class="hero-badge-dot"></span>  <!-- puntito azul animado -->
     Distribuidor Autorizado · Región 9 CDMX
   </div>
 
+  <!-- Título principal: "BERY" en azul marino, "HUERT" en azul (clase accent) -->
   <h1>BERY<span class="accent">HUERT</span></h1>
 
+  <!-- Subtítulo descriptivo debajo del nombre -->
   <p class="hero-tagline">
     Subdistributora Telcel especializada en <strong>equipos telefónicos</strong> y<br>
     <strong>planes corporativos</strong> para cuerpos de seguridad pública en CDMX.
   </p>
 
+  <!-- Los dos botones de acción -->
   <div class="hero-ctas">
+    <!-- Botón azul sólido → va a la sección de planes -->
     <a href="#corps" class="btn-primary">Ver planes por corporación →</a>
+    <!-- Botón con borde → va a la sección de contacto -->
     <a href="#contacto" class="btn-outline">Contactar asesor</a>
   </div>
 
+  <!-- Tarjeta de estadísticas con 3 datos clave -->
   <div class="hero-stats">
+
+    <!-- Estadística 1: años de experiencia (se anima contando de 0 a 25) -->
     <div class="stat">
-      <div class="stat-num"><span class="count-up" data-target="25">0</span>+</div>
+      <div class="stat-num">
+        <!-- data-target="25" le dice al JS hasta qué número contar -->
+        <span class="count-up" data-target="25">0</span>+
+      </div>
       <div class="stat-label">Años de experiencia</div>
     </div>
+
+    <!-- Estadística 2: corporaciones atendidas (cuenta de 0 a 3) -->
     <div class="stat">
-      <div class="stat-num"><span class="count-up" data-target="3">0</span></div>
+      <div class="stat-num">
+        <span class="count-up" data-target="3">0</span>
+      </div>
       <div class="stat-label">Corporaciones atendidas</div>
     </div>
+
+    <!-- Estadística 3: región (texto fijo, sin contador) -->
     <div class="stat">
       <div class="stat-num">R<span>9</span></div>
       <div class="stat-label">Región Telcel CDMX</div>
     </div>
+
   </div>
 
+  <!-- Indicador de scroll: línea animada + texto "Scroll" en la parte inferior -->
   <div class="hero-scroll">
     <div class="hero-scroll-line"></div>
     <span>Scroll</span>
   </div>
+
 </section>
 
-<!-- ─── FEATURE STRIP ─── -->
+<!-- ══════════════════════════════════════════
+     FEATURE STRIP — Banda azul con texto deslizante
+     Los ítems están duplicados en el HTML para que el carrusel
+     pueda hacer un bucle sin saltos visibles
+     ══════════════════════════════════════════ -->
 <div id="features">
+  <!-- features-track es la pista que se mueve automáticamente (CSS lo anima) -->
   <div class="features-track" id="featuresTrack">
     <div class="feature-item"><span class="feature-dot"></span> Distribuidor Autorizado Telcel</div>
     <div class="feature-item"><span class="feature-dot"></span> Descuento Directo en Nómina</div>
@@ -1887,14 +1979,22 @@
   </div>
 </div>
 
-<!-- ─── THIN BLUE LINE ─── -->
+<!-- ══════════════════════════════════════════
+     THIN BLUE LINE — Separador policial
+     Tres franjas: negra / azul / negra
+     Simboliza "La Línea Azul Delgada", símbolo que representa
+     a los policías como la barrera entre el orden y el caos
+     ══════════════════════════════════════════ -->
 <div class="tbl-divider">
-  <div class="tbl-stripe tbl-black"></div>
-  <div class="tbl-stripe tbl-blue"></div>
-  <div class="tbl-stripe tbl-black"></div>
+  <div class="tbl-stripe tbl-black"></div>  <!-- franja negra superior -->
+  <div class="tbl-stripe tbl-blue"></div>   <!-- franja azul central (la "línea") -->
+  <div class="tbl-stripe tbl-black"></div>  <!-- franja negra inferior -->
 </div>
 
-<!-- ─── ABOUT ─── -->
+<!-- ══════════════════════════════════════════
+     ABOUT — Sección "Quiénes somos"
+     Historia de la empresa, misión, visión y lista de beneficios
+     ══════════════════════════════════════════ -->
 <section id="about">
   <div class="container section-pad">
     <div class="about-grid">
@@ -1976,7 +2076,11 @@
   </div>
 </section>
 
-<!-- ─── CORPS / PLANES ─── -->
+<!-- ══════════════════════════════════════════
+     CORPS / PLANES — Las 3 tarjetas de corporaciones
+     Cada tarjeta es un enlace (<a>) que lleva directamente
+     al portal de pre-registro de esa corporación
+     ══════════════════════════════════════════ -->
 <section id="corps">
   <div class="container section-pad">
     <div class="corps-header reveal">
@@ -2036,9 +2140,15 @@
   </div>
 </section>
 
-<!-- ─── PARA QUIENES PROTEGEN ─── -->
+<!-- ══════════════════════════════════════════
+     PROTEGEN — Sección oscura tipo "manifiesto"
+     Fondo azul marino. Izquierda: texto de compromiso.
+     Derecha: cuadrícula de 5 tarjetas con estadísticas clave.
+     ══════════════════════════════════════════ -->
 <section id="protegen">
-  <!-- Escudo SVG gigante de fondo decorativo -->
+  <!-- Escudo SVG gigante semitransparente decorativo en el lado derecho.
+       Es el mismo diseño que los escudos del hero, pero más grande
+       y dibujado en blanco sobre el fondo oscuro. -->
   <svg class="protegen-bg-shield" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 8L12 42V110C12 160 52 205 100 222C148 205 188 160 188 110V42L100 8Z" stroke="white" stroke-width="4" fill="none"/>
     <path d="M100 30L30 58V112C30 152 60 188 100 202C140 188 170 152 170 112V58L100 30Z" stroke="white" stroke-width="2" fill="none"/>
@@ -2093,7 +2203,11 @@
   </div>
 </section>
 
-<!-- ─── VALORES ─── -->
+<!-- ══════════════════════════════════════════
+     VALORES — Sección azul con 6 tarjetas
+     Fondo azul sólido. Las 6 tarjetas muestran los valores
+     corporativos de Beryhuert con emojis e iconos.
+     ══════════════════════════════════════════ -->
 <section id="valores">
   <div class="valores-inner">
     <div class="valores-bg-text">VALORES</div>
@@ -2150,7 +2264,12 @@
   </div>
 </section>
 
-<!-- ─── CLIENTES ─── -->
+<!-- ══════════════════════════════════════════
+     CLIENTES — Carrusel de nombres de clientes
+     Los nombres están duplicados en el HTML para que el carrusel
+     funcione en bucle infinito sin saltos visibles.
+     Al pasar el cursor, la animación se pausa (CSS).
+     ══════════════════════════════════════════ -->
 <section id="clientes">
   <div class="container section-pad">
     <div class="reveal" style="text-align:center;">
@@ -2193,7 +2312,12 @@
   </div>
 </section>
 
-<!-- ─── CONTACTO ─── -->
+<!-- ══════════════════════════════════════════
+     CONTACTO — Formulario de contacto
+     Columna izquierda: dirección, web y redes sociales.
+     Columna derecha: formulario con nombre, email, corporación y mensaje.
+     Al enviar, JavaScript oculta el formulario y muestra el mensaje de éxito.
+     ══════════════════════════════════════════ -->
 <section id="contacto">
   <div class="container section-pad">
     <div class="reveal">
@@ -2273,7 +2397,14 @@
   </div>
 </section>
 
-<!-- ─── MAPA ─── -->
+<!-- ══════════════════════════════════════════
+     MAPA — Google Maps a ancho completo
+     Esta sección está FUERA de cualquier contenedor (.container)
+     para que el mapa ocupe todo el ancho de la página.
+     El iframe incrusta el mapa de Google directamente.
+     style="position:relative" permite posicionar la etiqueta
+     flotante (.map-badge) encima del mapa.
+     ══════════════════════════════════════════ -->
 <section id="mapa" style="position:relative;">
   <div class="map-badge" style="top:1.5rem;left:1.5rem;">
     <span class="map-badge-dot"></span>
@@ -2289,7 +2420,11 @@
   ></iframe>
 </section>
 
-<!-- ─── FOOTER ─── -->
+<!-- ══════════════════════════════════════════
+     FOOTER — Pie de página oscuro
+     Cuatro columnas: marca + navegación + acceso + legal.
+     Debajo: barra con copyright y aviso de privacidad.
+     ══════════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
@@ -2329,57 +2464,106 @@
   </div>
 </footer>
 
-<!-- ─── SCROLL TOP ─── -->
+<!-- ══════════════════════════════════════════
+     BOTÓN "VOLVER ARRIBA" — Esquina inferior derecha
+     Fijo en pantalla. Invisible hasta hacer scroll 300px.
+     onclick llama a window.scrollTo para subir suavemente.
+     ══════════════════════════════════════════ -->
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<!-- ─── CHATBOT ─── -->
+<!-- ══════════════════════════════════════════
+     CHATBOT — Botón flotante + ventana de conversación
+     El botón siempre está visible en la esquina inferior izquierda.
+     La ventana aparece/desaparece al hacer clic en el botón.
+     ══════════════════════════════════════════ -->
+
+<!-- Botón circular "💬" que abre/cierra el chatbot -->
 <button id="chatBtn" onclick="toggleChat()" title="Asistente virtual">💬</button>
 
+<!-- Ventana del chatbot (oculta por defecto, aparece al hacer clic) -->
 <div id="chatWindow">
+
+  <!-- Encabezado azul con avatar y estado -->
   <div class="chat-header">
     <div class="chat-avatar">🤖</div>
     <div class="chat-header-info">
       <div class="chat-name">Asistente Beryhuert</div>
       <div class="chat-status">
-        <span class="chat-status-dot"></span>
+        <span class="chat-status-dot"></span>  <!-- puntito verde "en línea" -->
         En línea · respuesta inmediata
       </div>
     </div>
   </div>
+
+  <!-- Área donde aparecen los mensajes (JavaScript los inserta aquí) -->
   <div class="chat-messages" id="chatMessages"></div>
+
+  <!-- Área donde aparecen los botones de respuesta rápida (JavaScript los inserta) -->
   <div class="chat-quick-replies" id="quickReplies"></div>
+
+  <!-- Fila de entrada: campo de texto + botón enviar -->
   <div class="chat-input-row">
-    <input class="chat-input" id="chatInput" type="text" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')sendChat()" />
+    <!-- onkeydown: si el usuario presiona Enter, envía el mensaje -->
+    <input class="chat-input" id="chatInput" type="text"
+           placeholder="Escribe tu pregunta..."
+           onkeydown="if(event.key==='Enter')sendChat()" />
+    <!-- Botón "➤" para enviar el mensaje -->
     <button class="chat-send-btn" onclick="sendChat()">➤</button>
   </div>
+
 </div>
 
+<!-- ════════════════════════════════════════════════════════════
+     JAVASCRIPT — La lógica interactiva de la página
+     Todo lo que "hace cosas" al hacer clic, scroll o escribir.
+     Está al final del HTML para que cargue DESPUÉS de todo
+     el contenido visible (mejor rendimiento).
+     ════════════════════════════════════════════════════════════ -->
 <script>
-  /* ── Navbar scroll ── */
+
+  /* ══════════════════════════════════════════
+     NAVBAR — Cambio de fondo al hacer scroll
+     Cuando el usuario baja 40px, el navbar se vuelve blanco.
+     Cuando baja 300px, aparece el botón "volver arriba".
+     ══════════════════════════════════════════ */
   const nav = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
+    /* classList.toggle(clase, condición) → añade la clase si la condición es true,
+       la quita si es false. window.scrollY = cuántos píxeles se ha bajado */
     nav.classList.toggle('scrolled', window.scrollY > 40);
     document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 300);
   });
 
-  /* ── Mobile menu ── */
+  /* ══════════════════════════════════════════
+     MENÚ MÓVIL — Abrir/cerrar el panel lateral
+     Al hacer clic en el hamburger (≡), se añade/quita
+     la clase "open" en la lista de enlaces, lo que la
+     desliza desde afuera de la pantalla.
+     ══════════════════════════════════════════ */
   function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('open');
   }
+  /* Al hacer clic en cualquier enlace del menú, se cierra el panel */
   document.querySelectorAll('#navLinks a').forEach(a => {
     a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
   });
 
-  /* ── Modal ── */
+  /* ══════════════════════════════════════════
+     MODAL DE ACCESO — Abrir y cerrar
+     openModal: añade clase "open" y bloquea el scroll de la página.
+     Cerrar: quita la clase y restaura el scroll.
+     ══════════════════════════════════════════ */
   function openModal(e) {
-    if (e) e.preventDefault();
+    if (e) e.preventDefault(); /* evita que el enlace "#" haga scroll al tope */
     document.getElementById('modalOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; /* bloquea el scroll del fondo */
   }
+  /* Cerrar al hacer clic en el botón "✕" */
   document.getElementById('modalClose').addEventListener('click', () => {
     document.getElementById('modalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.style.overflow = ''; /* restaura el scroll */
   });
+  /* Cerrar también si el usuario hace clic en el fondo oscuro (fuera del modal) */
   document.getElementById('modalOverlay').addEventListener('click', (e) => {
     if (e.target === document.getElementById('modalOverlay')) {
       document.getElementById('modalOverlay').classList.remove('open');
@@ -2387,41 +2571,55 @@
     }
   });
 
-  /* ── Reveal on scroll ── */
+  /* ══════════════════════════════════════════
+     REVEAL ON SCROLL — Animación de entrada al hacer scroll
+     IntersectionObserver "vigila" todos los elementos con clase "reveal".
+     Cuando alguno entra en el área visible del navegador (10% visible),
+     se le añade la clase "in-view" que lo hace aparecer con animación.
+     ══════════════════════════════════════════ */
   const revealEls = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
-  }, { threshold: 0.1 });
-  revealEls.forEach(el => obs.observe(el));
+  }, { threshold: 0.1 }); /* threshold:0.1 = activa cuando el 10% del elemento es visible */
+  revealEls.forEach(el => obs.observe(el)); /* empieza a vigilar cada elemento */
 
-  /* ── Counter animation ── */
+  /* ══════════════════════════════════════════
+     CONTADOR ANIMADO — Los números del hero cuentan desde 0
+     Cuando el bloque de estadísticas entra en pantalla,
+     los números suben de 0 al valor indicado en data-target.
+     ══════════════════════════════════════════ */
   const counters = document.querySelectorAll('.count-up');
   const counterObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+      if (!entry.isIntersecting) return; /* si no es visible, ignorar */
       const el = entry.target;
-      const target = parseInt(el.dataset.target);
+      const target = parseInt(el.dataset.target); /* leer el número destino del HTML */
       let current = 0;
-      const step = target / 40;
+      const step = target / 40; /* dividir en 40 pasos */
       const timer = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = Math.round(current);
-        if (current >= target) clearInterval(timer);
-      }, 40);
-      counterObs.unobserve(el);
+        current = Math.min(current + step, target); /* sumar un paso, sin pasar del máximo */
+        el.textContent = Math.round(current);        /* mostrar el número redondeado */
+        if (current >= target) clearInterval(timer); /* detener cuando llega al destino */
+      }, 40); /* ejecutar cada 40 milisegundos (≈ 25 veces por segundo) */
+      counterObs.unobserve(el); /* dejar de vigilar para no contar dos veces */
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.5 }); /* activa cuando el 50% del elemento es visible */
   counters.forEach(c => counterObs.observe(c));
 
-  /* ── Floating particles ── */
+  /* ══════════════════════════════════════════
+     PARTÍCULAS FLOTANTES — Puntitos azules en el hero
+     Se crean dinámicamente con JavaScript y se eliminan
+     solos después de completar su animación.
+     ══════════════════════════════════════════ */
   const particleContainer = document.getElementById('heroParticles');
   function createParticle() {
-    const p = document.createElement('div');
+    const p = document.createElement('div'); /* crear un nuevo div */
     p.className = 'particle';
-    const size = Math.random() * 4 + 2;
-    const x = Math.random() * 100;
-    const delay = Math.random() * 6;
-    const duration = Math.random() * 6 + 6;
+    const size     = Math.random() * 4 + 2;   /* tamaño aleatorio entre 2px y 6px */
+    const x        = Math.random() * 100;      /* posición horizontal aleatoria (0-100%) */
+    const delay    = Math.random() * 6;        /* retraso de animación aleatorio (0-6s) */
+    const duration = Math.random() * 6 + 6;   /* duración aleatoria entre 6s y 12s */
+    /* Aplicar todos los estilos en una sola asignación */
     p.style.cssText = `
       width:${size}px;height:${size}px;
       left:${x}%;bottom:${Math.random()*30}%;
@@ -2430,33 +2628,58 @@
       opacity:0.4;
     `;
     particleContainer.appendChild(p);
+    /* Eliminar la partícula del DOM cuando termina su animación (ahorra memoria) */
     setTimeout(() => p.remove(), (delay + duration) * 1000);
   }
+  /* Crear 20 partículas al cargar la página */
   for (let i = 0; i < 20; i++) createParticle();
+  /* Crear una nueva partícula cada 800ms de forma indefinida */
   setInterval(createParticle, 800);
 
-  /* ── Contact form ── */
+  /* ══════════════════════════════════════════
+     FORMULARIO DE CONTACTO — Validación y envío
+     Verifica que todos los campos estén llenos.
+     Si sí: oculta el formulario y muestra el mensaje de éxito.
+     Si no: muestra una alerta pidiendo completar los campos.
+     (No envía datos a ningún servidor — es solo visual)
+     ══════════════════════════════════════════ */
   function submitForm() {
+    /* Leer el valor de cada campo y quitar espacios en blanco con .trim() */
     const nombre = document.getElementById('cf-nombre').value.trim();
     const email  = document.getElementById('cf-email').value.trim();
     const corp   = document.getElementById('cf-corp').value;
     const msg    = document.getElementById('cf-msg').value.trim();
+    /* Si algún campo está vacío, mostrar alerta y detener el envío */
     if (!nombre || !email || !corp || !msg) {
       alert('Por favor completa todos los campos antes de enviar.');
-      return;
+      return; /* "return" detiene la función aquí */
     }
+    /* Ocultar el formulario y mostrar el mensaje de confirmación */
     document.getElementById('contactFormWrap').style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
   }
 
-  /* ── Chatbot ── */
+  /* ══════════════════════════════════════════
+     CHATBOT — Asistente virtual con respuestas automáticas
+     No usa inteligencia artificial real: busca palabras clave
+     en el texto del usuario y devuelve respuestas predefinidas.
+     ══════════════════════════════════════════ */
+
+  /* Referencias a los elementos del DOM que usará el chatbot */
   const chatBtn    = document.getElementById('chatBtn');
   const chatWindow = document.getElementById('chatWindow');
   const chatMsgs   = document.getElementById('chatMessages');
   const quickRepl  = document.getElementById('quickReplies');
-  let chatOpen = false;
-  let chatStarted = false;
 
+  /* Variables de estado del chatbot */
+  let chatOpen    = false; /* ¿Está abierta la ventana de chat? */
+  let chatStarted = false; /* ¿Ya se envió el mensaje de bienvenida? */
+
+  /* ── Base de datos de respuestas del bot ──
+     Es una lista de objetos. Cada objeto tiene:
+     - keys:  palabras clave que activan esa respuesta
+     - reply: el mensaje HTML que responde el bot
+     - quick: botones de respuesta rápida que aparecen debajo del mensaje */
   const BOT_RESPONSES = [
     {
       keys: ['hola','buenos','buenas','hey','saludos','hi'],
@@ -2530,30 +2753,37 @@
     }
   ];
 
+  /* Respuesta por defecto cuando el bot no reconoce ninguna palabra clave */
   const DEFAULT = {
     reply: '🤔 No encontré información exacta sobre eso, pero puedo conectarte con un asesor que resolverá tu duda. También puedes explorar las opciones de abajo.',
     quick: ['Ver planes','Contactar asesor','Dirección','¿Quiénes son?']
   };
 
+  /* ── Mapa de respuestas rápidas ──
+     Cada botón de respuesta rápida tiene una etiqueta (ej: "Ver planes")
+     y una función que simula escribir un mensaje y enviarlo */
   const QUICK_MAP = {
-    'Ver planes':       () => sendQuick('planes corporativos'),
-    'Policía Auxiliar': () => sendQuick('Policía Auxiliar PA'),
-    'Policía Bancaria': () => sendQuick('Policía Bancaria PBI'),
-    'SSC CDMX':         () => sendQuick('SSC CDMX seguridad ciudadana'),
-    'Dirección':        () => sendQuick('dirección ubicación'),
-    'Horario':          () => sendQuick('horario atención'),
-    'Contactar asesor': () => sendQuick('contacto asesor'),
-    'Acceso plataforma':() => sendQuick('acceso plataforma registro'),
-    '¿Quiénes son?':    () => sendQuick('quiénes son beryhuert empresa'),
+    'Ver planes':           () => sendQuick('planes corporativos'),
+    'Policía Auxiliar':     () => sendQuick('Policía Auxiliar PA'),
+    'Policía Bancaria':     () => sendQuick('Policía Bancaria PBI'),
+    'SSC CDMX':             () => sendQuick('SSC CDMX seguridad ciudadana'),
+    'Dirección':            () => sendQuick('dirección ubicación'),
+    'Horario':              () => sendQuick('horario atención'),
+    'Contactar asesor':     () => sendQuick('contacto asesor'),
+    'Acceso plataforma':    () => sendQuick('acceso plataforma registro'),
+    '¿Quiénes son?':        () => sendQuick('quiénes son beryhuert empresa'),
     '¿Qué son los planes?': () => sendQuick('planes corporativos nómina'),
   };
 
+  /* Abrir/cerrar el chatbot al hacer clic en el botón "💬" */
   function toggleChat() {
-    chatOpen = !chatOpen;
+    chatOpen = !chatOpen; /* invertir el estado: si estaba abierto, cierra; y viceversa */
     chatBtn.classList.toggle('open', chatOpen);
     chatWindow.classList.toggle('open', chatOpen);
+    /* Solo la primera vez que se abre: enviar el mensaje de bienvenida */
     if (chatOpen && !chatStarted) {
       chatStarted = true;
+      /* Esperar 400ms antes de mostrar el indicador de escritura */
       setTimeout(() => addTyping(() => {
         addBotMsg('👋 ¡Bienvenido a <strong>Beryhuert</strong>! Soy tu asistente virtual. Te ayudo con información sobre planes Telcel corporativos, equipos, ubicación y más. ¿Cómo puedo ayudarte hoy?');
         setQuickReplies(['Ver planes','Dirección','Contactar asesor','¿Quiénes son?']);
@@ -2561,79 +2791,108 @@
     }
   }
 
+  /* Crear y añadir una burbuja de mensaje del BOT al área de chat */
   function addBotMsg(html) {
     const div = document.createElement('div');
     div.className = 'chat-msg bot';
-    div.innerHTML = html;
+    div.innerHTML = html; /* innerHTML permite insertar HTML con negritas, enlaces, etc. */
     chatMsgs.appendChild(div);
-    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    chatMsgs.scrollTop = chatMsgs.scrollHeight; /* hacer scroll automático al último mensaje */
   }
 
+  /* Crear y añadir una burbuja de mensaje del USUARIO al área de chat */
   function addUserMsg(text) {
     const div = document.createElement('div');
     div.className = 'chat-msg user';
-    div.textContent = text;
+    div.textContent = text; /* textContent (no innerHTML) para evitar que el usuario inyecte HTML */
     chatMsgs.appendChild(div);
     chatMsgs.scrollTop = chatMsgs.scrollHeight;
   }
 
+  /* Mostrar indicador "está escribiendo..." (3 puntos animados) y luego ejecutar una función.
+     cb = "callback": la función que se ejecuta DESPUÉS de los puntos (900ms después) */
   function addTyping(cb) {
     const t = document.createElement('div');
     t.className = 'chat-typing';
-    t.innerHTML = '<span></span><span></span><span></span>';
+    t.innerHTML = '<span></span><span></span><span></span>'; /* los 3 puntos animados */
     chatMsgs.appendChild(t);
     chatMsgs.scrollTop = chatMsgs.scrollHeight;
-    setTimeout(() => { t.remove(); cb(); }, 900);
+    setTimeout(() => { t.remove(); cb(); }, 900); /* quitar puntos y mostrar respuesta */
   }
 
+  /* Crear los botones de respuesta rápida debajo del último mensaje del bot */
   function setQuickReplies(options) {
-    quickRepl.innerHTML = '';
+    quickRepl.innerHTML = ''; /* limpiar botones anteriores */
     options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'chat-quick-btn';
       btn.textContent = opt;
+      /* Al hacer clic: buscar en QUICK_MAP; si no existe, enviar el texto directamente */
       btn.onclick = () => (QUICK_MAP[opt] || (() => sendQuick(opt)))();
       quickRepl.appendChild(btn);
     });
   }
 
+  /* Simular que el usuario escribió "text" y enviarlo */
   function sendQuick(text) {
     document.getElementById('chatInput').value = text;
     sendChat();
   }
 
+  /* Procesar y enviar el mensaje del usuario:
+     1. Leer el texto del input
+     2. Mostrarlo como burbuja de usuario
+     3. Buscar en BOT_RESPONSES una entrada con palabras clave que coincidan
+     4. Mostrar indicador de escritura y luego la respuesta del bot */
   function sendChat() {
     const input = document.getElementById('chatInput');
     const text = input.value.trim();
-    if (!text) return;
+    if (!text) return; /* ignorar si el campo está vacío */
     addUserMsg(text);
-    input.value = '';
-    quickRepl.innerHTML = '';
-    const lower = text.toLowerCase();
+    input.value = '';          /* limpiar el campo de texto */
+    quickRepl.innerHTML = '';  /* limpiar botones de respuesta rápida */
+    const lower = text.toLowerCase(); /* convertir a minúsculas para comparación sin distinción */
+    /* Buscar la primera entrada de BOT_RESPONSES que tenga alguna palabra clave
+       contenida en el mensaje del usuario */
     const match = BOT_RESPONSES.find(r => r.keys.some(k => lower.includes(k)));
-    const response = match || DEFAULT;
+    const response = match || DEFAULT; /* si no hay coincidencia, usar la respuesta por defecto */
+    /* Pequeño retraso de 300ms para que se sienta más natural */
     setTimeout(() => addTyping(() => {
       addBotMsg(response.reply);
       if (response.quick) setQuickReplies(response.quick);
     }), 300);
   }
 
-  /* ── Subtle card tilt on hover ── */
+  /* ══════════════════════════════════════════
+     EFECTO 3D EN TARJETAS DE CORPORACIONES
+     Al mover el cursor sobre una tarjeta, esta se inclina
+     ligeramente en la dirección del cursor (perspectiva 3D sutil).
+     mousemove  → calcula la posición del cursor dentro de la tarjeta
+     mouseleave → vuelve a la posición normal
+     mouseenter → acelera la animación para que responda al instante
+     ══════════════════════════════════════════ */
   document.querySelectorAll('.corps-card').forEach(card => {
     card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const rect = card.getBoundingClientRect(); /* tamaño y posición de la tarjeta */
+      /* Calcular posición relativa del cursor: -0.5 (izquierda) a 0.5 (derecha) */
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
       const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      /* Aplicar rotación 3D: máximo 4 grados en cada eje */
       card.style.transform = `translateY(-8px) rotateX(${-y*4}deg) rotateY(${x*4}deg)`;
     });
     card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.transition = 'transform 0.5s ease';
+      card.style.transform  = ''; /* resetear la transformación */
+      card.style.transition = 'transform 0.5s ease'; /* volver lentamente */
     });
     card.addEventListener('mouseenter', () => {
+      /* Al entrar, responder rápido al movimiento del cursor */
       card.style.transition = 'transform 0.1s ease, border-color 0.3s, box-shadow 0.3s';
     });
   });
+
 </script>
+
+<!-- Fin del cuerpo de la página -->
 </body>
+<!-- Fin del documento HTML -->
 </html>
