@@ -1,0 +1,17 @@
+# Extensiones de IA (Claude/ChatGPT)
+.claude/
+.anthropic/
+
+# Archivos de sistema de Windows
+Thumbs.db
+desktop.ini
+
+# Carpetas de dependencias (si llegas a usar Node.js o Python)
+node_modules/
+__pycache__/
+*.pyc
+
+# Credenciales y archivos de AWS (Seguridad importante)
+.aws/
+credentials
+*.pem
