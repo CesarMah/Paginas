@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Beryhuert - Distribuidor Autorizado Telcel. Planes especiales para Policía Auxiliar, PBI y Secretaría de Seguridad Ciudadana CDMX." />
+  <title>BERYHUERT | Distribuidor Autorizado Telcel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:       #0057b8;
+      --red-dark:  #003d8a;
+      --red-glow:  rgba(0,87,184,0.3);
+      --navy:      #07091a;
+      --navy-mid:  #0c1030;
+      --card:      rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --blue-acc:  #3b82f6;
+      --white:     #ffffff;
+      --gray:      #94a3b8;
+      --gray-light:#cbd5e1;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Outfit', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── NAV ─── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(7,9,26,0.88);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 38px; height: 38px;
+      background: var(--red);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.5px;
+      color: #fff;
+      box-shadow: 0 0 16px var(--red-glow);
+    }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+    .nav-logo-sub {
+      font-size: 0.6rem;
+      font-weight: 300;
+      color: var(--gray);
+      letter-spacing: 1px;
+      margin-top: -4px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.2rem;
+      align-items: center;
+    }
+    nav ul a {
+      text-decoration: none;
+      color: var(--gray-light);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    nav ul a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+    nav ul .btn-nav {
+      background: var(--red);
+      color: #fff !important;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    nav ul .btn-nav:hover {
+      background: var(--red-dark);
+      box-shadow: 0 0 20px var(--red-glow);
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    @media(max-width:820px){
+      nav ul {
+        position: fixed;
+        top: 0; right: -100%;
+        height: 100vh;
+        width: 260px;
+        flex-direction: column;
+        background: rgba(7,9,26,0.97);
+        backdrop-filter: blur(24px);
+        padding: 5rem 2rem 2rem;
+        gap: 0.3rem;
+        transition: right 0.35s cubic-bezier(.4,0,.2,1);
+        border-left: 1px solid var(--card-border);
+      }
+      nav ul.open { right: 0; }
+      nav ul a { display: block; width: 100%; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 50% -10%, rgba(0,87,184,0.22) 0%, transparent 65%),
+                  radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,149,255,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,87,184,0.07) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 40%, transparent 100%);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0,87,184,0.12);
+      border: 1px solid rgba(0,87,184,0.35);
+      color: #5ba8ff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+      animation: fadeDown 0.7s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--red);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100%{ opacity:1; transform:scale(1); }
+      50%{ opacity:0.6; transform:scale(1.4); }
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      color: var(--white);
+      animation: fadeDown 0.7s 0.1s ease both;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 span {
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(0,87,184,0.5);
+    }
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 300;
+      color: var(--gray);
+      max-width: 560px;
+      animation: fadeUp 0.7s 0.2s ease both;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-ctas {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.3s ease both;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 0.85rem 2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px var(--red-glow);
+    }
+    .btn-primary:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,87,184,0.5);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--gray-light);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.2);
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.45s ease both;
+      position: relative;
+      z-index: 1;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--red); }
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gray);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .hero-divider {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    /* ─── SECTIONS COMMON ─── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section-pad { padding: 6rem 0; }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      letter-spacing: 2px;
+      color: var(--white);
+      line-height: 1;
+    }
+    .section-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--gray);
+      max-width: 560px;
+      margin-top: 0.8rem;
+      line-height: 1.8;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--navy-mid); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), transparent);
+    }
+    .about-telcel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: rgba(0,87,184,0.12);
+      border: 1px solid rgba(0,87,184,0.22);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .telcel-icon {
+      width: 40px; height: 40px;
+      background: var(--red);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: #fff;
+    }
+    .about-acc-label {
+      font-size: 0.65rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .about-acc-val {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 1px;
+    }
+    .about-years {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      letter-spacing: 2px;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(0,87,184,0.5);
+      line-height: 1;
+      margin: 1rem 0;
+    }
+    .about-years-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .about-info p {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+    }
+    .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .mv-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+    .mv-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .mv-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .mv-text { font-size: 0.8rem; color: var(--gray); line-height: 1.7; }
+    @media(max-width:768px){ .about-grid{ grid-template-columns:1fr; gap:2.5rem; } }
+
+    /* ─── CORPS / PLANS ─── */
+    #corps { background: var(--navy); }
+    .corps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .corps-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .corps-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0,87,184,0.5);
+      box-shadow: 0 20px 60px rgba(0,87,184,0.12);
+    }
+    .corps-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .corps-card:hover::before { opacity: 1; }
+    .corps-card-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,87,184,0.07), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .corps-card:hover .corps-card-glow { opacity: 1; }
+    .corps-emblem {
+      width: 70px; height: 70px;
+      margin: 0 auto 1.5rem;
+      background: rgba(0,87,184,0.12);
+      border: 1px solid rgba(0,87,184,0.22);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .corps-card:hover .corps-emblem {
+      background: rgba(0,87,184,0.22);
+      border-color: rgba(0,87,184,0.6);
+    }
+    .corps-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .corps-full {
+      font-size: 0.75rem;
+      color: var(--red);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .corps-desc {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .corps-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+    .corps-feat {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--gray-light);
+    }
+    .corps-feat::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .corps-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(0,87,184,0.12);
+      border: 1px solid rgba(0,87,184,0.3);
+      border-radius: 8px;
+      color: #5ba8ff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .corps-card:hover .corps-btn {
+      background: rgba(0,87,184,0.22);
+      border-color: rgba(0,87,184,0.6);
+    }
+    @media(max-width:900px){ .corps-grid{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; } }
+
+    /* ─── VALUES ─── */
+    #valores { background: var(--navy-mid); }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .val-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .val-card:hover {
+      border-color: rgba(0,87,184,0.35);
+      transform: translateY(-3px);
+    }
+    .val-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .val-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.5px;
+    }
+    .val-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
+    @media(max-width:768px){ .values-grid{ grid-template-columns: 1fr 1fr; } }
+    @media(max-width:480px){ .values-grid{ grid-template-columns: 1fr; } }
+
+    /* ─── CLIENTS ─── */
+    #clientes { background: var(--navy); }
+    .clients-track-wrap {
+      overflow: hidden;
+      margin-top: 3rem;
+      padding: 1.5rem 0;
+      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+    .clients-track {
+      display: flex;
+      gap: 2.5rem;
+      animation: scroll 25s linear infinite;
+      width: max-content;
+    }
+    .clients-track:hover { animation-play-state: paused; }
+    @keyframes scroll { from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+    .client-pill {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.8rem 1.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray);
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .client-pill:hover {
+      color: #fff;
+      border-color: rgba(0,87,184,0.35);
+    }
+
+    /* ─── CONTACT ─── */
+    #contacto { background: var(--navy-mid); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+    .contact-info h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .contact-info p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .contact-detail-icon {
+      width: 40px; height: 40px;
+      background: rgba(0,87,184,0.12);
+      border: 1px solid rgba(0,87,184,0.22);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contact-detail-text label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 2px;
+    }
+    .contact-detail-text span {
+      font-size: 0.85rem;
+      color: var(--gray-light);
+    }
+    .socials {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 2rem;
+    }
+    .social-btn {
+      width: 40px; height: 40px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      color: var(--gray);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .social-btn:hover {
+      border-color: rgba(0,87,184,0.5);
+      color: #fff;
+      background: rgba(0,87,184,0.1);
+    }
+    .contact-form {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--gray); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: rgba(0,87,184,0.6);
+      box-shadow: 0 0 0 3px rgba(0,87,184,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-submit {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: #4ade80;
+      font-size: 0.9rem;
+    }
+    @media(max-width:768px){ .contact-grid{ grid-template-columns:1fr; } .form-row{ grid-template-columns:1fr; } }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #040612;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 3rem 2rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-top: 0.8rem;
+      max-width: 260px;
+    }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-decoration: none;
+      margin-bottom: 0.6rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: var(--gray); }
+    .footer-bottom a { color: var(--gray); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--red); }
+    @media(max-width:768px){
+      .footer-inner{ grid-template-columns:1fr 1fr; }
+      .footer-brand{ grid-column:1/-1; }
+    }
+    @media(max-width:480px){ .footer-inner{ grid-template-columns:1fr; } }
+
+    /* ─── SCROLL TO TOP ─── */
+    #scrollTop {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 44px; height: 44px;
+      background: var(--red);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      color: #fff;
+      box-shadow: 0 4px 20px var(--red-glow);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 900;
+    }
+    #scrollTop.show { opacity: 1; transform: translateY(0); }
+    #scrollTop:hover { background: var(--red-dark); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeDown { from{ opacity:0; transform:translateY(-20px); } to{ opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from{ opacity:0; transform:translateY(20px);  } to{ opacity:1; transform:translateY(0); } }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in-view { opacity: 1; transform: none; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #0f1632;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      animation: fadeUp 0.35s ease;
+    }
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      border-radius: 20px 20px 0 0;
+    }
+    .modal h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+    .modal p { font-size: 0.88rem; color: var(--gray); margin-bottom: 1.5rem; line-height: 1.7; }
+    .modal-close {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--gray);
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+    .modal-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .modal-btns { display: flex; flex-direction: column; gap: 0.7rem; }
+    .modal-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--gray-light);
+      font-size: 0.88rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .modal-link:hover { border-color: rgba(0,87,184,0.5); color: #fff; }
+    .modal-link span { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+
+<!-- ─── MODAL ─── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <h3>ACCESO</h3>
+    <p>Selecciona tu corporación para acceder a la plataforma de pre-registro de planes.</p>
+    <div class="modal-btns">
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" class="modal-link">
+        <span>🛡️</span> Policía Auxiliar (PA)
+      </a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" class="modal-link">
+        <span>🏦</span> Policía Bancaria e Industrial (PBI)
+      </a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" class="modal-link">
+        <span>🏙️</span> Secretaría de Seg. Ciudadana CDMX (SSC)
+      </a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/Login" class="modal-link">
+        <span>🔐</span> Acceso General / Administración
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── NAVBAR ─── -->
+<header id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-mark">B</div>
+    <div>
+      <div class="nav-logo-text">BERYHUERT</div>
+      <div class="nav-logo-sub">DIST. AUTORIZADO TELCEL</div>
+    </div>
+  </a>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <nav>
+    <ul id="navLinks">
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#about">Acerca</a></li>
+      <li><a href="#corps">Planes</a></li>
+      <li><a href="#valores">Valores</a></li>
+      <li><a href="#clientes">Clientes</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#" class="btn-nav" onclick="openModal(event)">Acceso →</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">Distribuidor Autorizado · Región 9 CDMX</div>
+
+  <h1>BERY<span>HUERT</span></h1>
+  <p class="hero-sub">
+    Subdistribuidora Telcel especializada en planes corporativos para cuerpos de seguridad y empresas en la Ciudad de México.
+  </p>
+  <div class="hero-ctas">
+    <a href="#corps" class="btn-primary">Ver planes por corporación →</a>
+    <a href="#contacto" class="btn-outline">Contactar asesor</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">25<span>+</span></div>
+      <div class="stat-label">Años de experiencia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<span> </span></div>
+      <div class="stat-label">Corporaciones atendidas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">R<span>9</span></div>
+      <div class="stat-label">Región Telcel CDMX</div>
+    </div>
+  </div>
+
+  <div class="hero-divider"></div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="container section-pad">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <div class="about-telcel-badge">
+            <div class="telcel-icon">T</div>
+            <div>
+              <div class="about-acc-label">Autorización Oficial</div>
+              <div class="about-acc-val">Radio Móvil Dipsa S.A. de C.V.</div>
+            </div>
+          </div>
+          <div class="about-years">25</div>
+          <div class="about-years-label">Años innovando · Desde 1992</div>
+          <div class="mv-grid">
+            <div class="mv-card">
+              <div class="mv-icon">🎯</div>
+              <div class="mv-title">Misión</div>
+              <div class="mv-text">Mantenernos líderes entre los Distribuidores Autorizados Telcel en Región 9 consolidando la confianza de nuestros clientes.</div>
+            </div>
+            <div class="mv-card">
+              <div class="mv-icon">🔭</div>
+              <div class="mv-title">Visión</div>
+              <div class="mv-text">Ofrecer un servicio eficiente que fomente la lealtad de nuestros clientes en un entorno de mejora continua.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-info reveal">
+        <span class="section-tag">Quiénes somos</span>
+        <h2 class="section-title">30 AÑOS CONECTANDO CDMX</h2>
+        <p>Beryhuert S.A. de C.V. inició operaciones con ventas de accesorios para teléfonos celulares vía telemarketing hasta obtener la distribución directa de Telcel el <strong style="color:#fff">8 de agosto de 1992</strong>.</p>
+        <p>Hoy somos Distribuidor Autorizado de Radio Móvil Dipsa, ofreciendo comercio retail y mayoreo de telefonía celular prepago y posp-ago, además de equipos y accesorios de comunicación con tecnología de punta.</p>
+        <p>Nuestra especialidad son los planes corporativos diseñados para instituciones de seguridad pública en la Ciudad de México, con descuento directo en nómina.</p>
+        <a href="#corps" class="btn-primary" style="margin-top:1.5rem; display:inline-flex;">Conocer planes →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CORPS ─── -->
+<section id="corps">
+  <div class="container section-pad">
+    <div class="reveal">
+      <span class="section-tag">Planes corporativos</span>
+      <h2 class="section-title">TU CORPORACIÓN,<br>TU PLAN</h2>
+      <p class="section-desc">Planes Telcel diseñados específicamente para cada institución, con descuento directo vía nómina y equipos de última generación.</p>
+    </div>
+    <div class="corps-grid">
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" class="corps-card reveal" style="transition-delay:0.1s">
+        <div class="corps-card-glow"></div>
+        <div class="corps-emblem">🛡️</div>
+        <div class="corps-name">AMIGO PA</div>
+        <div class="corps-full">Policía Auxiliar</div>
+        <p class="corps-desc">Plan exclusivo para elementos de la Policía Auxiliar del Estado de México y CDMX con beneficios especiales en nómina.</p>
+        <div class="corps-features">
+          <div class="corps-feat">Descuento directo en nómina</div>
+          <div class="corps-feat">Equipos Telcel de alta gama</div>
+          <div class="corps-feat">Datos ilimitados / LTE+</div>
+          <div class="corps-feat">Llamadas y SMS sin costo</div>
+        </div>
+        <div class="corps-btn">Acceder al plan →</div>
+      </a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" class="corps-card reveal" style="transition-delay:0.2s">
+        <div class="corps-card-glow"></div>
+        <div class="corps-emblem">🏦</div>
+        <div class="corps-name">AMIGO PBI</div>
+        <div class="corps-full">Policía Bancaria e Industrial</div>
+        <p class="corps-desc">Plan para elementos de la Policía Bancaria e Industrial con condiciones preferenciales y acceso a equipos de última generación.</p>
+        <div class="corps-features">
+          <div class="corps-feat">Planes posp-ago preferentes</div>
+          <div class="corps-feat">Sin aval ni buró de crédito</div>
+          <div class="corps-feat">Portabilidad incluida</div>
+          <div class="corps-feat">Atención personalizada</div>
+        </div>
+        <div class="corps-btn">Acceder al plan →</div>
+      </a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" class="corps-card reveal" style="transition-delay:0.3s">
+        <div class="corps-card-glow"></div>
+        <div class="corps-emblem">🏙️</div>
+        <div class="corps-name">SSC CDMX</div>
+        <div class="corps-full">Secretaría de Seguridad Ciudadana</div>
+        <p class="corps-desc">Convenio especial para elementos de la Secretaría de Seguridad Ciudadana de la Ciudad de México con beneficios exclusivos.</p>
+        <div class="corps-features">
+          <div class="corps-feat">Convenio institucional SSC</div>
+          <div class="corps-feat">Equipos con plan incluido</div>
+          <div class="corps-feat">Cobertura nacional Telcel</div>
+          <div class="corps-feat">Soporte técnico dedicado</div>
+        </div>
+        <div class="corps-btn">Acceder al plan →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALORES ─── -->
+<section id="valores">
+  <div class="container section-pad">
+    <div class="reveal" style="text-align:center; margin-bottom:1rem;">
+      <span class="section-tag">Nuestros principios</span>
+      <h2 class="section-title">VALORES QUE<br>NOS DEFINEN</h2>
+    </div>
+    <div class="values-grid">
+      <div class="val-card reveal" style="transition-delay:0.05s">
+        <div class="val-icon">🤝</div>
+        <div>
+          <div class="val-name">Lealtad</div>
+          <div class="val-desc">Compromiso inquebrantable con nuestros clientes, socios y con la marca Telcel que representamos.</div>
+        </div>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.1s">
+        <div class="val-icon">🙏</div>
+        <div>
+          <div class="val-name">Respeto</div>
+          <div class="val-desc">Tratamos a cada cliente, colaborador e institución con la dignidad que merece, sin excepción.</div>
+        </div>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.15s">
+        <div class="val-icon">💪</div>
+        <div>
+          <div class="val-name">Compromiso</div>
+          <div class="val-desc">Cumplimos lo que prometemos. Cada plan, cada equipo, cada entrega — con puntualidad y calidad.</div>
+        </div>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.2s">
+        <div class="val-icon">⚖️</div>
+        <div>
+          <div class="val-name">Ética</div>
+          <div class="val-desc">Operamos con transparencia, honestidad y apego a las normas en cada proceso comercial.</div>
+        </div>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.25s">
+        <div class="val-icon">💬</div>
+        <div>
+          <div class="val-name">Comunicación efectiva</div>
+          <div class="val-desc">Escuchamos activamente y nos expresamos con claridad para garantizar que cada cliente entienda su plan.</div>
+        </div>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.3s">
+        <div class="val-icon">👥</div>
+        <div>
+          <div class="val-name">Trabajo en equipo</div>
+          <div class="val-desc">Nuestro equipo coordina esfuerzos para ofrecer una experiencia de compra y soporte sin fricciones.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CLIENTES ─── -->
+<section id="clientes">
+  <div class="container section-pad">
+    <div class="reveal" style="text-align:center;">
+      <span class="section-tag">Empresas aliadas</span>
+      <h2 class="section-title">CONFÍAN EN<br>BERYHUERT</h2>
+      <p class="section-desc" style="margin:0.8rem auto 0;">Empresas e instituciones que han elegido nuestros servicios para conectar a sus equipos de trabajo.</p>
+    </div>
+    <div class="clients-track-wrap reveal">
+      <div class="clients-track" id="clientsTrack">
+        <div class="client-pill">Abengoa</div>
+        <div class="client-pill">Cable de Acero</div>
+        <div class="client-pill">CDI</div>
+        <div class="client-pill">Cornelius</div>
+        <div class="client-pill">Enre Medical</div>
+        <div class="client-pill">FedEx México</div>
+        <div class="client-pill">Pfizer</div>
+        <div class="client-pill">Roshfrans</div>
+        <div class="client-pill">Mayahuel</div>
+        <div class="client-pill">Mejicú</div>
+        <div class="client-pill">Novartis</div>
+        <div class="client-pill">NSK</div>
+        <div class="client-pill">Perfiles</div>
+        <div class="client-pill">Plásticos</div>
+        <!-- clone for infinite loop -->
+        <div class="client-pill">Abengoa</div>
+        <div class="client-pill">Cable de Acero</div>
+        <div class="client-pill">CDI</div>
+        <div class="client-pill">Cornelius</div>
+        <div class="client-pill">Enre Medical</div>
+        <div class="client-pill">FedEx México</div>
+        <div class="client-pill">Pfizer</div>
+        <div class="client-pill">Roshfrans</div>
+        <div class="client-pill">Mayahuel</div>
+        <div class="client-pill">Mejicú</div>
+        <div class="client-pill">Novartis</div>
+        <div class="client-pill">NSK</div>
+        <div class="client-pill">Perfiles</div>
+        <div class="client-pill">Plásticos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACTO ─── -->
+<section id="contacto">
+  <div class="container section-pad">
+    <div class="reveal">
+      <span class="section-tag">Contáctanos</span>
+      <h2 class="section-title">HABLEMOS</h2>
+      <p class="section-desc">¿Quieres un plan para tu corporación o empresa? Un asesor te responderá en menos de 24 horas.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div class="contact-detail-text">
+            <label>Dirección</label>
+            <span>Calzada Acoxpa 423, Tlalpan, Villa Lázaro Cárdenas, 14370 Ciudad de México, CDMX</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🌐</div>
+          <div class="contact-detail-text">
+            <label>Sitio web</label>
+            <span>www.descuentoxnomina.com.mx</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📱</div>
+          <div class="contact-detail-text">
+            <label>Plataforma de pre-registro</label>
+            <span>Disponible para PA, PBI y SSC CDMX</span>
+          </div>
+        </div>
+        <div class="socials">
+          <a href="https://es-la.facebook.com/tmkberyhuert/" class="social-btn" title="Facebook" target="_blank" rel="noopener">f</a>
+          <a href="https://twitter.com/SCARBERYHUERT/" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">𝕏</a>
+          <a href="https://www.instagram.com/tiendatelcel_oficial/" class="social-btn" title="Instagram" target="_blank" rel="noopener">◉</a>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <div id="contactFormWrap">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" id="cf-nombre" placeholder="Tu nombre completo" />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="cf-email" placeholder="correo@ejemplo.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Corporación / Empresa</label>
+            <select id="cf-corp">
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option>Policía Auxiliar (PA)</option>
+              <option>Policía Bancaria e Industrial (PBI)</option>
+              <option>Secretaría de Seguridad Ciudadana CDMX</option>
+              <option>Empresa privada</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea id="cf-msg" placeholder="Cuéntanos qué necesitas..."></textarea>
+          </div>
+          <button class="btn-primary form-submit" onclick="submitForm()">Enviar mensaje →</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">✅</div>
+          <strong style="color:#fff;font-size:1rem;">¡Mensaje enviado!</strong><br>
+          Un asesor se pondrá en contacto contigo pronto.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo" style="display:inline-flex;">
+        <div class="nav-logo-mark">B</div>
+        <div>
+          <div class="nav-logo-text">BERYHUERT</div>
+          <div class="nav-logo-sub">DIST. AUTORIZADO TELCEL</div>
+        </div>
+      </div>
+      <p>Distribuidor Autorizado de Radio Móvil Dipsa S.A. de C.V. Tlalpan, Ciudad de México. © 2026 Beryhuert.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <a href="#hero">Inicio</a>
+      <a href="#about">Acerca de</a>
+      <a href="#corps">Planes</a>
+      <a href="#valores">Valores</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h4>Acceso</h4>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa">Policía Auxiliar</a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi">Policía Bancaria</a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc">SSC CDMX</a>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/Login">Admin</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://www.descuentoxnomina.com.mx/Acceso/AvisodePrivacidad">Aviso de Privacidad</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Beryhuert S.A. de C.V. — Distribuidor Autorizado Telcel Región 9</p>
+    <a href="https://www.descuentoxnomina.com.mx/Acceso/AvisodePrivacidad">Aviso de privacidad</a>
+  </div>
+</footer>
+
+<!-- ─── SCROLL TOP ─── -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // ── Navbar scroll ──
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+    document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 300);
+  });
+
+  // ── Mobile menu ──
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('#navLinks a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  // ── Modal ──
+  function openModal(e) {
+    if (e) e.preventDefault();
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('modalClose').addEventListener('click', () => {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalOverlay')) {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // ── Reveal on scroll ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+
+  // ── Contact form ──
+  function submitForm() {
+    const nombre = document.getElementById('cf-nombre').value.trim();
+    const email  = document.getElementById('cf-email').value.trim();
+    const corp   = document.getElementById('cf-corp').value;
+    const msg    = document.getElementById('cf-msg').value.trim();
+    if (!nombre || !email || !corp || !msg) {
+      alert('Por favor completa todos los campos antes de enviar.');
+      return;
+    }
+    document.getElementById('contactFormWrap').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+</body>
+</html>
