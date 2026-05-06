@@ -7,127 +7,133 @@
   <title>BERYHUERT | Distribuidor Autorizado Telcel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red:       #0057b8;
-      --red-dark:  #003d8a;
-      --red-glow:  rgba(0,87,184,0.3);
-      --navy:      #07091a;
-      --navy-mid:  #0c1030;
-      --card:      rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --blue-acc:  #3b82f6;
-      --white:     #ffffff;
-      --gray:      #94a3b8;
-      --gray-light:#cbd5e1;
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-body:    'Outfit', sans-serif;
+      --blue:        #0057b8;
+      --blue-dark:   #003d8a;
+      --blue-deeper: #002966;
+      --blue-light:  #3b82f6;
+      --blue-pale:   #eff6ff;
+      --blue-pale2:  #dbeafe;
+      --blue-glow:   rgba(0,87,184,0.18);
+      --accent:      #0ea5e9;
+      --white:       #ffffff;
+      --off-white:   #f8fafc;
+      --gray-50:     #f1f5f9;
+      --gray-100:    #e2e8f0;
+      --gray-300:    #94a3b8;
+      --gray-500:    #64748b;
+      --gray-700:    #334155;
+      --navy:        #0f172a;
+      --font-display:'Bebas Neue', sans-serif;
+      --font-body:   'Outfit', sans-serif;
+      --radius-sm:   8px;
+      --radius:      16px;
+      --radius-lg:   24px;
+      --shadow-sm:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow:      0 4px 24px rgba(0,87,184,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-lg:   0 20px 60px rgba(0,87,184,0.15), 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-blue: 0 8px 32px rgba(0,87,184,0.35);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--navy);
-      color: var(--white);
+      background: var(--white);
+      color: var(--navy);
       font-family: var(--font-body);
       font-size: 16px;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ─── SCROLLBAR ─── */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--navy-mid); }
-    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: var(--gray-50); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
 
-    /* ─── NOISE TEXTURE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── NAV ─── */
+    /* ─── NAVBAR ─── */
     #navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 1000;
-      padding: 1.2rem 2rem;
+      padding: 1rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.3s;
+      background: rgba(255,255,255,0);
     }
     #navbar.scrolled {
-      background: rgba(7,9,26,0.88);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 var(--gray-100), 0 4px 20px rgba(0,0,0,0.06);
+      padding: 0.7rem 2rem;
     }
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
       text-decoration: none;
     }
     .nav-logo-mark {
-      width: 38px; height: 38px;
-      background: var(--red);
-      border-radius: 8px;
+      width: 40px; height: 40px;
+      background: var(--blue);
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-family: var(--font-display);
-      font-size: 1.25rem;
-      letter-spacing: 0.5px;
+      font-size: 1.3rem;
       color: #fff;
-      box-shadow: 0 0 16px var(--red-glow);
+      box-shadow: 0 4px 12px rgba(0,87,184,0.4);
+      transition: transform 0.3s;
     }
+    .nav-logo:hover .nav-logo-mark { transform: rotate(-5deg) scale(1.05); }
     .nav-logo-text {
       font-family: var(--font-display);
       font-size: 1.4rem;
       letter-spacing: 2px;
-      color: var(--white);
+      color: var(--navy);
+      line-height: 1;
     }
     .nav-logo-sub {
-      font-size: 0.6rem;
-      font-weight: 300;
-      color: var(--gray);
-      letter-spacing: 1px;
-      margin-top: -4px;
+      font-size: 0.58rem;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
     }
     nav ul {
       list-style: none;
       display: flex;
-      gap: 0.2rem;
+      gap: 0.1rem;
       align-items: center;
     }
     nav ul a {
       text-decoration: none;
-      color: var(--gray-light);
+      color: var(--gray-700);
       font-size: 0.82rem;
       font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      letter-spacing: 0.5px;
       padding: 0.5rem 0.9rem;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       transition: color 0.2s, background 0.2s;
     }
-    nav ul a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+    nav ul a:hover { color: var(--blue); background: var(--blue-pale); }
     nav ul .btn-nav {
-      background: var(--red);
+      background: var(--blue);
       color: #fff !important;
-      padding: 0.5rem 1.1rem;
-      border-radius: 6px;
-      transition: background 0.2s, box-shadow 0.2s;
+      padding: 0.55rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      box-shadow: var(--shadow-blue);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
     }
     nav ul .btn-nav:hover {
-      background: var(--red-dark);
-      box-shadow: 0 0 20px var(--red-glow);
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 32px rgba(0,87,184,0.4);
     }
     .nav-hamburger {
       display: none;
@@ -139,7 +145,7 @@
     .nav-hamburger span {
       display: block;
       width: 24px; height: 2px;
-      background: var(--white);
+      background: var(--navy);
       border-radius: 2px;
       transition: transform 0.3s, opacity 0.3s;
     }
@@ -148,14 +154,15 @@
         position: fixed;
         top: 0; right: -100%;
         height: 100vh;
-        width: 260px;
+        width: 280px;
         flex-direction: column;
-        background: rgba(7,9,26,0.97);
+        background: rgba(255,255,255,0.98);
         backdrop-filter: blur(24px);
         padding: 5rem 2rem 2rem;
         gap: 0.3rem;
         transition: right 0.35s cubic-bezier(.4,0,.2,1);
-        border-left: 1px solid var(--card-border);
+        border-left: 1px solid var(--gray-100);
+        box-shadow: -8px 0 40px rgba(0,0,0,0.1);
       }
       nav ul.open { right: 0; }
       nav ul a { display: block; width: 100%; }
@@ -170,78 +177,179 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 8rem 2rem 4rem;
+      padding: 8rem 2rem 5rem;
       text-align: center;
       overflow: hidden;
+      background: var(--white);
     }
-    .hero-bg {
+
+    /* Animated background blobs */
+    .hero-blob {
       position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 70% at 50% -10%, rgba(0,87,184,0.22) 0%, transparent 65%),
-                  radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,149,255,0.08) 0%, transparent 60%),
-                  radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,87,184,0.07) 0%, transparent 60%);
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: blobFloat 8s ease-in-out infinite;
     }
+    .hero-blob-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(0,87,184,0.08) 0%, transparent 70%);
+      top: -200px; left: -150px;
+      animation-delay: 0s;
+    }
+    .hero-blob-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+      animation-delay: -3s;
+    }
+    .hero-blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+      top: 40%; left: 60%;
+      animation-delay: -5s;
+    }
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-20px) scale(1.05); }
+      66% { transform: translate(-20px,15px) scale(0.97); }
+    }
+
+    /* Grid lines */
     .hero-grid {
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(var(--gray-100) 1px, transparent 1px),
+        linear-gradient(90deg, var(--gray-100) 1px, transparent 1px);
       background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 40%, transparent 100%);
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+      opacity: 0.5;
     }
+
+    /* Floating orbit rings */
+    .hero-orbit {
+      position: absolute;
+      border: 1px solid rgba(0,87,184,0.08);
+      border-radius: 50%;
+      animation: orbitSpin linear infinite;
+      pointer-events: none;
+    }
+    .hero-orbit-1 {
+      width: 500px; height: 500px;
+      top: 50%; left: 50%;
+      transform-origin: center;
+      margin: -250px 0 0 -250px;
+      animation-duration: 30s;
+    }
+    .hero-orbit-2 {
+      width: 720px; height: 720px;
+      top: 50%; left: 50%;
+      margin: -360px 0 0 -360px;
+      animation-duration: 45s;
+      animation-direction: reverse;
+    }
+    .hero-orbit::after {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      background: var(--blue);
+      border-radius: 50%;
+      top: -4px; left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 12px var(--blue);
+    }
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Floating particles */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0;
+      animation: particleFly linear infinite;
+    }
+    @keyframes particleFly {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-120px) scale(1); }
+    }
+
+    /* Hero badge */
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(0,87,184,0.12);
-      border: 1px solid rgba(0,87,184,0.35);
-      color: #5ba8ff;
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-pale2);
+      color: var(--blue);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 0.4rem 1rem;
+      padding: 0.4rem 1.1rem;
       border-radius: 100px;
       margin-bottom: 1.8rem;
       animation: fadeDown 0.7s ease both;
+      position: relative;
+      z-index: 1;
     }
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--red);
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      background: var(--blue);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--red);
       animation: pulse 2s infinite;
+      box-shadow: 0 0 6px var(--blue);
     }
     @keyframes pulse {
       0%,100%{ opacity:1; transform:scale(1); }
-      50%{ opacity:0.6; transform:scale(1.4); }
+      50%{ opacity:0.5; transform:scale(1.5); }
     }
+
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 10vw, 8rem);
-      line-height: 0.9;
+      font-size: clamp(3.8rem, 11vw, 9rem);
+      line-height: 0.88;
       letter-spacing: 4px;
-      color: var(--white);
+      color: var(--navy);
       animation: fadeDown 0.7s 0.1s ease both;
       position: relative;
       z-index: 1;
     }
-    .hero h1 span {
-      color: var(--red);
-      text-shadow: 0 0 60px rgba(0,87,184,0.5);
+    .hero h1 .accent {
+      color: var(--blue);
+      position: relative;
     }
-    .hero-sub {
-      margin-top: 1.5rem;
+    .hero h1 .accent::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+      border-radius: 3px;
+      opacity: 0.25;
+    }
+    .hero-tagline {
+      margin-top: 1.2rem;
       font-size: clamp(1rem, 2.5vw, 1.2rem);
       font-weight: 300;
-      color: var(--gray);
-      max-width: 560px;
+      color: var(--gray-500);
+      max-width: 580px;
       animation: fadeUp 0.7s 0.2s ease both;
       position: relative;
       z-index: 1;
+      line-height: 1.8;
     }
+    .hero-tagline strong { color: var(--blue); font-weight: 700; }
     .hero-ctas {
       margin-top: 2.5rem;
       display: flex;
@@ -256,425 +364,569 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--red);
+      background: var(--blue);
       color: #fff;
       font-family: var(--font-body);
       font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      padding: 0.85rem 2rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      padding: 0.9rem 2rem;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       text-decoration: none;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 24px var(--red-glow);
+      box-shadow: var(--shadow-blue);
     }
     .btn-primary:hover {
-      background: var(--red-dark);
+      background: var(--blue-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(0,87,184,0.5);
+      box-shadow: 0 12px 40px rgba(0,87,184,0.45);
     }
     .btn-outline {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       background: transparent;
-      color: var(--gray-light);
+      color: var(--gray-700);
       font-family: var(--font-body);
       font-size: 0.9rem;
-      font-weight: 500;
-      padding: 0.85rem 2rem;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-sm);
       text-decoration: none;
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
     }
     .btn-outline:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: #fff;
-      background: rgba(255,255,255,0.04);
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-pale);
+      transform: translateY(-2px);
     }
+
+    /* Stats row */
     .hero-stats {
-      margin-top: 4rem;
+      margin-top: 4.5rem;
       display: flex;
-      gap: 3rem;
+      gap: 0;
       flex-wrap: wrap;
       justify-content: center;
       animation: fadeUp 0.7s 0.45s ease both;
       position: relative;
       z-index: 1;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
-    .stat { text-align: center; }
+    .stat {
+      text-align: center;
+      padding: 1.8rem 2.5rem;
+      position: relative;
+    }
+    .stat:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--gray-100);
+    }
     .stat-num {
       font-family: var(--font-display);
-      font-size: 2.8rem;
+      font-size: 3rem;
       letter-spacing: 2px;
-      color: var(--white);
+      color: var(--blue);
       line-height: 1;
     }
-    .stat-num span { color: var(--red); }
     .stat-label {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--gray);
-      letter-spacing: 1.5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      letter-spacing: 1px;
       text-transform: uppercase;
-      margin-top: 0.3rem;
-    }
-    .hero-divider {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin-top: 0.4rem;
     }
 
-    /* ─── SECTIONS COMMON ─── */
-    section { position: relative; z-index: 1; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    .section-pad { padding: 6rem 0; }
-    .section-tag {
-      display: inline-block;
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--gray-300);
       font-size: 0.7rem;
-      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      z-index: 1;
+      animation: fadeUp 1s 1s ease both;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--blue), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    section { position: relative; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section-pad { padding: 7rem 0; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--blue);
       margin-bottom: 0.8rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 16px; height: 2px;
+      background: var(--blue);
+      border-radius: 1px;
     }
     .section-title {
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(2.5rem, 6vw, 4.2rem);
       letter-spacing: 2px;
-      color: var(--white);
-      line-height: 1;
+      color: var(--navy);
+      line-height: 0.95;
     }
     .section-desc {
       font-size: 1rem;
-      font-weight: 300;
-      color: var(--gray);
-      max-width: 560px;
-      margin-top: 0.8rem;
+      font-weight: 400;
+      color: var(--gray-500);
+      max-width: 540px;
+      margin-top: 0.9rem;
       line-height: 1.8;
     }
 
+    /* ─── FEATURE STRIP ─── */
+    #features {
+      background: var(--blue);
+      padding: 1.2rem 0;
+      overflow: hidden;
+    }
+    .features-track {
+      display: flex;
+      gap: 3rem;
+      animation: scroll 30s linear infinite;
+      width: max-content;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .feature-dot { width: 5px; height: 5px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+
     /* ─── ABOUT ─── */
-    #about { background: var(--navy-mid); }
+    #about { background: var(--off-white); }
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: center;
     }
-    .about-visual {
-      position: relative;
-    }
-    .about-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+    .about-visual { position: relative; }
+    .about-main-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
       padding: 2.5rem;
-      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--gray-100);
       position: relative;
       overflow: hidden;
     }
-    .about-card::before {
+    .about-main-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--red), transparent);
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
     }
-    .about-telcel-badge {
-      display: inline-flex;
+    .about-badge-row {
+      display: flex;
       align-items: center;
-      gap: 0.7rem;
-      background: rgba(0,87,184,0.12);
-      border: 1px solid rgba(0,87,184,0.22);
-      border-radius: 12px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-pale2);
+      border-radius: var(--radius);
     }
-    .telcel-icon {
-      width: 40px; height: 40px;
-      background: var(--red);
-      border-radius: 8px;
+    .about-badge-icon {
+      width: 48px; height: 48px;
+      background: var(--blue);
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 1.3rem;
       color: #fff;
+      flex-shrink: 0;
     }
-    .about-acc-label {
-      font-size: 0.65rem;
-      color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-    .about-acc-val {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #fff;
-      margin-top: 1px;
-    }
-    .about-years {
+    .about-badge-label { font-size: 0.62rem; color: var(--gray-500); letter-spacing: 1.5px; text-transform: uppercase; }
+    .about-badge-val { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-top: 1px; }
+
+    .about-years-display {
       font-family: var(--font-display);
-      font-size: 5rem;
-      letter-spacing: 2px;
+      font-size: 6rem;
+      letter-spacing: 3px;
       color: transparent;
-      -webkit-text-stroke: 2px rgba(0,87,184,0.5);
+      -webkit-text-stroke: 2px var(--blue-pale2);
       line-height: 1;
-      margin: 1rem 0;
+      text-align: center;
+      margin: 1rem 0 0.3rem;
     }
-    .about-years-label {
-      font-size: 0.8rem;
-      color: var(--gray);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-    }
-    .about-info p {
-      font-size: 0.9rem;
-      color: var(--gray-light);
-      line-height: 1.9;
-      margin-bottom: 1rem;
-    }
-    .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-    .mv-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.2rem;
-    }
-    .mv-icon {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-    .mv-title {
-      font-size: 0.7rem;
+    .about-years-sub {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--blue);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.4rem;
+      margin-bottom: 1.5rem;
     }
-    .mv-text { font-size: 0.8rem; color: var(--gray); line-height: 1.7; }
+
+    .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .mv-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+    }
+    .mv-icon { font-size: 1.3rem; margin-bottom: 0.4rem; }
+    .mv-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 0.3rem; }
+    .mv-text { font-size: 0.78rem; color: var(--gray-500); line-height: 1.6; }
+
+    /* Floating mini-card */
+    .about-float-card {
+      position: absolute;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      padding: 1rem 1.3rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      animation: floatCard 6s ease-in-out infinite;
+    }
+    .about-float-card:nth-child(2) {
+      bottom: -1rem; right: -2rem;
+      animation-delay: -2s;
+    }
+    .about-float-card:nth-child(3) {
+      top: -1rem; right: -1rem;
+      animation-delay: -4s;
+    }
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .float-icon { font-size: 1.5rem; }
+    .float-label { font-size: 0.65rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; }
+    .float-val { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+
+    .about-info { position: relative; z-index: 1; }
+    .about-info p {
+      font-size: 0.93rem;
+      color: var(--gray-500);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+    }
+    .about-info p strong { color: var(--navy); font-weight: 700; }
+    .about-checkmarks { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.7rem; }
+    .about-check {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.88rem;
+      color: var(--gray-700);
+    }
+    .check-icon {
+      width: 22px; height: 22px;
+      background: var(--blue-pale);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .check-icon svg { width: 12px; height: 12px; stroke: var(--blue); fill: none; stroke-width: 2.5; }
+
     @media(max-width:768px){ .about-grid{ grid-template-columns:1fr; gap:2.5rem; } }
 
-    /* ─── CORPS / PLANS ─── */
-    #corps { background: var(--navy); }
+    /* ─── PLANS / CORPS ─── */
+    #corps { background: var(--white); }
+    .corps-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
     .corps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
-      margin-top: 3rem;
     }
     .corps-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-lg);
       padding: 2.5rem 2rem;
       text-align: center;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      transition: transform 0.35s cubic-bezier(.25,.8,.25,1), border-color 0.3s, box-shadow 0.3s;
       cursor: pointer;
       text-decoration: none;
       display: block;
       color: inherit;
     }
     .corps-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(0,87,184,0.5);
-      box-shadow: 0 20px 60px rgba(0,87,184,0.12);
+      transform: translateY(-8px);
+      border-color: var(--blue);
+      box-shadow: var(--shadow-lg);
     }
-    .corps-card::before {
-      content: '';
+    .corps-card-top-bar {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
     }
-    .corps-card:hover::before { opacity: 1; }
-    .corps-card-glow {
+    .corps-card:hover .corps-card-top-bar { transform: scaleX(1); }
+
+    .corps-card-bg {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,87,184,0.07), transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,87,184,0.04), transparent 70%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.35s;
     }
-    .corps-card:hover .corps-card-glow { opacity: 1; }
+    .corps-card:hover .corps-card-bg { opacity: 1; }
+
     .corps-emblem {
-      width: 70px; height: 70px;
+      width: 80px; height: 80px;
       margin: 0 auto 1.5rem;
-      background: rgba(0,87,184,0.12);
-      border: 1px solid rgba(0,87,184,0.22);
+      background: var(--blue-pale);
+      border: 2px solid var(--blue-pale2);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-      transition: background 0.3s, border-color 0.3s;
+      font-size: 2.2rem;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      position: relative;
+      z-index: 1;
     }
     .corps-card:hover .corps-emblem {
-      background: rgba(0,87,184,0.22);
-      border-color: rgba(0,87,184,0.6);
+      background: var(--blue);
+      border-color: var(--blue);
+      transform: scale(1.08) rotate(-5deg);
     }
     .corps-name {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       letter-spacing: 2px;
-      color: #fff;
-      margin-bottom: 0.3rem;
+      color: var(--navy);
+      margin-bottom: 0.2rem;
+      position: relative; z-index: 1;
     }
     .corps-full {
-      font-size: 0.75rem;
-      color: var(--red);
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-size: 0.72rem;
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 1rem;
+      position: relative; z-index: 1;
     }
     .corps-desc {
       font-size: 0.85rem;
-      color: var(--gray);
-      line-height: 1.7;
+      color: var(--gray-500);
+      line-height: 1.75;
       margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
     }
     .corps-features {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.55rem;
       text-align: left;
       margin-bottom: 2rem;
+      position: relative; z-index: 1;
     }
     .corps-feat {
       display: flex;
       align-items: center;
       gap: 0.6rem;
       font-size: 0.82rem;
-      color: var(--gray-light);
+      color: var(--gray-700);
     }
-    .corps-feat::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--red);
+    .corps-feat-dot {
+      width: 7px; height: 7px;
+      background: var(--blue);
       border-radius: 50%;
       flex-shrink: 0;
+      opacity: 0.5;
+      transition: opacity 0.3s;
     }
+    .corps-card:hover .corps-feat-dot { opacity: 1; }
     .corps-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
       width: 100%;
-      padding: 0.75rem;
-      background: rgba(0,87,184,0.12);
-      border: 1px solid rgba(0,87,184,0.3);
-      border-radius: 8px;
-      color: #5ba8ff;
+      padding: 0.8rem;
+      background: var(--blue-pale);
+      border: 1.5px solid var(--blue-pale2);
+      border-radius: var(--radius-sm);
+      color: var(--blue);
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      transition: background 0.2s, border-color 0.2s;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+      position: relative; z-index: 1;
     }
     .corps-card:hover .corps-btn {
-      background: rgba(0,87,184,0.22);
-      border-color: rgba(0,87,184,0.6);
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
     }
-    @media(max-width:900px){ .corps-grid{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; } }
+    @media(max-width:900px){ .corps-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto; } .corps-header{ flex-direction:column; align-items:flex-start; gap:1rem; } }
 
     /* ─── VALUES ─── */
-    #valores { background: var(--navy-mid); }
+    #valores { background: var(--blue); }
+    .valores-inner { position: relative; overflow: hidden; }
+    .valores-bg-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      font-family: var(--font-display);
+      font-size: 20rem;
+      letter-spacing: 10px;
+      color: rgba(255,255,255,0.03);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    #valores .section-label { color: rgba(255,255,255,0.7); }
+    #valores .section-label::before { background: rgba(255,255,255,0.5); }
+    #valores .section-title { color: #fff; }
     .values-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
       margin-top: 3rem;
+      position: relative;
+      z-index: 1;
     }
     .val-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
       padding: 1.8rem;
       display: flex;
       align-items: flex-start;
       gap: 1rem;
-      transition: border-color 0.25s, transform 0.25s;
+      transition: background 0.25s, transform 0.25s, border-color 0.25s;
+      backdrop-filter: blur(8px);
     }
     .val-card:hover {
-      border-color: rgba(0,87,184,0.35);
+      background: rgba(255,255,255,0.13);
+      border-color: rgba(255,255,255,0.25);
       transform: translateY(-3px);
     }
     .val-icon {
-      font-size: 1.6rem;
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
       flex-shrink: 0;
-      margin-top: 0.1rem;
     }
-    .val-name {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.3rem;
-      letter-spacing: 0.5px;
-    }
-    .val-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
-    @media(max-width:768px){ .values-grid{ grid-template-columns: 1fr 1fr; } }
-    @media(max-width:480px){ .values-grid{ grid-template-columns: 1fr; } }
+    .val-name { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+    .val-desc { font-size: 0.78rem; color: rgba(255,255,255,0.65); line-height: 1.7; }
+    @media(max-width:768px){ .values-grid{ grid-template-columns:1fr 1fr; } }
+    @media(max-width:480px){ .values-grid{ grid-template-columns:1fr; } }
 
     /* ─── CLIENTS ─── */
-    #clientes { background: var(--navy); }
+    #clientes { background: var(--off-white); }
+    #clientes .section-title { color: var(--navy); }
     .clients-track-wrap {
       overflow: hidden;
       margin-top: 3rem;
-      padding: 1.5rem 0;
-      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+      padding: 1rem 0;
+      mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
     }
     .clients-track {
       display: flex;
-      gap: 2.5rem;
-      animation: scroll 25s linear infinite;
+      gap: 1.2rem;
+      animation: scroll 28s linear infinite;
       width: max-content;
     }
     .clients-track:hover { animation-play-state: paused; }
     @keyframes scroll { from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
     .client-pill {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 0.8rem 1.6rem;
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1.8rem;
       font-size: 0.85rem;
       font-weight: 600;
-      color: var(--gray);
+      color: var(--gray-500);
       white-space: nowrap;
-      transition: color 0.2s, border-color 0.2s;
-      letter-spacing: 0.5px;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-sm);
     }
     .client-pill:hover {
-      color: #fff;
-      border-color: rgba(0,87,184,0.35);
+      color: var(--blue);
+      border-color: var(--blue-pale2);
+      box-shadow: var(--shadow);
     }
 
     /* ─── CONTACT ─── */
-    #contacto { background: var(--navy-mid); }
+    #contacto { background: var(--white); }
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1.4fr;
+      grid-template-columns: 1fr 1.5fr;
       gap: 4rem;
       align-items: start;
       margin-top: 3rem;
     }
-    .contact-info h3 {
+    .contact-info-title {
       font-family: var(--font-display);
-      font-size: 2rem;
+      font-size: 2.2rem;
       letter-spacing: 1px;
-      color: #fff;
+      color: var(--navy);
       margin-bottom: 0.5rem;
     }
-    .contact-info p {
+    .contact-info-sub {
       font-size: 0.9rem;
-      color: var(--gray);
+      color: var(--gray-500);
       line-height: 1.8;
       margin-bottom: 2rem;
     }
@@ -685,107 +937,109 @@
       margin-bottom: 1.2rem;
     }
     .contact-detail-icon {
-      width: 40px; height: 40px;
-      background: rgba(0,87,184,0.12);
-      border: 1px solid rgba(0,87,184,0.22);
-      border-radius: 10px;
+      width: 44px; height: 44px;
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-pale2);
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.1rem;
       flex-shrink: 0;
     }
     .contact-detail-text label {
       display: block;
-      font-size: 0.65rem;
-      font-weight: 600;
+      font-size: 0.62rem;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--blue);
       margin-bottom: 2px;
     }
-    .contact-detail-text span {
-      font-size: 0.85rem;
-      color: var(--gray-light);
-    }
+    .contact-detail-text span { font-size: 0.88rem; color: var(--gray-700); }
     .socials {
       display: flex;
       gap: 0.7rem;
-      margin-top: 2rem;
+      margin-top: 2.5rem;
     }
     .social-btn {
-      width: 40px; height: 40px;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
+      width: 42px; height: 42px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
       text-decoration: none;
-      color: var(--gray);
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      color: var(--gray-500);
+      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+      box-shadow: var(--shadow-sm);
     }
     .social-btn:hover {
-      border-color: rgba(0,87,184,0.5);
-      color: #fff;
-      background: rgba(0,87,184,0.1);
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-pale);
+      transform: translateY(-2px);
     }
     .contact-form {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-lg);
       padding: 2.5rem;
+      box-shadow: var(--shadow);
     }
     .form-group { margin-bottom: 1.2rem; }
     .form-group label {
       display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: var(--gray);
+      color: var(--gray-700);
       margin-bottom: 0.5rem;
     }
     .form-group input,
     .form-group textarea,
     .form-group select {
       width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 0.8rem 1rem;
-      color: var(--white);
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      color: var(--navy);
       font-family: var(--font-body);
       font-size: 0.9rem;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
       appearance: none;
     }
     .form-group input::placeholder,
-    .form-group textarea::placeholder { color: var(--gray); }
+    .form-group textarea::placeholder { color: var(--gray-300); }
     .form-group input:focus,
     .form-group textarea:focus,
     .form-group select:focus {
-      border-color: rgba(0,87,184,0.6);
+      border-color: var(--blue);
+      background: var(--white);
       box-shadow: 0 0 0 3px rgba(0,87,184,0.1);
     }
     .form-group textarea { resize: vertical; min-height: 110px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-submit {
-      width: 100%;
-      margin-top: 0.5rem;
-    }
+    .form-submit { width: 100%; margin-top: 0.5rem; }
     .form-success {
       display: none;
       text-align: center;
-      padding: 2rem;
-      color: #4ade80;
-      font-size: 0.9rem;
+      padding: 3rem 2rem;
     }
-    @media(max-width:768px){ .contact-grid{ grid-template-columns:1fr; } .form-row{ grid-template-columns:1fr; } }
+    .form-success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .form-success strong { color: var(--navy); font-size: 1.1rem; }
+    .form-success p { color: var(--gray-500); margin-top: 0.5rem; font-size: 0.9rem; }
+    @media(max-width:768px){
+      .contact-grid{ grid-template-columns:1fr; }
+      .form-row{ grid-template-columns:1fr; }
+    }
 
     /* ─── FOOTER ─── */
     footer {
-      background: #040612;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 3rem 2rem 2rem;
+      background: var(--navy);
+      padding: 4rem 2rem 2rem;
     }
     .footer-inner {
       max-width: 1200px;
@@ -796,23 +1050,26 @@
     }
     .footer-brand p {
       font-size: 0.82rem;
-      color: var(--gray);
+      color: var(--gray-300);
       line-height: 1.8;
-      margin-top: 0.8rem;
+      margin-top: 1rem;
       max-width: 260px;
     }
+    .footer-logo-mark { background: var(--blue) !important; }
+    .footer-logo-text { color: #fff !important; }
+    .footer-logo-sub { color: rgba(255,255,255,0.5) !important; }
     .footer-col h4 {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: var(--gray);
+      color: var(--gray-300);
       margin-bottom: 1rem;
     }
     .footer-col a {
       display: block;
       font-size: 0.85rem;
-      color: var(--gray);
+      color: rgba(255,255,255,0.5);
       text-decoration: none;
       margin-bottom: 0.6rem;
       transition: color 0.2s;
@@ -822,16 +1079,16 @@
       max-width: 1200px;
       margin: 2rem auto 0;
       padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid rgba(255,255,255,0.07);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-    .footer-bottom p { font-size: 0.78rem; color: var(--gray); }
-    .footer-bottom a { color: var(--gray); text-decoration: none; }
-    .footer-bottom a:hover { color: var(--red); }
+    .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+    .footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+    .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
     @media(max-width:768px){
       .footer-inner{ grid-template-columns:1fr 1fr; }
       .footer-brand{ grid-column:1/-1; }
@@ -843,29 +1100,29 @@
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      width: 44px; height: 44px;
-      background: var(--red);
+      width: 46px; height: 46px;
+      background: var(--blue);
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #fff;
-      box-shadow: 0 4px 20px var(--red-glow);
+      box-shadow: var(--shadow-blue);
       opacity: 0;
       transform: translateY(12px);
-      transition: opacity 0.3s, transform 0.3s;
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
       z-index: 900;
     }
     #scrollTop.show { opacity: 1; transform: translateY(0); }
-    #scrollTop:hover { background: var(--red-dark); }
+    #scrollTop:hover { background: var(--blue-dark); }
 
     /* ─── ANIMATIONS ─── */
     @keyframes fadeDown { from{ opacity:0; transform:translateY(-20px); } to{ opacity:1; transform:translateY(0); } }
-    @keyframes fadeUp   { from{ opacity:0; transform:translateY(20px);  } to{ opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from{ opacity:0; transform:translateY(24px);  } to{ opacity:1; transform:translateY(0); } }
     .reveal {
       opacity: 0;
-      transform: translateY(28px);
+      transform: translateY(30px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .reveal.in-view { opacity: 1; transform: none; }
@@ -873,7 +1130,7 @@
     /* ─── MODAL ─── */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(15,23,42,0.5);
       backdrop-filter: blur(8px);
       z-index: 2000;
       display: none;
@@ -883,60 +1140,78 @@
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: #0f1632;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-lg);
       padding: 2.5rem;
       max-width: 480px;
       width: 100%;
       position: relative;
       animation: fadeUp 0.35s ease;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2);
     }
     .modal::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
-      border-radius: 20px 20px 0 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+      border-radius: 24px 24px 0 0;
     }
     .modal h3 {
       font-family: var(--font-display);
-      font-size: 1.8rem;
+      font-size: 2rem;
       letter-spacing: 2px;
-      margin-bottom: 0.5rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
     }
-    .modal p { font-size: 0.88rem; color: var(--gray); margin-bottom: 1.5rem; line-height: 1.7; }
+    .modal p { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.7; }
     .modal-close {
       position: absolute;
       top: 1.2rem; right: 1.2rem;
       width: 32px; height: 32px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      color: var(--gray);
-      font-size: 1rem;
+      color: var(--gray-500);
+      font-size: 0.9rem;
       display: flex; align-items: center; justify-content: center;
       transition: color 0.2s, background 0.2s;
     }
-    .modal-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .modal-close:hover { color: var(--navy); background: var(--gray-100); }
     .modal-btns { display: flex; flex-direction: column; gap: 0.7rem; }
     .modal-link {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      padding: 0.9rem 1.2rem;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
+      gap: 0.9rem;
+      padding: 1rem 1.2rem;
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius);
       text-decoration: none;
-      color: var(--gray-light);
+      color: var(--gray-700);
       font-size: 0.88rem;
-      transition: border-color 0.2s, color 0.2s;
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
     }
-    .modal-link:hover { border-color: rgba(0,87,184,0.5); color: #fff; }
-    .modal-link span { font-size: 1.3rem; }
+    .modal-link:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-pale);
+      transform: translateX(4px);
+    }
+    .modal-link span { font-size: 1.4rem; }
+    .modal-link .modal-arrow {
+      margin-left: auto;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .modal-link:hover .modal-arrow { opacity: 1; transform: translateX(3px); }
+
+    /* ─── COUNTER ANIMATION ─── */
+    .count-up { display: inline; }
   </style>
 </head>
 <body>
@@ -950,15 +1225,19 @@
     <div class="modal-btns">
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" class="modal-link">
         <span>🛡️</span> Policía Auxiliar (PA)
+        <span class="modal-arrow">→</span>
       </a>
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" class="modal-link">
         <span>🏦</span> Policía Bancaria e Industrial (PBI)
+        <span class="modal-arrow">→</span>
       </a>
       <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" class="modal-link">
         <span>🏙️</span> Secretaría de Seg. Ciudadana CDMX (SSC)
+        <span class="modal-arrow">→</span>
       </a>
       <a href="https://www.descuentoxnomina.com.mx/Acceso/Login" class="modal-link">
         <span>🔐</span> Acceso General / Administración
+        <span class="modal-arrow">→</span>
       </a>
     </div>
   </div>
@@ -970,7 +1249,7 @@
     <div class="nav-logo-mark">B</div>
     <div>
       <div class="nav-logo-text">BERYHUERT</div>
-      <div class="nav-logo-sub">DIST. AUTORIZADO TELCEL</div>
+      <div class="nav-logo-sub">Dist. Autorizado Telcel</div>
     </div>
   </a>
   <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
@@ -991,15 +1270,29 @@
 
 <!-- ─── HERO ─── -->
 <section id="hero">
-  <div class="hero-bg"></div>
+  <!-- Animated background -->
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
   <div class="hero-grid"></div>
+  <div class="hero-orbit hero-orbit-1"></div>
+  <div class="hero-orbit hero-orbit-2"></div>
 
-  <div class="hero-badge">Distribuidor Autorizado · Región 9 CDMX</div>
+  <!-- Floating particles (generated by JS) -->
+  <div class="hero-particles" id="heroParticles"></div>
 
-  <h1>BERY<span>HUERT</span></h1>
-  <p class="hero-sub">
-    Subdistribuidora Telcel especializada en planes corporativos para cuerpos de seguridad y empresas en la Ciudad de México.
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Distribuidor Autorizado · Región 9 CDMX
+  </div>
+
+  <h1>BERY<span class="accent">HUERT</span></h1>
+
+  <p class="hero-tagline">
+    Subdistributora Telcel especializada en <strong>equipos telefónicos</strong> y<br>
+    <strong>planes corporativos</strong> para cuerpos de seguridad pública en CDMX.
   </p>
+
   <div class="hero-ctas">
     <a href="#corps" class="btn-primary">Ver planes por corporación →</a>
     <a href="#contacto" class="btn-outline">Contactar asesor</a>
@@ -1007,11 +1300,11 @@
 
   <div class="hero-stats">
     <div class="stat">
-      <div class="stat-num">25<span>+</span></div>
+      <div class="stat-num"><span class="count-up" data-target="25">0</span>+</div>
       <div class="stat-label">Años de experiencia</div>
     </div>
     <div class="stat">
-      <div class="stat-num">3<span> </span></div>
+      <div class="stat-num"><span class="count-up" data-target="3">0</span></div>
       <div class="stat-label">Corporaciones atendidas</div>
     </div>
     <div class="stat">
@@ -1020,29 +1313,57 @@
     </div>
   </div>
 
-  <div class="hero-divider"></div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
 </section>
+
+<!-- ─── FEATURE STRIP ─── -->
+<div id="features">
+  <div class="features-track" id="featuresTrack">
+    <div class="feature-item"><span class="feature-dot"></span> Distribuidor Autorizado Telcel</div>
+    <div class="feature-item"><span class="feature-dot"></span> Descuento Directo en Nómina</div>
+    <div class="feature-item"><span class="feature-dot"></span> Equipos de Última Generación</div>
+    <div class="feature-item"><span class="feature-dot"></span> Cobertura Nacional Telcel</div>
+    <div class="feature-item"><span class="feature-dot"></span> Sin Buró de Crédito</div>
+    <div class="feature-item"><span class="feature-dot"></span> Planes LTE+ Ilimitados</div>
+    <div class="feature-item"><span class="feature-dot"></span> Atención Personalizada</div>
+    <div class="feature-item"><span class="feature-dot"></span> Soporte Técnico Dedicado</div>
+    <div class="feature-item"><span class="feature-dot"></span> Portabilidad Incluida</div>
+    <!-- clone -->
+    <div class="feature-item"><span class="feature-dot"></span> Distribuidor Autorizado Telcel</div>
+    <div class="feature-item"><span class="feature-dot"></span> Descuento Directo en Nómina</div>
+    <div class="feature-item"><span class="feature-dot"></span> Equipos de Última Generación</div>
+    <div class="feature-item"><span class="feature-dot"></span> Cobertura Nacional Telcel</div>
+    <div class="feature-item"><span class="feature-dot"></span> Sin Buró de Crédito</div>
+    <div class="feature-item"><span class="feature-dot"></span> Planes LTE+ Ilimitados</div>
+    <div class="feature-item"><span class="feature-dot"></span> Atención Personalizada</div>
+    <div class="feature-item"><span class="feature-dot"></span> Soporte Técnico Dedicado</div>
+    <div class="feature-item"><span class="feature-dot"></span> Portabilidad Incluida</div>
+  </div>
+</div>
 
 <!-- ─── ABOUT ─── -->
 <section id="about">
   <div class="container section-pad">
     <div class="about-grid">
       <div class="about-visual reveal">
-        <div class="about-card">
-          <div class="about-telcel-badge">
-            <div class="telcel-icon">T</div>
+        <div class="about-main-card">
+          <div class="about-badge-row">
+            <div class="about-badge-icon">T</div>
             <div>
-              <div class="about-acc-label">Autorización Oficial</div>
-              <div class="about-acc-val">Radio Móvil Dipsa S.A. de C.V.</div>
+              <div class="about-badge-label">Autorización Oficial</div>
+              <div class="about-badge-val">Radio Móvil Dipsa S.A. de C.V.</div>
             </div>
           </div>
-          <div class="about-years">25</div>
-          <div class="about-years-label">Años innovando · Desde 1992</div>
+          <div class="about-years-display">25</div>
+          <div class="about-years-sub">Años innovando · Desde 1992</div>
           <div class="mv-grid">
             <div class="mv-card">
               <div class="mv-icon">🎯</div>
               <div class="mv-title">Misión</div>
-              <div class="mv-text">Mantenernos líderes entre los Distribuidores Autorizados Telcel en Región 9 consolidando la confianza de nuestros clientes.</div>
+              <div class="mv-text">Mantenernos líderes entre los Distribuidores Autorizados Telcel en Región 9, consolidando la confianza de nuestros clientes.</div>
             </div>
             <div class="mv-card">
               <div class="mv-icon">🔭</div>
@@ -1051,67 +1372,113 @@
             </div>
           </div>
         </div>
+        <!-- Floating accent cards -->
+        <div class="about-float-card" style="bottom:-1rem;right:-2rem;">
+          <span class="float-icon">📱</span>
+          <div>
+            <div class="float-label">Equipos disponibles</div>
+            <div class="float-val">Alta gama Telcel</div>
+          </div>
+        </div>
+        <div class="about-float-card" style="top:-1rem;right:-1rem;">
+          <span class="float-icon">🛡️</span>
+          <div>
+            <div class="float-label">Seguridad Pública</div>
+            <div class="float-val">3 Corporaciones</div>
+          </div>
+        </div>
       </div>
+
       <div class="about-info reveal">
-        <span class="section-tag">Quiénes somos</span>
-        <h2 class="section-title">30 AÑOS CONECTANDO CDMX</h2>
-        <p>Beryhuert S.A. de C.V. inició operaciones con ventas de accesorios para teléfonos celulares vía telemarketing hasta obtener la distribución directa de Telcel el <strong style="color:#fff">8 de agosto de 1992</strong>.</p>
-        <p>Hoy somos Distribuidor Autorizado de Radio Móvil Dipsa, ofreciendo comercio retail y mayoreo de telefonía celular prepago y posp-ago, además de equipos y accesorios de comunicación con tecnología de punta.</p>
-        <p>Nuestra especialidad son los planes corporativos diseñados para instituciones de seguridad pública en la Ciudad de México, con descuento directo en nómina.</p>
-        <a href="#corps" class="btn-primary" style="margin-top:1.5rem; display:inline-flex;">Conocer planes →</a>
+        <span class="section-label">Quiénes somos</span>
+        <h2 class="section-title">30 AÑOS<br>CONECTANDO CDMX</h2>
+        <p style="margin-top:1rem;">Beryhuert S.A. de C.V. inició operaciones con ventas de accesorios para teléfonos celulares vía telemarketing hasta obtener la distribución directa de Telcel el <strong>8 de agosto de 1992</strong>.</p>
+        <p>Hoy somos Distribuidor Autorizado de Radio Móvil Dipsa, ofreciendo comercio retail y mayoreo de telefonía celular prepago y pospago, además de equipos y accesorios de comunicación con tecnología de punta.</p>
+        <div class="about-checkmarks">
+          <div class="about-check">
+            <span class="check-icon">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </span>
+            Planes corporativos con descuento directo en nómina
+          </div>
+          <div class="about-check">
+            <span class="check-icon">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </span>
+            Especialistas en instituciones de seguridad pública CDMX
+          </div>
+          <div class="about-check">
+            <span class="check-icon">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </span>
+            Equipos de última generación con garantía Telcel
+          </div>
+          <div class="about-check">
+            <span class="check-icon">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </span>
+            Portabilidad incluida sin trámites complicados
+          </div>
+        </div>
+        <a href="#corps" class="btn-primary" style="margin-top:0.5rem;display:inline-flex;">Conocer planes →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── CORPS ─── -->
+<!-- ─── CORPS / PLANES ─── -->
 <section id="corps">
   <div class="container section-pad">
-    <div class="reveal">
-      <span class="section-tag">Planes corporativos</span>
-      <h2 class="section-title">TU CORPORACIÓN,<br>TU PLAN</h2>
-      <p class="section-desc">Planes Telcel diseñados específicamente para cada institución, con descuento directo vía nómina y equipos de última generación.</p>
+    <div class="corps-header reveal">
+      <div>
+        <span class="section-label">Planes corporativos</span>
+        <h2 class="section-title">TU CORPORACIÓN,<br>TU PLAN</h2>
+        <p class="section-desc">Planes Telcel diseñados específicamente para cada institución, con descuento directo vía nómina y equipos de última generación.</p>
+      </div>
     </div>
     <div class="corps-grid">
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPa" class="corps-card reveal" style="transition-delay:0.1s">
-        <div class="corps-card-glow"></div>
+        <div class="corps-card-top-bar"></div>
+        <div class="corps-card-bg"></div>
         <div class="corps-emblem">🛡️</div>
         <div class="corps-name">AMIGO PA</div>
         <div class="corps-full">Policía Auxiliar</div>
         <p class="corps-desc">Plan exclusivo para elementos de la Policía Auxiliar del Estado de México y CDMX con beneficios especiales en nómina.</p>
         <div class="corps-features">
-          <div class="corps-feat">Descuento directo en nómina</div>
-          <div class="corps-feat">Equipos Telcel de alta gama</div>
-          <div class="corps-feat">Datos ilimitados / LTE+</div>
-          <div class="corps-feat">Llamadas y SMS sin costo</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Descuento directo en nómina</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Equipos Telcel de alta gama</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Datos ilimitados / LTE+</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Llamadas y SMS sin costo</div>
         </div>
         <div class="corps-btn">Acceder al plan →</div>
       </a>
       <a href="https://www.descuentoxnomina.com.mx/Acceso/AmigoPbi" class="corps-card reveal" style="transition-delay:0.2s">
-        <div class="corps-card-glow"></div>
+        <div class="corps-card-top-bar"></div>
+        <div class="corps-card-bg"></div>
         <div class="corps-emblem">🏦</div>
         <div class="corps-name">AMIGO PBI</div>
         <div class="corps-full">Policía Bancaria e Industrial</div>
         <p class="corps-desc">Plan para elementos de la Policía Bancaria e Industrial con condiciones preferenciales y acceso a equipos de última generación.</p>
         <div class="corps-features">
-          <div class="corps-feat">Planes posp-ago preferentes</div>
-          <div class="corps-feat">Sin aval ni buró de crédito</div>
-          <div class="corps-feat">Portabilidad incluida</div>
-          <div class="corps-feat">Atención personalizada</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Planes pospago preferentes</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Sin aval ni buró de crédito</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Portabilidad incluida</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Atención personalizada</div>
         </div>
         <div class="corps-btn">Acceder al plan →</div>
       </a>
       <a href="https://www.descuentoxnomina.com.mx/Acceso/Ssc" class="corps-card reveal" style="transition-delay:0.3s">
-        <div class="corps-card-glow"></div>
+        <div class="corps-card-top-bar"></div>
+        <div class="corps-card-bg"></div>
         <div class="corps-emblem">🏙️</div>
         <div class="corps-name">SSC CDMX</div>
         <div class="corps-full">Secretaría de Seguridad Ciudadana</div>
         <p class="corps-desc">Convenio especial para elementos de la Secretaría de Seguridad Ciudadana de la Ciudad de México con beneficios exclusivos.</p>
         <div class="corps-features">
-          <div class="corps-feat">Convenio institucional SSC</div>
-          <div class="corps-feat">Equipos con plan incluido</div>
-          <div class="corps-feat">Cobertura nacional Telcel</div>
-          <div class="corps-feat">Soporte técnico dedicado</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Convenio institucional SSC</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Equipos con plan incluido</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Cobertura nacional Telcel</div>
+          <div class="corps-feat"><span class="corps-feat-dot"></span>Soporte técnico dedicado</div>
         </div>
         <div class="corps-btn">Acceder al plan →</div>
       </a>
@@ -1121,52 +1488,55 @@
 
 <!-- ─── VALORES ─── -->
 <section id="valores">
-  <div class="container section-pad">
-    <div class="reveal" style="text-align:center; margin-bottom:1rem;">
-      <span class="section-tag">Nuestros principios</span>
-      <h2 class="section-title">VALORES QUE<br>NOS DEFINEN</h2>
-    </div>
-    <div class="values-grid">
-      <div class="val-card reveal" style="transition-delay:0.05s">
-        <div class="val-icon">🤝</div>
-        <div>
-          <div class="val-name">Lealtad</div>
-          <div class="val-desc">Compromiso inquebrantable con nuestros clientes, socios y con la marca Telcel que representamos.</div>
-        </div>
+  <div class="valores-inner">
+    <div class="valores-bg-text">VALORES</div>
+    <div class="container section-pad">
+      <div class="reveal" style="text-align:center;margin-bottom:0.5rem;">
+        <span class="section-label">Nuestros principios</span>
+        <h2 class="section-title">VALORES QUE<br>NOS DEFINEN</h2>
       </div>
-      <div class="val-card reveal" style="transition-delay:0.1s">
-        <div class="val-icon">🙏</div>
-        <div>
-          <div class="val-name">Respeto</div>
-          <div class="val-desc">Tratamos a cada cliente, colaborador e institución con la dignidad que merece, sin excepción.</div>
+      <div class="values-grid">
+        <div class="val-card reveal" style="transition-delay:0.05s">
+          <div class="val-icon">🤝</div>
+          <div>
+            <div class="val-name">Lealtad</div>
+            <div class="val-desc">Compromiso inquebrantable con nuestros clientes, socios y con la marca Telcel que representamos.</div>
+          </div>
         </div>
-      </div>
-      <div class="val-card reveal" style="transition-delay:0.15s">
-        <div class="val-icon">💪</div>
-        <div>
-          <div class="val-name">Compromiso</div>
-          <div class="val-desc">Cumplimos lo que prometemos. Cada plan, cada equipo, cada entrega — con puntualidad y calidad.</div>
+        <div class="val-card reveal" style="transition-delay:0.1s">
+          <div class="val-icon">🙏</div>
+          <div>
+            <div class="val-name">Respeto</div>
+            <div class="val-desc">Tratamos a cada cliente, colaborador e institución con la dignidad que merece, sin excepción.</div>
+          </div>
         </div>
-      </div>
-      <div class="val-card reveal" style="transition-delay:0.2s">
-        <div class="val-icon">⚖️</div>
-        <div>
-          <div class="val-name">Ética</div>
-          <div class="val-desc">Operamos con transparencia, honestidad y apego a las normas en cada proceso comercial.</div>
+        <div class="val-card reveal" style="transition-delay:0.15s">
+          <div class="val-icon">💪</div>
+          <div>
+            <div class="val-name">Compromiso</div>
+            <div class="val-desc">Cumplimos lo que prometemos. Cada plan, cada equipo, cada entrega — con puntualidad y calidad.</div>
+          </div>
         </div>
-      </div>
-      <div class="val-card reveal" style="transition-delay:0.25s">
-        <div class="val-icon">💬</div>
-        <div>
-          <div class="val-name">Comunicación efectiva</div>
-          <div class="val-desc">Escuchamos activamente y nos expresamos con claridad para garantizar que cada cliente entienda su plan.</div>
+        <div class="val-card reveal" style="transition-delay:0.2s">
+          <div class="val-icon">⚖️</div>
+          <div>
+            <div class="val-name">Ética</div>
+            <div class="val-desc">Operamos con transparencia, honestidad y apego a las normas en cada proceso comercial.</div>
+          </div>
         </div>
-      </div>
-      <div class="val-card reveal" style="transition-delay:0.3s">
-        <div class="val-icon">👥</div>
-        <div>
-          <div class="val-name">Trabajo en equipo</div>
-          <div class="val-desc">Nuestro equipo coordina esfuerzos para ofrecer una experiencia de compra y soporte sin fricciones.</div>
+        <div class="val-card reveal" style="transition-delay:0.25s">
+          <div class="val-icon">💬</div>
+          <div>
+            <div class="val-name">Comunicación efectiva</div>
+            <div class="val-desc">Escuchamos activamente y nos expresamos con claridad para que cada cliente entienda su plan.</div>
+          </div>
+        </div>
+        <div class="val-card reveal" style="transition-delay:0.3s">
+          <div class="val-icon">👥</div>
+          <div>
+            <div class="val-name">Trabajo en equipo</div>
+            <div class="val-desc">Nuestro equipo coordina esfuerzos para ofrecer una experiencia de compra y soporte sin fricciones.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1177,7 +1547,7 @@
 <section id="clientes">
   <div class="container section-pad">
     <div class="reveal" style="text-align:center;">
-      <span class="section-tag">Empresas aliadas</span>
+      <span class="section-label">Empresas aliadas</span>
       <h2 class="section-title">CONFÍAN EN<br>BERYHUERT</h2>
       <p class="section-desc" style="margin:0.8rem auto 0;">Empresas e instituciones que han elegido nuestros servicios para conectar a sus equipos de trabajo.</p>
     </div>
@@ -1197,7 +1567,6 @@
         <div class="client-pill">NSK</div>
         <div class="client-pill">Perfiles</div>
         <div class="client-pill">Plásticos</div>
-        <!-- clone for infinite loop -->
         <div class="client-pill">Abengoa</div>
         <div class="client-pill">Cable de Acero</div>
         <div class="client-pill">CDI</div>
@@ -1221,12 +1590,14 @@
 <section id="contacto">
   <div class="container section-pad">
     <div class="reveal">
-      <span class="section-tag">Contáctanos</span>
+      <span class="section-label">Contáctanos</span>
       <h2 class="section-title">HABLEMOS</h2>
       <p class="section-desc">¿Quieres un plan para tu corporación o empresa? Un asesor te responderá en menos de 24 horas.</p>
     </div>
     <div class="contact-grid">
       <div class="contact-info reveal">
+        <p class="contact-info-title" style="font-family:var(--font-display);font-size:2rem;letter-spacing:1px;color:var(--navy);margin-bottom:0.5rem;">Estamos aquí<br>para ayudarte</p>
+        <p class="contact-info-sub">Nuestro equipo de asesores está listo para encontrar el plan perfecto para tu institución o empresa.</p>
         <div class="contact-detail">
           <div class="contact-detail-icon">📍</div>
           <div class="contact-detail-text">
@@ -1285,9 +1656,9 @@
           <button class="btn-primary form-submit" onclick="submitForm()">Enviar mensaje →</button>
         </div>
         <div class="form-success" id="formSuccess">
-          <div style="font-size:2.5rem;margin-bottom:1rem;">✅</div>
-          <strong style="color:#fff;font-size:1rem;">¡Mensaje enviado!</strong><br>
-          Un asesor se pondrá en contacto contigo pronto.
+          <div class="form-success-icon">✅</div>
+          <strong>¡Mensaje enviado!</strong>
+          <p>Un asesor se pondrá en contacto contigo pronto.</p>
         </div>
       </div>
     </div>
@@ -1299,10 +1670,10 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="nav-logo" style="display:inline-flex;">
-        <div class="nav-logo-mark">B</div>
+        <div class="nav-logo-mark footer-logo-mark">B</div>
         <div>
-          <div class="nav-logo-text">BERYHUERT</div>
-          <div class="nav-logo-sub">DIST. AUTORIZADO TELCEL</div>
+          <div class="nav-logo-text footer-logo-text">BERYHUERT</div>
+          <div class="nav-logo-sub footer-logo-sub">Dist. Autorizado Telcel</div>
         </div>
       </div>
       <p>Distribuidor Autorizado de Radio Móvil Dipsa S.A. de C.V. Tlalpan, Ciudad de México. © 2026 Beryhuert.</p>
@@ -1338,14 +1709,14 @@
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-  // ── Navbar scroll ──
+  /* ── Navbar scroll ── */
   const nav = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
     document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 300);
   });
 
-  // ── Mobile menu ──
+  /* ── Mobile menu ── */
   function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('open');
   }
@@ -1353,7 +1724,7 @@
     a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
   });
 
-  // ── Modal ──
+  /* ── Modal ── */
   function openModal(e) {
     if (e) e.preventDefault();
     document.getElementById('modalOverlay').classList.add('open');
@@ -1370,14 +1741,55 @@
     }
   });
 
-  // ── Reveal on scroll ──
+  /* ── Reveal on scroll ── */
   const revealEls = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); } });
-  }, { threshold: 0.12 });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.1 });
   revealEls.forEach(el => obs.observe(el));
 
-  // ── Contact form ──
+  /* ── Counter animation ── */
+  const counters = document.querySelectorAll('.count-up');
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const step = target / 40;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.round(current);
+        if (current >= target) clearInterval(timer);
+      }, 40);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObs.observe(c));
+
+  /* ── Floating particles ── */
+  const particleContainer = document.getElementById('heroParticles');
+  function createParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    const x = Math.random() * 100;
+    const delay = Math.random() * 6;
+    const duration = Math.random() * 6 + 6;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${x}%;bottom:${Math.random()*30}%;
+      animation-delay:${delay}s;
+      animation-duration:${duration}s;
+      opacity:0.4;
+    `;
+    particleContainer.appendChild(p);
+    setTimeout(() => p.remove(), (delay + duration) * 1000);
+  }
+  for (let i = 0; i < 20; i++) createParticle();
+  setInterval(createParticle, 800);
+
+  /* ── Contact form ── */
   function submitForm() {
     const nombre = document.getElementById('cf-nombre').value.trim();
     const email  = document.getElementById('cf-email').value.trim();
@@ -1390,6 +1802,23 @@
     document.getElementById('contactFormWrap').style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
   }
+
+  /* ── Subtle card tilt on hover ── */
+  document.querySelectorAll('.corps-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `translateY(-8px) rotateX(${-y*4}deg) rotateY(${x*4}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.5s ease';
+    });
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease, border-color 0.3s, box-shadow 0.3s';
+    });
+  });
 </script>
 </body>
 </html>
