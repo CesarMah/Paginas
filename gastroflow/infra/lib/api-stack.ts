@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as apigwv2Integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import * as apigwv2Authorizers from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
@@ -31,7 +32,7 @@ export class ApiStack extends cdk.Stack {
     const { stage, userPool, userPoolClient, dbSecret, dbEndpoint, mediaBucket } = props;
     const isProd = stage === 'prod';
 
-    // DynamoDB WebSocket connections table (free tier: 25GB, 25 WCU/RCU)
+    // DynamoDB WebSocket connections table
     const connectionsTable = new dynamodb.Table(this, 'WsConnections', {
       tableName: `gastroflow-ws-connections-${stage}`,
       partitionKey: { name: 'tenantId', type: dynamodb.AttributeType.STRING },
@@ -47,26 +48,24 @@ export class ApiStack extends cdk.Stack {
       projectionType: dynamodb.ProjectionType.ALL,
     });
 
-    // SNS Topic (free: 1M publishes/month)
+    // SNS Topic
     const ordersTopic = new sns.Topic(this, 'OrdersTopic', {
       topicName: `gastroflow-new-order-${stage}`,
     });
 
-    // WebSocket API (free tier: 1M messages/month)
+    // WebSocket API
     const wsApi = new apigwv2.WebSocketApi(this, 'WsApi', {
       apiName: `gastroflow-ws-${stage}`,
     });
-
     const wsStage = new apigwv2.WebSocketStage(this, 'WsStage', {
       webSocketApi: wsApi,
       stageName: stage,
       autoDeploy: true,
     });
-
     const wsEndpoint = `https://${wsApi.apiId}.execute-api.${this.region}.amazonaws.com/${stage}`;
 
-    // Common Lambda env vars
-    const commonEnv = {
+    // Common env vars for all Lambdas
+    const commonEnv: Record<string, string> = {
       STAGE: stage,
       WS_ENDPOINT: wsEndpoint,
       SNS_TOPIC_ARN: ordersTopic.topicArn,
@@ -74,26 +73,34 @@ export class ApiStack extends cdk.Stack {
       MEDIA_BUCKET: mediaBucket.bucketName,
       USER_POOL_ID: userPool.userPoolId,
       USER_POOL_CLIENT_ID: userPoolClient.userPoolClientId,
+      DB_SECRET_ARN: dbSecret.secretArn,
+      DB_HOST: dbEndpoint,
     };
 
-    // Lambda defaults — NO VPC to avoid NAT Gateway costs
-    const lambdaDefaults: Omit<lambda.FunctionProps, 'handler' | 'code'> = {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      architecture: lambda.Architecture.ARM_64,
-      memorySize: 256,
-      timeout: cdk.Duration.seconds(29),
-      environment: commonEnv,
-    };
+    const backendDir = path.join(__dirname, '../../backend');
 
-    const backendPath = path.join(__dirname, '../../backend');
-
-    const makeLambda = (name: string, handlerPath: string, extraEnv?: Record<string, string>) => {
-      const fn = new lambda.Function(this, name, {
-        ...lambdaDefaults,
-        functionName: `gastroflow-${stage}-${name.toLowerCase()}`,
-        code: lambda.Code.fromAsset(backendPath),
-        handler: `lambdas/${handlerPath}/index.handler`,
+    // NodejsFunction compiles TypeScript with esbuild automatically
+    const makeNodeFn = (
+      id: string,
+      handlerFile: string,
+      extraEnv?: Record<string, string>
+    ): lambdaNodejs.NodejsFunction => {
+      const fn = new lambdaNodejs.NodejsFunction(this, id, {
+        functionName: `gastroflow-${stage}-${id.toLowerCase()}`,
+        entry: path.join(backendDir, `${handlerFile}/index.ts`),
+        handler: 'handler',
+        runtime: lambda.Runtime.NODEJS_20_X,
+        architecture: lambda.Architecture.ARM_64,
+        memorySize: 256,
+        timeout: cdk.Duration.seconds(29),
         environment: { ...commonEnv, ...extraEnv },
+        bundling: {
+          minify: true,
+          sourceMap: false,
+          target: 'es2022',
+          // Bundle all deps into the output so the Lambda zip is self-contained
+          externalModules: [],
+        },
       });
       dbSecret.grantRead(fn);
       connectionsTable.grantReadWriteData(fn);
@@ -102,21 +109,20 @@ export class ApiStack extends cdk.Stack {
       return fn;
     };
 
-    // Database URL secret ARN passed as env — Lambda reads it at runtime
-    const dbSecretEnv = { DB_SECRET_ARN: dbSecret.secretArn, DB_HOST: dbEndpoint };
-
-    const ordersCreate       = makeLambda('OrdersCreate',       'orders/create',           dbSecretEnv);
-    const ordersList         = makeLambda('OrdersList',         'orders/list',             dbSecretEnv);
-    const ordersUpdateStatus = makeLambda('OrdersUpdateStatus', 'orders/update-status',    dbSecretEnv);
-    const menuList           = makeLambda('MenuList',           'menu/list',               dbSecretEnv);
-    const menuUpsert         = makeLambda('MenuUpsert',         'menu/upsert',             dbSecretEnv);
-    const analyticsDaily     = makeLambda('AnalyticsDaily',     'analytics/daily',         dbSecretEnv);
-    const analyticsWeekly    = makeLambda('AnalyticsWeekly',    'analytics/weekly',        dbSecretEnv);
-    const inventoryList      = makeLambda('InventoryList',      'inventory/list',          dbSecretEnv);
-    const inventoryUpdate    = makeLambda('InventoryUpdate',    'inventory/update',        dbSecretEnv);
-    const wsConnect          = makeLambda('WsConnect',          'websocket/connect',       dbSecretEnv);
-    const wsDisconnect       = makeLambda('WsDisconnect',       'websocket/disconnect',    dbSecretEnv);
-    const sendEmail          = makeLambda('SendEmail',          'notifications/send-email', { FROM_EMAIL: 'cessarmahwk@gmail.com' });
+    const ordersCreate       = makeNodeFn('OrdersCreate',       'lambdas/orders/create');
+    const ordersList         = makeNodeFn('OrdersList',         'lambdas/orders/list');
+    const ordersUpdateStatus = makeNodeFn('OrdersUpdateStatus', 'lambdas/orders/update-status');
+    const menuList           = makeNodeFn('MenuList',           'lambdas/menu/list');
+    const menuUpsert         = makeNodeFn('MenuUpsert',         'lambdas/menu/upsert');
+    const analyticsDaily     = makeNodeFn('AnalyticsDaily',     'lambdas/analytics/daily');
+    const analyticsWeekly    = makeNodeFn('AnalyticsWeekly',    'lambdas/analytics/weekly');
+    const inventoryList      = makeNodeFn('InventoryList',      'lambdas/inventory/list');
+    const inventoryUpdate    = makeNodeFn('InventoryUpdate',    'lambdas/inventory/update');
+    const wsConnect          = makeNodeFn('WsConnect',          'lambdas/websocket/connect');
+    const wsDisconnect       = makeNodeFn('WsDisconnect',       'lambdas/websocket/disconnect');
+    const sendEmail          = makeNodeFn('SendEmail',          'lambdas/notifications/send-email', {
+      FROM_EMAIL: 'cessarmahwk@gmail.com',
+    });
 
     this.lambdaFunctions = [
       ordersCreate, ordersList, ordersUpdateStatus,
@@ -136,7 +142,7 @@ export class ApiStack extends cdk.Stack {
     wsApi.grantManageConnections(ordersCreate);
     wsApi.grantManageConnections(ordersUpdateStatus);
 
-    // HTTP API with Cognito authorizer (free tier: 1M calls/month for 12 months)
+    // HTTP API with Cognito JWT authorizer
     const authorizer = new apigwv2Authorizers.HttpJwtAuthorizer(
       'CognitoAuthorizer',
       userPool.userPoolProviderUrl,
@@ -159,7 +165,7 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
-    const addRoute = (method: apigwv2.HttpMethod, routePath: string, fn: lambda.Function) => {
+    const route = (method: apigwv2.HttpMethod, routePath: string, fn: lambda.Function) => {
       this.httpApi.addRoutes({
         path: routePath,
         methods: [method],
@@ -168,16 +174,16 @@ export class ApiStack extends cdk.Stack {
       });
     };
 
-    addRoute(apigwv2.HttpMethod.POST,  '/orders',          ordersCreate);
-    addRoute(apigwv2.HttpMethod.GET,   '/orders',          ordersList);
-    addRoute(apigwv2.HttpMethod.PATCH, '/orders/{id}',     ordersUpdateStatus);
-    addRoute(apigwv2.HttpMethod.GET,   '/menu-items',      menuList);
-    addRoute(apigwv2.HttpMethod.POST,  '/menu-items',      menuUpsert);
-    addRoute(apigwv2.HttpMethod.PUT,   '/menu-items/{id}', menuUpsert);
-    addRoute(apigwv2.HttpMethod.GET,   '/reports/daily',   analyticsDaily);
-    addRoute(apigwv2.HttpMethod.GET,   '/reports/weekly',  analyticsWeekly);
-    addRoute(apigwv2.HttpMethod.GET,   '/inventory',       inventoryList);
-    addRoute(apigwv2.HttpMethod.PATCH, '/inventory/{id}',  inventoryUpdate);
+    route(apigwv2.HttpMethod.POST,  '/orders',          ordersCreate);
+    route(apigwv2.HttpMethod.GET,   '/orders',          ordersList);
+    route(apigwv2.HttpMethod.PATCH, '/orders/{id}',     ordersUpdateStatus);
+    route(apigwv2.HttpMethod.GET,   '/menu-items',      menuList);
+    route(apigwv2.HttpMethod.POST,  '/menu-items',      menuUpsert);
+    route(apigwv2.HttpMethod.PUT,   '/menu-items/{id}', menuUpsert);
+    route(apigwv2.HttpMethod.GET,   '/reports/daily',   analyticsDaily);
+    route(apigwv2.HttpMethod.GET,   '/reports/weekly',  analyticsWeekly);
+    route(apigwv2.HttpMethod.GET,   '/inventory',       inventoryList);
+    route(apigwv2.HttpMethod.PATCH, '/inventory/{id}',  inventoryUpdate);
 
     new cdk.CfnOutput(this, 'HttpApiUrl', { value: this.httpApi.url! });
     new cdk.CfnOutput(this, 'WsApiUrl',   { value: wsStage.url });

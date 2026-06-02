@@ -21,7 +21,7 @@ async function buildConnectionString(): Promise<string> {
     password: string;
   };
 
-  return `postgresql://${username}:${encodeURIComponent(password)}@${host}:5432/gastroflow?sslmode=require`;
+  return `postgresql://${username}:${encodeURIComponent(password)}@${host}:5432/gastroflow`;
 }
 
 async function getPool(): Promise<Pool> {
@@ -33,6 +33,7 @@ async function getPool(): Promise<Pool> {
     max: 5,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
+    ssl: { rejectUnauthorized: false },
   });
 
   pool.on('error', (err) => {

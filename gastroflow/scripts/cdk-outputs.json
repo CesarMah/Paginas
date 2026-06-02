@@ -1,4 +1,10 @@
 {
+  "GastroFlow-dev-Network": {
+    "VpcId": "vpc-0767d9b4c934ac03c",
+    "ExportsOutputRefVpcPublicSubnet2Subnet691E08A351552740": "subnet-0d64e5eb208d5ce0b",
+    "ExportsOutputFnGetAttRdsSg7F9F43B6GroupId133E31A8": "sg-038c26f319a26763c",
+    "ExportsOutputRefVpcPublicSubnet1Subnet5C2D37C4FFA2B456": "subnet-0df61cc6946fd8c6e"
+  },
   "GastroFlow-dev-Auth": {
     "UserPoolClientId": "61le49m55lfo8q58c6e8n80a0u",
     "UserPoolId": "us-east-1_zJrSOZqKY",
@@ -11,12 +17,6 @@
     "MediaBucketName": "gastroflow-media-dev",
     "ExportsOutputRefMediaBucketBCBB02BA270A7AEB": "gastroflow-media-dev",
     "ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B": "arn:aws:s3:::gastroflow-media-dev"
-  },
-  "GastroFlow-dev-Network": {
-    "VpcId": "vpc-0767d9b4c934ac03c",
-    "ExportsOutputRefVpcPublicSubnet2Subnet691E08A351552740": "subnet-0d64e5eb208d5ce0b",
-    "ExportsOutputFnGetAttRdsSg7F9F43B6GroupId133E31A8": "sg-038c26f319a26763c",
-    "ExportsOutputRefVpcPublicSubnet1Subnet5C2D37C4FFA2B456": "subnet-0df61cc6946fd8c6e"
   },
   "GastroFlow-dev-Database": {
     "ExportsOutputFnGetAttPostgres9DC8BB04EndpointAddress36F9722A": "gastroflow-dev-database-postgres9dc8bb04-wwwkkie4qvlo.cwnq88is69lr.us-east-1.rds.amazonaws.com",
