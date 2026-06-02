@@ -10,9 +10,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { to: '/dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'manager'] },
-  { to: '/orders', label: 'Órdenes', icon: '🧾', roles: ['owner', 'manager'] },
-  { to: '/kitchen', label: 'Cocina', icon: '👨‍🍳', roles: ['owner', 'manager', 'staff'] },
+  { to: '/dashboard', label: 'Dashboard',    icon: '📊', roles: ['owner', 'manager'] },
+  { to: '/waiter',    label: 'Tomar orden',  icon: '📝', roles: ['owner', 'manager', 'staff'] },
+  { to: '/orders',    label: 'Órdenes',      icon: '🧾', roles: ['owner', 'manager'] },
+  { to: '/kitchen',   label: 'Cocina',       icon: '👨‍🍳', roles: ['owner', 'manager', 'staff'] },
   { to: '/menu', label: 'Menú', icon: '🍽️', roles: ['owner', 'manager'] },
   { to: '/inventory', label: 'Inventario', icon: '📦', roles: ['owner', 'manager'] },
   { to: '/reports', label: 'Reportes', icon: '📈', roles: ['owner', 'manager'] },

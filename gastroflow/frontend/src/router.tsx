@@ -7,13 +7,19 @@ import { KitchenPage } from './pages/Kitchen';
 import { MenuPage } from './pages/Menu';
 import { InventoryPage } from './pages/Inventory';
 import { ReportsPage } from './pages/Reports';
+import { WaiterPage } from './pages/Waiter';
+
+function defaultRoute(role: string): string {
+  if (role === 'staff') return '/waiter';
+  return '/dashboard';
+}
 
 function RequireAuth({ children, roles }: { children: JSX.Element; roles: string[] }) {
   const token = useAuthStore((s) => s.token);
   const role = useAuthStore((s) => s.role) ?? '';
 
   if (!token) return <Navigate to="/login" replace />;
-  if (!roles.includes(role)) return <Navigate to="/dashboard" replace />;
+  if (!roles.includes(role)) return <Navigate to={defaultRoute(role)} replace />;
   return children;
 }
 
@@ -36,6 +42,14 @@ export function AppRouter() {
         element={
           <RequireAuth roles={['owner', 'manager']}>
             <OrdersPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/waiter"
+        element={
+          <RequireAuth roles={['owner', 'manager', 'staff']}>
+            <WaiterPage />
           </RequireAuth>
         }
       />
@@ -71,7 +85,7 @@ export function AppRouter() {
           </RequireAuth>
         }
       />
-      <Route path="*" element={<Navigate to={token ? '/dashboard' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={token ? defaultRoute(useAuthStore.getState().role ?? '') : '/login'} replace />} />
     </Routes>
   );
 }
