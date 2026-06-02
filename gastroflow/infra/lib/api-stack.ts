@@ -1,5 +1,4 @@
 import * as cdk from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as apigwv2Integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
@@ -15,11 +14,10 @@ import { Construct } from 'constructs';
 
 interface ApiStackProps extends cdk.StackProps {
   stage: string;
-  vpc: ec2.Vpc;
-  lambdaSg: ec2.SecurityGroup;
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
   dbSecret: rds.DatabaseSecret;
+  dbEndpoint: string;
   mediaBucket: s3.Bucket;
 }
 
@@ -30,12 +28,12 @@ export class ApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
-    const { stage, vpc, lambdaSg, userPool, userPoolClient, dbSecret, mediaBucket } = props;
+    const { stage, userPool, userPoolClient, dbSecret, dbEndpoint, mediaBucket } = props;
     const isProd = stage === 'prod';
 
-    // DynamoDB WebSocket connections table
+    // DynamoDB WebSocket connections table (free tier: 25GB, 25 WCU/RCU)
     const connectionsTable = new dynamodb.Table(this, 'WsConnections', {
-      tableName: 'gastroflow-ws-connections',
+      tableName: `gastroflow-ws-connections-${stage}`,
       partitionKey: { name: 'tenantId', type: dynamodb.AttributeType.STRING },
       sortKey: { name: 'connectionId', type: dynamodb.AttributeType.STRING },
       timeToLiveAttribute: 'expiresAt',
@@ -43,19 +41,18 @@ export class ApiStack extends cdk.Stack {
       removalPolicy: isProd ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
     });
 
-    // GSI for disconnect lookup by connectionId
     connectionsTable.addGlobalSecondaryIndex({
       indexName: 'connectionId-index',
       partitionKey: { name: 'connectionId', type: dynamodb.AttributeType.STRING },
       projectionType: dynamodb.ProjectionType.ALL,
     });
 
-    // SNS Topic
+    // SNS Topic (free: 1M publishes/month)
     const ordersTopic = new sns.Topic(this, 'OrdersTopic', {
       topicName: `gastroflow-new-order-${stage}`,
     });
 
-    // WebSocket API
+    // WebSocket API (free tier: 1M messages/month)
     const wsApi = new apigwv2.WebSocketApi(this, 'WsApi', {
       apiName: `gastroflow-ws-${stage}`,
     });
@@ -75,17 +72,16 @@ export class ApiStack extends cdk.Stack {
       SNS_TOPIC_ARN: ordersTopic.topicArn,
       CONNECTIONS_TABLE: connectionsTable.tableName,
       MEDIA_BUCKET: mediaBucket.bucketName,
+      USER_POOL_ID: userPool.userPoolId,
+      USER_POOL_CLIENT_ID: userPoolClient.userPoolClientId,
     };
 
+    // Lambda defaults — NO VPC to avoid NAT Gateway costs
     const lambdaDefaults: Omit<lambda.FunctionProps, 'handler' | 'code'> = {
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      memorySize: isProd ? 512 : 256,
+      memorySize: 256,
       timeout: cdk.Duration.seconds(29),
-      tracing: lambda.Tracing.ACTIVE,
-      vpc,
-      securityGroups: [lambdaSg],
-      vpcSubnets: { subnetType: isProd ? ec2.SubnetType.PRIVATE_WITH_EGRESS : ec2.SubnetType.PRIVATE_ISOLATED },
       environment: commonEnv,
     };
 
@@ -106,29 +102,21 @@ export class ApiStack extends cdk.Stack {
       return fn;
     };
 
-    const ordersCreate = makeLambda('OrdersCreate', 'orders/create');
-    const ordersList = makeLambda('OrdersList', 'orders/list');
-    const ordersUpdateStatus = makeLambda('OrdersUpdateStatus', 'orders/update-status');
-    const menuList = makeLambda('MenuList', 'menu/list');
-    const menuUpsert = makeLambda('MenuUpsert', 'menu/upsert');
-    const analyticsDaily = makeLambda('AnalyticsDaily', 'analytics/daily');
-    const analyticsWeekly = makeLambda('AnalyticsWeekly', 'analytics/weekly');
-    const inventoryList = makeLambda('InventoryList', 'inventory/list');
-    const inventoryUpdate = makeLambda('InventoryUpdate', 'inventory/update');
-    const wsConnect = makeLambda('WsConnect', 'websocket/connect', {
-      USER_POOL_ID: userPool.userPoolId,
-      USER_POOL_CLIENT_ID: userPoolClient.userPoolClientId,
-    });
-    const wsDisconnect = makeLambda('WsDisconnect', 'websocket/disconnect');
-    const sendEmail = new lambda.Function(this, 'SendEmail', {
-      ...lambdaDefaults,
-      functionName: `gastroflow-${stage}-send-email`,
-      code: lambda.Code.fromAsset(backendPath),
-      handler: 'lambdas/notifications/send-email/index.handler',
-      vpc: undefined,
-      securityGroups: undefined,
-      vpcSubnets: undefined,
-    });
+    // Database URL secret ARN passed as env — Lambda reads it at runtime
+    const dbSecretEnv = { DB_SECRET_ARN: dbSecret.secretArn, DB_HOST: dbEndpoint };
+
+    const ordersCreate       = makeLambda('OrdersCreate',       'orders/create',           dbSecretEnv);
+    const ordersList         = makeLambda('OrdersList',         'orders/list',             dbSecretEnv);
+    const ordersUpdateStatus = makeLambda('OrdersUpdateStatus', 'orders/update-status',    dbSecretEnv);
+    const menuList           = makeLambda('MenuList',           'menu/list',               dbSecretEnv);
+    const menuUpsert         = makeLambda('MenuUpsert',         'menu/upsert',             dbSecretEnv);
+    const analyticsDaily     = makeLambda('AnalyticsDaily',     'analytics/daily',         dbSecretEnv);
+    const analyticsWeekly    = makeLambda('AnalyticsWeekly',    'analytics/weekly',        dbSecretEnv);
+    const inventoryList      = makeLambda('InventoryList',      'inventory/list',          dbSecretEnv);
+    const inventoryUpdate    = makeLambda('InventoryUpdate',    'inventory/update',        dbSecretEnv);
+    const wsConnect          = makeLambda('WsConnect',          'websocket/connect',       dbSecretEnv);
+    const wsDisconnect       = makeLambda('WsDisconnect',       'websocket/disconnect',    dbSecretEnv);
+    const sendEmail          = makeLambda('SendEmail',          'notifications/send-email', { FROM_EMAIL: 'cessarmahwk@gmail.com' });
 
     this.lambdaFunctions = [
       ordersCreate, ordersList, ordersUpdateStatus,
@@ -148,10 +136,12 @@ export class ApiStack extends cdk.Stack {
     wsApi.grantManageConnections(ordersCreate);
     wsApi.grantManageConnections(ordersUpdateStatus);
 
-    // HTTP API
-    const authorizer = new apigwv2Authorizers.HttpJwtAuthorizer('CognitoAuthorizer', userPool.userPoolProviderUrl, {
-      jwtAudience: [userPoolClient.userPoolClientId],
-    });
+    // HTTP API with Cognito authorizer (free tier: 1M calls/month for 12 months)
+    const authorizer = new apigwv2Authorizers.HttpJwtAuthorizer(
+      'CognitoAuthorizer',
+      userPool.userPoolProviderUrl,
+      { jwtAudience: [userPoolClient.userPoolClientId] }
+    );
 
     this.httpApi = new apigwv2.HttpApi(this, 'HttpApi', {
       apiName: `gastroflow-api-${stage}`,
@@ -169,11 +159,7 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
-    const addRoute = (
-      method: apigwv2.HttpMethod,
-      routePath: string,
-      fn: lambda.Function
-    ) => {
+    const addRoute = (method: apigwv2.HttpMethod, routePath: string, fn: lambda.Function) => {
       this.httpApi.addRoutes({
         path: routePath,
         methods: [method],
@@ -182,18 +168,18 @@ export class ApiStack extends cdk.Stack {
       });
     };
 
-    addRoute(apigwv2.HttpMethod.POST, '/orders', ordersCreate);
-    addRoute(apigwv2.HttpMethod.GET, '/orders', ordersList);
-    addRoute(apigwv2.HttpMethod.PATCH, '/orders/{id}', ordersUpdateStatus);
-    addRoute(apigwv2.HttpMethod.GET, '/menu-items', menuList);
-    addRoute(apigwv2.HttpMethod.POST, '/menu-items', menuUpsert);
-    addRoute(apigwv2.HttpMethod.PUT, '/menu-items/{id}', menuUpsert);
-    addRoute(apigwv2.HttpMethod.GET, '/reports/daily', analyticsDaily);
-    addRoute(apigwv2.HttpMethod.GET, '/reports/weekly', analyticsWeekly);
-    addRoute(apigwv2.HttpMethod.GET, '/inventory', inventoryList);
-    addRoute(apigwv2.HttpMethod.PATCH, '/inventory/{id}', inventoryUpdate);
+    addRoute(apigwv2.HttpMethod.POST,  '/orders',          ordersCreate);
+    addRoute(apigwv2.HttpMethod.GET,   '/orders',          ordersList);
+    addRoute(apigwv2.HttpMethod.PATCH, '/orders/{id}',     ordersUpdateStatus);
+    addRoute(apigwv2.HttpMethod.GET,   '/menu-items',      menuList);
+    addRoute(apigwv2.HttpMethod.POST,  '/menu-items',      menuUpsert);
+    addRoute(apigwv2.HttpMethod.PUT,   '/menu-items/{id}', menuUpsert);
+    addRoute(apigwv2.HttpMethod.GET,   '/reports/daily',   analyticsDaily);
+    addRoute(apigwv2.HttpMethod.GET,   '/reports/weekly',  analyticsWeekly);
+    addRoute(apigwv2.HttpMethod.GET,   '/inventory',       inventoryList);
+    addRoute(apigwv2.HttpMethod.PATCH, '/inventory/{id}',  inventoryUpdate);
 
     new cdk.CfnOutput(this, 'HttpApiUrl', { value: this.httpApi.url! });
-    new cdk.CfnOutput(this, 'WsApiUrl', { value: wsStage.url });
+    new cdk.CfnOutput(this, 'WsApiUrl',   { value: wsStage.url });
   }
 }

@@ -59,11 +59,13 @@ export const handler = async (
       };
     }
 
+    const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
     const result = await client.query(
-      `INSERT INTO orders (tenant_id, items, table_number, notes, customer_email)
-       VALUES ($1, $2::jsonb, $3, $4, $5)
+      `INSERT INTO orders (tenant_id, items, total, table_number, notes, customer_email)
+       VALUES ($1, $2::jsonb, $3, $4, $5, $6)
        RETURNING *`,
-      [tenantId, JSON.stringify(items), tableNumber ?? null, notes ?? null, customerEmail ?? null]
+      [tenantId, JSON.stringify(items), total, tableNumber ?? null, notes ?? null, customerEmail ?? null]
     );
 
     const order = result.rows[0];

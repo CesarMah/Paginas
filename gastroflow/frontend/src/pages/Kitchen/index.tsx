@@ -65,7 +65,7 @@ function OrderCard({ order, nextStatus }: { order: Order; nextStatus: Order['sta
 }
 
 export function KitchenPage() {
-  const qc = useQueryClient();
+  useQueryClient();
   const orders = useOrderStore((s) => s.orders);
   const setOrders = useOrderStore((s) => s.setOrders);
 

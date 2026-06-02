@@ -1,0 +1,45 @@
+{
+  "GastroFlow-dev-Auth": {
+    "UserPoolClientId": "61le49m55lfo8q58c6e8n80a0u",
+    "UserPoolId": "us-east-1_zJrSOZqKY",
+    "ExportsOutputFnGetAttUserPool6BA7E5F2ProviderURL1DC61701": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_zJrSOZqKY",
+    "ExportsOutputRefUserPool6BA7E5F296FD7236": "us-east-1_zJrSOZqKY",
+    "ExportsOutputRefUserPoolSpaClient6B560FFA03368753": "61le49m55lfo8q58c6e8n80a0u"
+  },
+  "GastroFlow-dev-Storage": {
+    "DistributionDomain": "d3la0kjkx3soc5.cloudfront.net",
+    "MediaBucketName": "gastroflow-media-dev",
+    "ExportsOutputRefMediaBucketBCBB02BA270A7AEB": "gastroflow-media-dev",
+    "ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B": "arn:aws:s3:::gastroflow-media-dev"
+  },
+  "GastroFlow-dev-Network": {
+    "VpcId": "vpc-0767d9b4c934ac03c",
+    "ExportsOutputRefVpcPublicSubnet2Subnet691E08A351552740": "subnet-0d64e5eb208d5ce0b",
+    "ExportsOutputFnGetAttRdsSg7F9F43B6GroupId133E31A8": "sg-038c26f319a26763c",
+    "ExportsOutputRefVpcPublicSubnet1Subnet5C2D37C4FFA2B456": "subnet-0df61cc6946fd8c6e"
+  },
+  "GastroFlow-dev-Database": {
+    "ExportsOutputFnGetAttPostgres9DC8BB04EndpointAddress36F9722A": "gastroflow-dev-database-postgres9dc8bb04-wwwkkie4qvlo.cwnq88is69lr.us-east-1.rds.amazonaws.com",
+    "DbEndpoint": "gastroflow-dev-database-postgres9dc8bb04-wwwkkie4qvlo.cwnq88is69lr.us-east-1.rds.amazonaws.com",
+    "DbSecretArn": "arn:aws:secretsmanager:us-east-1:978344289403:secret:gastroflow/dev/db-credentials-iNoM1w",
+    "DbPort": "5432",
+    "ExportsOutputRefDbSecret685A0FA57881E1C6": "arn:aws:secretsmanager:us-east-1:978344289403:secret:gastroflow/dev/db-credentials-iNoM1w"
+  },
+  "GastroFlow-dev-Api": {
+    "ExportsOutputRefWsDisconnect817EF55B3210E279": "gastroflow-dev-wsdisconnect",
+    "ExportsOutputRefSendEmail14C261999AE49161": "gastroflow-dev-sendemail",
+    "ExportsOutputRefOrdersUpdateStatus2824C454A7FE3BD4": "gastroflow-dev-ordersupdatestatus",
+    "ExportsOutputRefMenuUpsert46ACCFDFA18F888A": "gastroflow-dev-menuupsert",
+    "ExportsOutputRefInventoryUpdate60882458E9D2797C": "gastroflow-dev-inventoryupdate",
+    "ExportsOutputRefWsConnect41AA3906CD55D655": "gastroflow-dev-wsconnect",
+    "WsApiUrl": "wss://8wgbo3qb6c.execute-api.us-east-1.amazonaws.com/dev",
+    "ExportsOutputRefOrdersList8E200B5B0155EEF0": "gastroflow-dev-orderslist",
+    "ExportsOutputRefHttpApiF5A9A8A7F70B5BDD": "0kehl3b7pf",
+    "HttpApiUrl": "https://0kehl3b7pf.execute-api.us-east-1.amazonaws.com/",
+    "ExportsOutputRefAnalyticsWeeklyD2D68FFBB5B37F94": "gastroflow-dev-analyticsweekly",
+    "ExportsOutputRefOrdersCreate085A08D57C0231C2": "gastroflow-dev-orderscreate",
+    "ExportsOutputRefAnalyticsDaily41B826450AB7D806": "gastroflow-dev-analyticsdaily",
+    "ExportsOutputRefMenuList1DD5253346D9D1FE": "gastroflow-dev-menulist",
+    "ExportsOutputRefInventoryList3A489E7E05F2413B": "gastroflow-dev-inventorylist"
+  }
+}

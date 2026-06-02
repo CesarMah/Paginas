@@ -15,32 +15,31 @@ const env: cdk.Environment = {
   region: process.env.CDK_DEFAULT_REGION || 'us-east-1',
 };
 
-const stackPrefix = `GastroFlow-${stage}`;
+const p = `GastroFlow-${stage}`;
 
-const networkStack = new NetworkStack(app, `${stackPrefix}-Network`, { env, stage });
-const authStack = new AuthStack(app, `${stackPrefix}-Auth`, { env, stage });
-const databaseStack = new DatabaseStack(app, `${stackPrefix}-Database`, {
+const networkStack  = new NetworkStack(app,  `${p}-Network`,  { env, stage });
+const authStack     = new AuthStack(app,     `${p}-Auth`,     { env, stage });
+const databaseStack = new DatabaseStack(app, `${p}-Database`, {
   env,
   stage,
-  vpc: networkStack.vpc,
-  lambdaSg: networkStack.lambdaSg,
+  vpc:   networkStack.vpc,
+  rdsSg: networkStack.rdsSg,
 });
-const storageStack = new StorageStack(app, `${stackPrefix}-Storage`, { env, stage });
-const apiStack = new ApiStack(app, `${stackPrefix}-Api`, {
+const storageStack  = new StorageStack(app,  `${p}-Storage`,  { env, stage });
+const apiStack      = new ApiStack(app,      `${p}-Api`,      {
   env,
   stage,
-  vpc: networkStack.vpc,
-  lambdaSg: networkStack.lambdaSg,
-  userPool: authStack.userPool,
+  userPool:       authStack.userPool,
   userPoolClient: authStack.userPoolClient,
-  dbSecret: databaseStack.dbSecret,
-  mediaBucket: storageStack.mediaBucket,
+  dbSecret:       databaseStack.dbSecret,
+  dbEndpoint:     databaseStack.dbEndpoint,
+  mediaBucket:    storageStack.mediaBucket,
 });
-new ObservabilityStack(app, `${stackPrefix}-Observability`, {
+new ObservabilityStack(app, `${p}-Observability`, {
   env,
   stage,
   lambdaFunctions: apiStack.lambdaFunctions,
-  httpApi: apiStack.httpApi,
+  httpApi:         apiStack.httpApi,
 });
 
 app.synth();

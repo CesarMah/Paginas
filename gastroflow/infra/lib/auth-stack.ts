@@ -46,9 +46,8 @@ export class AuthStack extends cdk.Stack {
         userSrp: true,
         custom: false,
       },
-      oAuth: {
-        flows: { implicitCodeGrant: false, authorizationCodeGrant: false },
-      },
+      // No OAuth flows — SPA uses SRP/password auth directly
+      disableOAuth: true,
       accessTokenValidity: cdk.Duration.hours(1),
       idTokenValidity: cdk.Duration.hours(1),
       refreshTokenValidity: cdk.Duration.days(30),

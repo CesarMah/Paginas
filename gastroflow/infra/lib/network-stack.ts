@@ -14,32 +14,28 @@ export class NetworkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: NetworkStackProps) {
     super(scope, id, props);
 
-    const { stage } = props;
-    const isProd = stage === 'prod';
-
+    // Minimal VPC — only needed for RDS subnet group requirement.
+    // Lambdas run outside VPC to avoid NAT Gateway costs (~$32/mo).
     this.vpc = new ec2.Vpc(this, 'Vpc', {
       maxAzs: 2,
-      natGateways: isProd ? 2 : 0,
+      natGateways: 0,
       subnetConfiguration: [
         { name: 'Public', subnetType: ec2.SubnetType.PUBLIC, cidrMask: 24 },
-        { name: 'Private', subnetType: isProd ? ec2.SubnetType.PRIVATE_WITH_EGRESS : ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: 24 },
       ],
     });
 
     this.lambdaSg = new ec2.SecurityGroup(this, 'LambdaSg', {
       vpc: this.vpc,
-      description: 'Security group for Lambda functions',
-      allowAllOutbound: false,
+      description: 'Placeholder SG for Lambda (free-tier mode)',
     });
-    this.lambdaSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), 'HTTPS outbound');
-    this.lambdaSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432), 'PostgreSQL outbound');
 
+    // RDS SG: allow inbound 5432 from anywhere (demo only, protected by password + SSL)
     this.rdsSg = new ec2.SecurityGroup(this, 'RdsSg', {
       vpc: this.vpc,
-      description: 'Security group for RDS PostgreSQL',
+      description: 'RDS PostgreSQL demo access',
       allowAllOutbound: false,
     });
-    this.rdsSg.addIngressRule(this.lambdaSg, ec2.Port.tcp(5432), 'Allow Lambda access to RDS');
+    this.rdsSg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432), 'Allow Lambda (no-VPC) access');
 
     new cdk.CfnOutput(this, 'VpcId', { value: this.vpc.vpcId });
   }
