@@ -1,0 +1,96 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dev:
+    name: Deploy — Dev
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - run: pnpm install --frozen-lockfile
+      - name: CDK deploy dev
+        run: pnpm --filter infra cdk deploy --all --context stage=dev --require-approval never
+      - name: Build frontend
+        run: pnpm --filter frontend build
+        env:
+          VITE_API_URL: ${{ vars.DEV_API_URL }}
+          VITE_WS_URL: ${{ vars.DEV_WS_URL }}
+          VITE_COGNITO_USER_POOL_ID: ${{ vars.DEV_COGNITO_USER_POOL_ID }}
+          VITE_COGNITO_CLIENT_ID: ${{ vars.DEV_COGNITO_CLIENT_ID }}
+          VITE_COGNITO_REGION: ${{ secrets.AWS_REGION }}
+      - name: Upload frontend to S3
+        run: |
+          aws s3 sync frontend/dist s3://gastroflow-frontend-dev --delete
+      - name: Invalidate CloudFront
+        run: |
+          DIST_ID=$(aws cloudformation describe-stacks \
+            --stack-name GastroFlow-dev-Storage \
+            --query 'Stacks[0].Outputs[?OutputKey==`DistributionDomain`].OutputValue' \
+            --output text | xargs -I{} aws cloudfront list-distributions \
+            --query "DistributionList.Items[?DomainName=='{}'].Id" --output text)
+          aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
+
+  deploy-prod:
+    name: Deploy — Prod
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - run: pnpm install --frozen-lockfile
+      - name: CDK deploy prod
+        run: pnpm --filter infra cdk deploy --all --context stage=prod --require-approval never
+      - name: Build frontend
+        run: pnpm --filter frontend build
+        env:
+          VITE_API_URL: ${{ vars.PROD_API_URL }}
+          VITE_WS_URL: ${{ vars.PROD_WS_URL }}
+          VITE_COGNITO_USER_POOL_ID: ${{ vars.PROD_COGNITO_USER_POOL_ID }}
+          VITE_COGNITO_CLIENT_ID: ${{ vars.PROD_COGNITO_CLIENT_ID }}
+          VITE_COGNITO_REGION: ${{ secrets.AWS_REGION }}
+      - name: Upload frontend to S3
+        run: |
+          aws s3 sync frontend/dist s3://gastroflow-frontend-prod --delete
+      - name: Invalidate CloudFront
+        run: |
+          DIST_ID=$(aws cloudformation describe-stacks \
+            --stack-name GastroFlow-prod-Storage \
+            --query 'Stacks[0].Outputs[?OutputKey==`DistributionDomain`].OutputValue' \
+            --output text | xargs -I{} aws cloudfront list-distributions \
+            --query "DistributionList.Items[?DomainName=='{}'].Id" --output text)
+          aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"

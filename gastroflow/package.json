@@ -1,0 +1,25 @@
+{
+  "name": "gastroflow",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "test": "pnpm --filter backend test && pnpm --filter frontend test",
+    "lint": "eslint . --ext .ts,.tsx",
+    "deploy:dev": "pnpm --filter infra cdk deploy --all --context stage=dev",
+    "deploy:prod": "pnpm --filter infra cdk deploy --all --context stage=prod --require-approval broadening"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

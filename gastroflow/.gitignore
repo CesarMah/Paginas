@@ -1,0 +1,10 @@
+node_modules/
+dist/
+cdk.out/
+.env
+*.local
+.DS_Store
+*.js.map
+coverage/
+.nyc_output/
+*.log

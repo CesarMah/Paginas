@@ -1,0 +1,60 @@
+import * as cdk from 'aws-cdk-lib';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import { Construct } from 'constructs';
+
+interface AuthStackProps extends cdk.StackProps {
+  stage: string;
+}
+
+export class AuthStack extends cdk.Stack {
+  public readonly userPool: cognito.UserPool;
+  public readonly userPoolClient: cognito.UserPoolClient;
+
+  constructor(scope: Construct, id: string, props: AuthStackProps) {
+    super(scope, id, props);
+
+    const { stage } = props;
+
+    this.userPool = new cognito.UserPool(this, 'UserPool', {
+      userPoolName: `gastroflow-${stage}`,
+      selfSignUpEnabled: false,
+      signInAliases: { email: true },
+      autoVerify: { email: true },
+      standardAttributes: {
+        email: { required: true, mutable: true },
+        fullname: { required: false, mutable: true },
+      },
+      customAttributes: {
+        tenantId: new cognito.StringAttribute({ mutable: false }),
+        role: new cognito.StringAttribute({ mutable: true }),
+      },
+      passwordPolicy: {
+        minLength: 8,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: false,
+      },
+      accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
+      removalPolicy: stage === 'prod' ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+    });
+
+    this.userPoolClient = this.userPool.addClient('SpaClient', {
+      userPoolClientName: `gastroflow-spa-${stage}`,
+      generateSecret: false,
+      authFlows: {
+        userPassword: true,
+        userSrp: true,
+        custom: false,
+      },
+      oAuth: {
+        flows: { implicitCodeGrant: false, authorizationCodeGrant: false },
+      },
+      accessTokenValidity: cdk.Duration.hours(1),
+      idTokenValidity: cdk.Duration.hours(1),
+      refreshTokenValidity: cdk.Duration.days(30),
+    });
+
+    new cdk.CfnOutput(this, 'UserPoolId', { value: this.userPool.userPoolId });
+    new cdk.CfnOutput(this, 'UserPoolClientId', { value: this.userPoolClient.userPoolClientId });
+  }
+}
