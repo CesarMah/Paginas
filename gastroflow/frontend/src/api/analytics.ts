@@ -10,9 +10,16 @@ export interface DailyReport {
   statusBreakdown: Record<string, number>;
 }
 
-export interface WeeklyReport {
+export interface RangeReport {
+  startDate: string;
   endDate: string;
   dailyData: Array<{ date: string; revenue: number; orders: number }>;
+  totalRevenue: number;
+  totalOrders: number;
+  cancelledOrders: number;
+  avgTicket: number;
+  topProducts: Array<{ name: string; count: number; revenue: number }>;
+  statusBreakdown: Record<string, number>;
 }
 
 export const analyticsApi = {
@@ -21,8 +28,7 @@ export const analyticsApi = {
     return apiFetch<DailyReport>(`/reports/daily${qs}`);
   },
 
-  weekly: (endDate?: string) => {
-    const qs = endDate ? `?endDate=${endDate}` : '';
-    return apiFetch<WeeklyReport>(`/reports/weekly${qs}`);
+  range: (startDate: string, endDate: string) => {
+    return apiFetch<RangeReport>(`/reports/weekly?startDate=${startDate}&endDate=${endDate}`);
   },
 };
