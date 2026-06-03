@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useAuthStore } from '../../stores/useAuthStore';
+import { useLayoutStore } from '../../stores/useLayoutStore';
 import { signOut } from '../../hooks/useAuth';
 
 interface NavItem {
@@ -12,46 +13,83 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: '/dashboard', label: 'Dashboard',    icon: '📊', roles: ['owner', 'manager'] },
   { to: '/waiter',    label: 'Tomar orden',  icon: '📝', roles: ['owner', 'manager', 'staff'] },
-  { to: '/orders',    label: 'Órdenes',      icon: '🧾', roles: ['owner', 'manager'] },
-  { to: '/kitchen',   label: 'Cocina',       icon: '👨‍🍳', roles: ['owner', 'manager', 'staff'] },
-  { to: '/menu', label: 'Menú', icon: '🍽️', roles: ['owner', 'manager'] },
-  { to: '/inventory', label: 'Inventario', icon: '📦', roles: ['owner', 'manager'] },
-  { to: '/reports', label: 'Reportes', icon: '📈', roles: ['owner', 'manager'] },
+  { to: '/orders',    label: 'Órdenes',      icon: '🧾', roles: ['owner', 'manager', 'staff'] },
+  { to: '/kitchen',   label: 'Cocina',       icon: '👨‍🍳', roles: ['owner', 'manager'] },
+  { to: '/menu',      label: 'Menú',         icon: '🍽️', roles: ['owner', 'manager'] },
+  { to: '/inventory', label: 'Inventario',   icon: '📦', roles: ['owner', 'manager'] },
+  { to: '/reports',   label: 'Reportes',     icon: '📈', roles: ['owner', 'manager'] },
 ];
 
 export function Sidebar() {
-  const role = useAuthStore((s) => s.role) ?? '';
+  const role        = useAuthStore((s) => s.role) ?? '';
+  const sidebarOpen = useLayoutStore((s) => s.sidebarOpen);
+
+  const visible = navItems.filter((item) => item.roles.includes(role));
 
   return (
-    <aside className="w-56 bg-gray-900 text-white flex flex-col min-h-screen">
-      <div className="px-4 py-5 border-b border-gray-700">
-        <span className="text-xl font-bold text-orange-400">GastroFlow</span>
-      </div>
-      <nav className="flex-1 p-3 space-y-1">
-        {navItems
-          .filter((item) => item.roles.includes(role))
-          .map((item) => (
+    <>
+      {/* Overlay en móvil cuando el sidebar está abierto */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+          onClick={() => useLayoutStore.getState().closeSidebar()}
+        />
+      )}
+
+      <aside
+        className={`
+          fixed top-0 left-0 h-full z-30 bg-gray-900 text-white flex flex-col
+          transition-all duration-300 ease-in-out
+          ${sidebarOpen ? 'w-56' : 'w-0 lg:w-16'}
+          overflow-hidden
+        `}
+      >
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-700 min-h-[64px]">
+          <span className="text-xl flex-shrink-0">🍴</span>
+          {sidebarOpen && (
+            <span className="text-lg font-bold text-orange-400 whitespace-nowrap">
+              GastroFlow
+            </span>
+          )}
+        </div>
+
+        {/* Navegación */}
+        <nav className="flex-1 p-2 space-y-1 overflow-y-auto overflow-x-hidden">
+          {visible.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
+              title={!sidebarOpen ? item.label : undefined}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors
-                ${isActive ? 'bg-orange-500 text-white' : 'text-gray-300 hover:bg-gray-800'}`
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors
+                 ${isActive
+                   ? 'bg-orange-500 text-white'
+                   : 'text-gray-300 hover:bg-gray-800'
+                 }`
               }
             >
-              <span>{item.icon}</span>
-              {item.label}
+              <span className="text-lg flex-shrink-0">{item.icon}</span>
+              {sidebarOpen && (
+                <span className="whitespace-nowrap">{item.label}</span>
+              )}
             </NavLink>
           ))}
-      </nav>
-      <div className="p-3 border-t border-gray-700">
-        <button
-          onClick={signOut}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-800 transition-colors"
-        >
-          <span>🚪</span> Cerrar sesión
-        </button>
-      </div>
-    </aside>
+        </nav>
+
+        {/* Cerrar sesión */}
+        <div className="p-2 border-t border-gray-700">
+          <button
+            onClick={signOut}
+            title={!sidebarOpen ? 'Cerrar sesión' : undefined}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
+                       text-gray-300 hover:bg-gray-800 transition-colors"
+          >
+            <span className="text-lg flex-shrink-0">🚪</span>
+            {sidebarOpen && <span className="whitespace-nowrap">Cerrar sesión</span>}
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }

@@ -9,14 +9,23 @@ import { InventoryPage } from './pages/Inventory';
 import { ReportsPage } from './pages/Reports';
 import { WaiterPage } from './pages/Waiter';
 
+// ─── Permisos por rol ───────────────────────────────────────────────────────
+//
+//  owner / manager  →  Todas las páginas
+//  staff (mesero)   →  Solo /waiter y /orders
+//
+// ───────────────────────────────────────────────────────────────────────────
+
+const ROLES_FULL   = ['owner', 'manager'];
+const ROLES_STAFF  = ['owner', 'manager', 'staff'];
+
 function defaultRoute(role: string): string {
-  if (role === 'staff') return '/waiter';
-  return '/dashboard';
+  return role === 'staff' ? '/waiter' : '/dashboard';
 }
 
 function RequireAuth({ children, roles }: { children: JSX.Element; roles: string[] }) {
   const token = useAuthStore((s) => s.token);
-  const role = useAuthStore((s) => s.role) ?? '';
+  const role  = useAuthStore((s) => s.role) ?? '';
 
   if (!token) return <Navigate to="/login" replace />;
   if (!roles.includes(role)) return <Navigate to={defaultRoute(role)} replace />;
@@ -25,67 +34,29 @@ function RequireAuth({ children, roles }: { children: JSX.Element; roles: string
 
 export function AppRouter() {
   const token = useAuthStore((s) => s.token);
+  const role  = useAuthStore((s) => s.role) ?? '';
 
   return (
     <Routes>
+      {/* ── Público ── */}
       <Route path="/login" element={<LoginPage />} />
+
+      {/* ── Solo owner / manager ── */}
+      <Route path="/dashboard" element={<RequireAuth roles={ROLES_FULL}><DashboardPage /></RequireAuth>} />
+      <Route path="/kitchen"   element={<RequireAuth roles={ROLES_FULL}><KitchenPage /></RequireAuth>} />
+      <Route path="/menu"      element={<RequireAuth roles={ROLES_FULL}><MenuPage /></RequireAuth>} />
+      <Route path="/inventory" element={<RequireAuth roles={ROLES_FULL}><InventoryPage /></RequireAuth>} />
+      <Route path="/reports"   element={<RequireAuth roles={ROLES_FULL}><ReportsPage /></RequireAuth>} />
+
+      {/* ── Todos los roles autenticados ── */}
+      <Route path="/waiter"    element={<RequireAuth roles={ROLES_STAFF}><WaiterPage /></RequireAuth>} />
+      <Route path="/orders"    element={<RequireAuth roles={ROLES_STAFF}><OrdersPage /></RequireAuth>} />
+
+      {/* ── Catch-all ── */}
       <Route
-        path="/dashboard"
-        element={
-          <RequireAuth roles={['owner', 'manager']}>
-            <DashboardPage />
-          </RequireAuth>
-        }
+        path="*"
+        element={<Navigate to={token ? defaultRoute(role) : '/login'} replace />}
       />
-      <Route
-        path="/orders"
-        element={
-          <RequireAuth roles={['owner', 'manager']}>
-            <OrdersPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/waiter"
-        element={
-          <RequireAuth roles={['owner', 'manager', 'staff']}>
-            <WaiterPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/kitchen"
-        element={
-          <RequireAuth roles={['owner', 'manager', 'staff']}>
-            <KitchenPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/menu"
-        element={
-          <RequireAuth roles={['owner', 'manager']}>
-            <MenuPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/inventory"
-        element={
-          <RequireAuth roles={['owner', 'manager']}>
-            <InventoryPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/reports"
-        element={
-          <RequireAuth roles={['owner', 'manager']}>
-            <ReportsPage />
-          </RequireAuth>
-        }
-      />
-      <Route path="*" element={<Navigate to={token ? defaultRoute(useAuthStore.getState().role ?? '') : '/login'} replace />} />
     </Routes>
   );
 }
