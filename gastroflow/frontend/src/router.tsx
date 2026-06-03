@@ -12,7 +12,8 @@ import { WaiterPage } from './pages/Waiter';
 // ─── Permisos por rol ───────────────────────────────────────────────────────
 //
 //  owner / manager  →  Todas las páginas
-//  staff (mesero)   →  Solo /waiter y /orders
+//  staff            →  /waiter + /orders + /kitchen
+//                      (meseros y personal de cocina comparten rol staff)
 //
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -43,7 +44,7 @@ export function AppRouter() {
 
       {/* ── Solo owner / manager ── */}
       <Route path="/dashboard" element={<RequireAuth roles={ROLES_FULL}><DashboardPage /></RequireAuth>} />
-      <Route path="/kitchen"   element={<RequireAuth roles={ROLES_FULL}><KitchenPage /></RequireAuth>} />
+      <Route path="/kitchen"   element={<RequireAuth roles={ROLES_STAFF}><KitchenPage /></RequireAuth>} />
       <Route path="/menu"      element={<RequireAuth roles={ROLES_FULL}><MenuPage /></RequireAuth>} />
       <Route path="/inventory" element={<RequireAuth roles={ROLES_FULL}><InventoryPage /></RequireAuth>} />
       <Route path="/reports"   element={<RequireAuth roles={ROLES_FULL}><ReportsPage /></RequireAuth>} />
