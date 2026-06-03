@@ -38,6 +38,15 @@ export class AuthStack extends cdk.Stack {
       removalPolicy: stage === 'prod' ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
     });
 
+    // Attributes the client can read from the ID token (must be explicit for custom attrs)
+    const readAttrs = new cognito.ClientAttributes()
+      .withStandardAttributes({ email: true, emailVerified: true, fullname: true })
+      .withCustomAttributes('tenantId', 'role');
+
+    const writeAttrs = new cognito.ClientAttributes()
+      .withStandardAttributes({ email: true, fullname: true })
+      .withCustomAttributes('role');
+
     this.userPoolClient = this.userPool.addClient('SpaClient', {
       userPoolClientName: `gastroflow-spa-${stage}`,
       generateSecret: false,
@@ -48,6 +57,8 @@ export class AuthStack extends cdk.Stack {
       },
       // No OAuth flows — SPA uses SRP/password auth directly
       disableOAuth: true,
+      readAttributes:  readAttrs,
+      writeAttributes: writeAttrs,
       accessTokenValidity: cdk.Duration.hours(1),
       idTokenValidity: cdk.Duration.hours(1),
       refreshTokenValidity: cdk.Duration.days(30),

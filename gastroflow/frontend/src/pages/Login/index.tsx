@@ -5,16 +5,23 @@ import { useAuthStore } from '../../stores/useAuthStore';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 
-export function LoginPage() {
-  const navigate = useNavigate();
-  const token = useAuthStore((s) => s.token);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+function homeForRole(role: string | null): string {
+  if (role === 'staff') return '/waiter';
+  return '/dashboard';
+}
 
+export function LoginPage() {
+  const navigate  = useNavigate();
+  const token     = useAuthStore((s) => s.token);
+  const role      = useAuthStore((s) => s.role);
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]       = useState('');
+  const [loading, setLoading]   = useState(false);
+
+  // Ya autenticado → ir a la página correcta según rol
   if (token) {
-    navigate('/dashboard', { replace: true });
+    navigate(homeForRole(role), { replace: true });
     return null;
   }
 
@@ -24,7 +31,9 @@ export function LoginPage() {
     setLoading(true);
     try {
       await signIn(email, password);
-      navigate('/dashboard', { replace: true });
+      // Leer el rol que guardó signIn en el store y redirigir
+      const storedRole = useAuthStore.getState().role;
+      navigate(homeForRole(storedRole), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
     } finally {
@@ -57,7 +66,9 @@ export function LoginPage() {
             required
             placeholder="••••••••"
           />
-          {error && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+          )}
           <Button type="submit" loading={loading} className="w-full">
             Iniciar sesión
           </Button>
