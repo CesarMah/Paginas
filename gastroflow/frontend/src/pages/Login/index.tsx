@@ -2,13 +2,9 @@ import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../hooks/useAuth';
 import { useAuthStore } from '../../stores/useAuthStore';
+import { homeForRole } from '../../router';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-
-function homeForRole(role: string | null): string {
-  if (role === 'staff') return '/waiter';
-  return '/dashboard';
-}
 
 export function LoginPage() {
   const navigate  = useNavigate();
@@ -19,7 +15,7 @@ export function LoginPage() {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
 
-  // Ya autenticado → ir a la página correcta según rol
+  // Ya autenticado → redirigir según rol
   if (token) {
     navigate(homeForRole(role), { replace: true });
     return null;
@@ -31,7 +27,7 @@ export function LoginPage() {
     setLoading(true);
     try {
       await signIn(email, password);
-      // Leer el rol que guardó signIn en el store y redirigir
+      // Leer el rol que guardó signIn en el store
       const storedRole = useAuthStore.getState().role;
       navigate(homeForRole(storedRole), { replace: true });
     } catch (err) {
